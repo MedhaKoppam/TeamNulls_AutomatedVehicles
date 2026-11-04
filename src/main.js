@@ -37,21 +37,43 @@ function buildPage(stats, total) {
 }
 
 function renderMapSummary(container, mapData, state) {
-  const metric = mapData.metrics.metrics.find((item) => item.key === state.selectedMetric) ?? mapData.metrics.metrics[0];
-  const countries = Object.values(mapData.metrics.countries).filter((country) => Number.isFinite(country.metrics[metric.key]));
+  const source = mapData.metrics;
+  const metric = source.metrics.find((item) => item.key === state.selectedMetric) ?? source.metrics[0];
+  const countries = Object.values(source.countries).filter((country) => Number.isFinite(country.metrics[metric.key]));
   const highest = d3.greatest(countries, (country) => country.metrics[metric.key]);
   const lowest = d3.least(countries, (country) => country.metrics[metric.key]);
   const sidePane = container.querySelector('.world-side-pane');
   if (!sidePane) return;
+
+  let legend = sidePane.querySelector('.map-color-legend');
+  if (!legend) {
+    legend = document.createElement('section');
+    legend.className = 'map-color-legend';
+    legend.setAttribute('aria-label', 'Map color scale');
+    sidePane.append(legend);
+  }
+  const values = countries.map((country) => country.metrics[metric.key]);
+  const min = d3.min(values), max = d3.max(values), average = source.global[metric.key];
+  const midpoint = Math.max(min, Math.min(max, average));
+  const averagePosition = max > min ? ((midpoint - min) / (max - min)) * 100 : 50;
+  legend.innerHTML = `<h4>Color scale</h4>
+    <div class="map-color-bar" role="img" aria-label="Coral represents values below the global average, warm sand marks the average, and teal represents values above the average"><span class="map-color-average-marker"></span></div>
+    <div class="map-color-labels"><span>${min.toFixed(1)}</span><span>${max.toFixed(1)}</span></div>
+    <p>Global average: ${average.toFixed(1)} · Coral: below, teal: above</p>`;
+  const stop = Math.max(0, Math.min(100, averagePosition));
+  legend.querySelector('.map-color-bar').style.background = `linear-gradient(90deg, #d95f59 0%, #f0d58a ${stop}%, #38a69b 100%)`;
+  legend.querySelector('.map-color-average-marker').style.left = `${stop}%`;
+
   let summary = sidePane.querySelector('.global-summary');
-  if (!summary) { summary = document.createElement('section'); summary.className = 'global-summary'; summary.setAttribute('aria-label', 'Selected metric summary'); sidePane.prepend(summary); }
-  summary.innerHTML = `<div><span class="micro-label">Global average</span><strong>${mapData.metrics.global[metric.key].toFixed(1)}</strong><span>${metric.label}</span></div><div><span class="micro-label">Highest</span><strong>${highest.name}</strong><span>${highest.metrics[metric.key].toFixed(1)} / 100</span></div><div><span class="micro-label">Lowest</span><strong>${lowest.name}</strong><span>${lowest.metrics[metric.key].toFixed(1)} / 100</span></div>`;
+  if (!summary) { summary = document.createElement('section'); summary.className = 'global-summary'; summary.setAttribute('aria-label', 'Selected metric summary'); sidePane.append(summary); }
+  summary.innerHTML = `<div><span class="micro-label">Global average</span><strong>${average.toFixed(1)}</strong><span>${metric.label}</span></div><div><span class="micro-label">Highest</span><strong>${highest.name}</strong><span>${highest.metrics[metric.key].toFixed(1)} / 100</span></div><div><span class="micro-label">Lowest</span><strong>${lowest.name}</strong><span>${lowest.metrics[metric.key].toFixed(1)} / 100</span></div>`;
 }
 
 async function initialize() {
   const [data, mapData, respondents] = await Promise.all([loadData(), loadMapData(), loadRespondents()]);
   buildPage(getStoryboardStats(data, mapData.metrics), data.length);
   const map = requireElement('#country-trust-chart');
+  map.closest('.chart-scroll')?.classList.add('map-chart-scroll');
   const actions = { setMetric: setSelectedMetric, setCountry: setSelectedCountry };
   const updateMap = (state) => {
     renderCountryDrilldown(map, mapData, state, actions);

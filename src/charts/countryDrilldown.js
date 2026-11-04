@@ -141,7 +141,6 @@ function profile(stage, mapData, state, actions, { showBack = false } = {}) {
 
 export function renderCountryDrilldown(container, mapData, state, actions) {
   const was = container.__selectedCountry; container.__selectedCountry = state.selectedCountry;
-  container.closest('.chart-scroll')?.classList.toggle('map-chart-scroll', !state.selectedCountry);
   d3.select(container).selectAll('.map-controls').data([null]).join('div').attr('class', 'map-controls');
   renderMetricControls(container, mapData.metrics, state, actions);
   const controls = container.querySelector('.map-controls');
@@ -153,7 +152,7 @@ export function renderCountryDrilldown(container, mapData, state, actions) {
     layout = document.createElement('div'); layout.className = 'world-layout';
     const mapPane = document.createElement('div'); mapPane.className = 'world-map-pane';
     const sidePane = document.createElement('aside'); sidePane.className = 'world-side-pane';
-    sidePane.setAttribute('aria-label', 'Global metric summary');
+    sidePane.setAttribute('aria-label', 'Map color scale and global summary');
     layout.append(mapPane, sidePane); world.append(layout);
   }
   const mapPane = layout.querySelector('.world-map-pane');

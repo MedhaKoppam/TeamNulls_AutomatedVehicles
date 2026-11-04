@@ -138,18 +138,20 @@
 }
 
 
-/* Country map: compact selector, visible map, and a vertical summary rail. */
+/* Country map: compact metric dropdown, enlarged map, and a side legend/summary rail. */
 #country-trust-chart {
   display: flex;
   flex-direction: column;
   height: 100%;
   min-height: 0;
+  min-width: 0;
 }
-.chart-scroll.map-chart-scroll { overflow: hidden; }
-.map-chart-scroll > .chart { height: 100%; min-height: 0; }
+.map-chart-scroll { overflow: hidden !important; }
+.map-chart-scroll > #country-trust-chart { flex: 1 1 auto; }
 #country-trust-chart > .map-controls {
+  flex: 0 0 auto;
   display: grid;
-  grid-template-columns: minmax(190px, 250px) minmax(0, 1fr);
+  grid-template-columns: minmax(205px, 260px) minmax(0, 1fr);
   align-items: center;
   gap: 8px 14px;
   margin: 0 0 8px;
@@ -176,68 +178,62 @@
   color: var(--text-primary);
   font: 500 12px var(--ui);
 }
-#country-trust-chart .metric-select:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-#country-trust-chart .metric-description {
-  margin: 0;
-  font-size: 11px;
-  line-height: 1.35;
-}
-#country-trust-chart .world-view {
-  flex: 1 1 auto;
-  min-height: 0;
-  height: 100%;
-  overflow: hidden;
-}
+#country-trust-chart .metric-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+#country-trust-chart .metric-description { margin: 0; font-size: 11px; line-height: 1.35; }
+#country-trust-chart .world-view { flex: 1 1 auto; min-height: 0; height: 100%; overflow: hidden; }
 #country-trust-chart .world-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(168px, 210px);
-  grid-template-areas: "map summary";
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) minmax(205px, 235px);
+  gap: 14px;
   width: 100%;
   height: 100%;
   min-height: 0;
 }
-#country-trust-chart .world-map-pane {
-  grid-area: map;
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
-}
-#country-trust-chart .world-map-pane > .drilldown-stage {
-  height: 100%;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-#country-trust-chart .choropleth-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: 100%;
-}
+#country-trust-chart .world-map-pane { min-width: 0; min-height: 0; overflow: hidden; }
+#country-trust-chart .world-map-pane > .drilldown-stage { width: 100%; height: 100%; min-height: 0; overflow: hidden; }
+#country-trust-chart .choropleth-svg { display: block; width: 100%; height: 100%; max-width: none; }
 #country-trust-chart .world-side-pane {
-  grid-area: summary;
-  align-content: start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   min-width: 0;
   min-height: 0;
   overflow-y: auto;
-  padding-left: 10px;
+  padding-left: 12px;
   border-left: 1px solid var(--rule);
 }
-#country-trust-chart .global-summary {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-  margin: 0;
+#country-trust-chart .map-color-legend { padding: 2px 0 12px; border-bottom: 1px solid var(--rule); }
+#country-trust-chart .map-color-legend h4 {
+  margin: 0 0 9px;
+  color: var(--text-primary);
+  font: 600 12px var(--ui);
 }
+#country-trust-chart .map-color-bar { position: relative; width: 100%; height: 13px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); }
+#country-trust-chart .map-color-average-marker {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  transform: translateX(-1px);
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.5);
+}
+#country-trust-chart .map-color-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 6px;
+  color: var(--text-secondary);
+  font: 10px var(--ui);
+  font-variant-numeric: tabular-nums;
+}
+#country-trust-chart .map-color-legend p { margin: 6px 0 0; color: var(--text-muted); font: 10px/1.35 var(--ui); }
+#country-trust-chart .global-summary { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 0; }
 #country-trust-chart .global-summary div {
   display: grid;
   grid-template-columns: 1fr;
   gap: 4px;
-  padding: 11px 12px;
+  padding: 10px 11px;
   border: 1px solid var(--rule);
   border-radius: var(--radius-sm);
   background: var(--glow-card);
@@ -245,38 +241,25 @@
 #country-trust-chart .global-summary .micro-label { grid-column: auto; }
 #country-trust-chart .global-summary strong {
   color: var(--text-primary);
-  font: 600 clamp(17px, 1.45vw, 22px)/1.15 var(--display);
+  font: 600 clamp(17px, 1.4vw, 22px)/1.15 var(--display);
   overflow-wrap: anywhere;
 }
-#country-trust-chart .global-summary span:last-child {
-  color: var(--text-muted);
-  font-size: 11px;
-}
+#country-trust-chart .global-summary span:last-child { color: var(--text-muted); font-size: 11px; }
+#country-trust-chart .ranking-strip { display: none; }
 
-@media (max-width: 760px) {
-  #country-trust-chart > .map-controls {
-    grid-template-columns: 1fr;
-    gap: 5px;
-  }
-  #country-trust-chart .world-layout {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto minmax(0, 1fr);
-    grid-template-areas: "summary" "map";
-    gap: 7px;
-  }
-  #country-trust-chart .world-side-pane {
-    overflow: visible;
-    padding: 0;
-    border-left: 0;
-  }
-  #country-trust-chart .global-summary {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 5px;
-  }
-  #country-trust-chart .global-summary div {
-    padding: 6px;
-    gap: 3px;
-  }
-  #country-trust-chart .global-summary strong { font-size: 14px; }
-  #country-trust-chart .global-summary span:last-child { font-size: 9px; }
+@media (max-width: 760px), (max-height: 560px) {
+  #country-trust-chart > .map-controls { grid-template-columns: minmax(160px, 1fr); gap: 5px; }
+  #country-trust-chart .metric-selector { grid-template-columns: auto minmax(0, 1fr); }
+  #country-trust-chart .world-layout { grid-template-columns: minmax(0, 1fr) 116px; gap: 7px; }
+  #country-trust-chart .world-side-pane { gap: 7px; padding-left: 7px; }
+  #country-trust-chart .map-color-legend { padding-bottom: 7px; }
+  #country-trust-chart .map-color-legend h4 { font-size: 10px; margin-bottom: 5px; }
+  #country-trust-chart .map-color-bar { height: 9px; }
+  #country-trust-chart .map-color-labels { font-size: 8px; gap: 2px; }
+  #country-trust-chart .map-color-legend p { font-size: 8px; }
+  #country-trust-chart .global-summary { gap: 5px; }
+  #country-trust-chart .global-summary div { padding: 6px; gap: 2px; }
+  #country-trust-chart .global-summary .micro-label { font-size: 8px; }
+  #country-trust-chart .global-summary strong { font-size: 13px; }
+  #country-trust-chart .global-summary span:last-child { font-size: 8px; }
 }
