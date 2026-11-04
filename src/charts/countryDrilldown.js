@@ -141,13 +141,25 @@ function profile(stage, mapData, state, actions, { showBack = false } = {}) {
 
 export function renderCountryDrilldown(container, mapData, state, actions) {
   const was = container.__selectedCountry; container.__selectedCountry = state.selectedCountry;
+  container.closest('.chart-scroll')?.classList.toggle('map-chart-scroll', !state.selectedCountry);
   d3.select(container).selectAll('.map-controls').data([null]).join('div').attr('class', 'map-controls');
   renderMetricControls(container, mapData.metrics, state, actions);
   const controls = container.querySelector('.map-controls');
   let world = container.querySelector('.world-view');
   if (!world) { world = document.createElement('div'); world.className = 'world-view'; controls.after(world); }
-  let worldStage = world.querySelector('.drilldown-stage');
-  if (!worldStage) { worldStage = document.createElement('div'); worldStage.className = 'drilldown-stage'; world.append(worldStage); }
+
+  let layout = world.querySelector('.world-layout');
+  if (!layout) {
+    layout = document.createElement('div'); layout.className = 'world-layout';
+    const mapPane = document.createElement('div'); mapPane.className = 'world-map-pane';
+    const sidePane = document.createElement('aside'); sidePane.className = 'world-side-pane';
+    sidePane.setAttribute('aria-label', 'Global metric summary');
+    layout.append(mapPane, sidePane); world.append(layout);
+  }
+  const mapPane = layout.querySelector('.world-map-pane');
+  let worldStage = mapPane.querySelector('.drilldown-stage');
+  if (!worldStage) { worldStage = document.createElement('div'); worldStage.className = 'drilldown-stage'; mapPane.append(worldStage); }
+
   let profileStage = container.querySelector('.profile-view');
   if (!profileStage) { profileStage = document.createElement('div'); profileStage.className = 'profile-view drilldown-stage'; world.after(profileStage); }
   const scrollFrame = () => container.closest('.chart-scroll')?.scrollTo({ top: 0, behavior: noMotion() ? 'auto' : 'smooth' });

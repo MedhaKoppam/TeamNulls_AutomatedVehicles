@@ -41,9 +41,10 @@ function renderMapSummary(container, mapData, state) {
   const countries = Object.values(mapData.metrics.countries).filter((country) => Number.isFinite(country.metrics[metric.key]));
   const highest = d3.greatest(countries, (country) => country.metrics[metric.key]);
   const lowest = d3.least(countries, (country) => country.metrics[metric.key]);
-  const world = container.querySelector('.world-view');
-  let summary = world.querySelector('.global-summary');
-  if (!summary) { summary = document.createElement('section'); summary.className = 'global-summary'; summary.setAttribute('aria-label', 'Selected metric summary'); world.prepend(summary); }
+  const sidePane = container.querySelector('.world-side-pane');
+  if (!sidePane) return;
+  let summary = sidePane.querySelector('.global-summary');
+  if (!summary) { summary = document.createElement('section'); summary.className = 'global-summary'; summary.setAttribute('aria-label', 'Selected metric summary'); sidePane.prepend(summary); }
   summary.innerHTML = `<div><span class="micro-label">Global average</span><strong>${mapData.metrics.global[metric.key].toFixed(1)}</strong><span>${metric.label}</span></div><div><span class="micro-label">Highest</span><strong>${highest.name}</strong><span>${highest.metrics[metric.key].toFixed(1)} / 100</span></div><div><span class="micro-label">Lowest</span><strong>${lowest.name}</strong><span>${lowest.metrics[metric.key].toFixed(1)} / 100</span></div>`;
 }
 

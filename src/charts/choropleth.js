@@ -8,9 +8,12 @@ export function renderMetricControls(container, source, state, actions, { showRa
   const metric = source.metrics.find((item) => item.key === state.selectedMetric) ?? source.metrics[0];
   const controls = d3.select(container).selectAll('.map-controls').data([null]).join('div').attr('class', 'map-controls');
   controls.html('');
-  controls.append('div').attr('class', 'metric-selector').attr('role', 'group').attr('aria-label', 'Country metric')
-    .selectAll('button').data(source.metrics).join('button').attr('type', 'button').attr('class', (d) => `metric-button${d.key === metric.key ? ' active' : ''}`)
-    .attr('aria-pressed', (d) => d.key === metric.key).text((d) => d.label).on('click', (_, d) => actions.setMetric(d.key));
+  const selector = controls.append('label').attr('class', 'metric-selector');
+  selector.append('span').attr('class', 'metric-select-label').text('Map metric');
+  selector.append('select').attr('class', 'metric-select').attr('aria-label', 'Choose map metric')
+    .selectAll('option').data(source.metrics).join('option')
+    .attr('value', (d) => d.key).property('selected', (d) => d.key === metric.key).text((d) => d.label);
+  selector.select('select').on('change', function change() { actions.setMetric(this.value); });
   controls.append('p').attr('class', 'metric-description').text(metric.description);
   if (!showRanking) {
     d3.select(container).selectAll('.ranking-strip').remove();
@@ -35,18 +38,17 @@ export function renderChoropleth(container, mapData, state, actions) {
   const color = d3.scaleSequential(d3.interpolateRgbBasis(['#184f95', '#2a78d6', '#6da7ec', '#cde2fb'])).domain([min, max]);
   const countryById = new Map(countries.map((d) => [d.id, d]));
   const features = feature(geometry, geometry.objects.countries).features;
-  // Keep a substantial desktop map even when the chart panel is relatively
-  // narrow. The surrounding chart-scroll panel handles any horizontal overflow.
-  const minMapWidth = window.innerWidth <= 760 ? 320 : 760;
-  const width = Math.max(minMapWidth, Math.floor(container.clientWidth || 900));
-  // Do not squeeze the map to fit the ranking and summary into the viewport;
-  // let the panel scroll vertically so the map remains the visual focus.
-  const mapHeight = Math.max(250, Math.min(width / (900 / 520), 560));
+  // Fit the entire map and its legend inside the visible map pane.
+  const width = Math.max(360, Math.floor(container.clientWidth || 900));
+  const availableHeight = Math.floor(container.clientHeight || container.closest('.chart-scroll')?.clientHeight || 520);
+  const mapHeight = Math.max(120, Math.min(width * (520 / 900), availableHeight - 78));
   const height = mapHeight + 72;
   const projection = d3.geoNaturalEarth1().fitSize([width, mapHeight], { type: 'FeatureCollection', features });
   const path = d3.geoPath(projection);
 
-  const svg = d3.select(container).selectAll('svg.choropleth-svg').data([null]).join('svg').attr('class', 'choropleth-svg').attr('width', width).attr('height', height).attr('role', 'img').attr('aria-label', `${metric.label} by country`);
+  const svg = d3.select(container).selectAll('svg.choropleth-svg').data([null]).join('svg').attr('class', 'choropleth-svg')
+    .attr('width', width).attr('height', height).attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('role', 'img').attr('aria-label', `${metric.label} by country`);
   svg.selectAll('*').remove();
   const defs = svg.append('defs');
   const hatch = defs.append('pattern').attr('id', 'no-data-hatch').attr('width', 6).attr('height', 6).attr('patternUnits', 'userSpaceOnUse').attr('patternTransform', 'rotate(45)');
