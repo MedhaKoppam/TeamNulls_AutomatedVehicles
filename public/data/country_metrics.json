@@ -1,0 +1,2977 @@
+{
+  "metrics": [
+    {
+      "key": "trust",
+      "label": "Trust",
+      "description": "Comfort, relaxation, safety, reliability, and predictability across automated-driving contexts.",
+      "higherIsBetter": true
+    },
+    {
+      "key": "adoption",
+      "label": "Adoption intention",
+      "description": "Intention to use, use with access, use on everyday trips, and buy a conditionally automated car.",
+      "higherIsBetter": true
+    },
+    {
+      "key": "safetyConfidence",
+      "label": "Safety confidence",
+      "description": "Inverse of concerns about safety, malfunctions, and resuming control after other activities.",
+      "higherIsBetter": true
+    },
+    {
+      "key": "expectedBenefits",
+      "label": "Expected benefits",
+      "description": "Expected usefulness, safer arrival, and greater comfort.",
+      "higherIsBetter": true
+    },
+    {
+      "key": "awareness",
+      "label": "Prior awareness",
+      "description": "Share who had heard of automated cars before the questionnaire.",
+      "higherIsBetter": true
+    },
+    {
+      "key": "secondaryActivities",
+      "label": "Secondary-activity willingness",
+      "description": "Willingness to use automated-driving time for other activities.",
+      "higherIsBetter": true
+    },
+    {
+      "key": "capabilityKnowledge",
+      "label": "L3 capability knowledge",
+      "description": "Share of answered capability statements classified correctly after the survey introduction.",
+      "higherIsBetter": true
+    }
+  ],
+  "global": {
+    "trust": 62.1,
+    "adoption": 67.9,
+    "safetyConfidence": 32.7,
+    "expectedBenefits": 68.5,
+    "awareness": 75.3,
+    "secondaryActivities": 59.4,
+    "capabilityKnowledge": 75.2
+  },
+  "globalDetails": {
+    "behaviors": {
+      "takingCareOfChildren": 17.5,
+      "talkingWithFellowTravelers": 40,
+      "internetOrVideo": 47.3,
+      "playingGames": 12.2,
+      "socializing": 30.2,
+      "eatingOrDrinking": 28.4,
+      "observingLandscape": 39.2,
+      "relaxingOrResting": 34.9,
+      "readingBook": 12.8,
+      "working": 18,
+      "other": 0.8
+    },
+    "misconceptions": {
+      "laneKeeping": 8.6,
+      "overtaking": 34.5,
+      "allConditions": 48.9,
+      "takeoverAnytime": 12.4,
+      "otherActivitiesButNoSleeping": 20.2
+    },
+    "demographics": {
+      "meanAge": 40.7,
+      "genderShares": {
+        "code1": 49.9,
+        "code2": 49.9,
+        "code3": 0.2
+      },
+      "meanIncomeCode": 4.7,
+      "licensedShare": 96.1,
+      "meanAnnualDistanceCode": 3.9,
+      "meanEducationCode": 2.4
+    }
+  },
+  "regions": {
+    "South America": {
+      "trust": 55.5,
+      "adoption": 60.7,
+      "safetyConfidence": 37,
+      "expectedBenefits": 59.9,
+      "awareness": 74.3,
+      "secondaryActivities": 53.3,
+      "capabilityKnowledge": 71.1
+    },
+    "Asia": {
+      "trust": 60.3,
+      "adoption": 67.9,
+      "safetyConfidence": 33.3,
+      "expectedBenefits": 67.8,
+      "awareness": 75,
+      "secondaryActivities": 57,
+      "capabilityKnowledge": 76.1
+    },
+    "Europe": {
+      "trust": 61.5,
+      "adoption": 66.1,
+      "safetyConfidence": 33.3,
+      "expectedBenefits": 67.5,
+      "awareness": 78.2,
+      "secondaryActivities": 59.1,
+      "capabilityKnowledge": 75.1
+    },
+    "Africa": {
+      "trust": 73.7,
+      "adoption": 79.9,
+      "safetyConfidence": 23.9,
+      "expectedBenefits": 81.1,
+      "awareness": 69.8,
+      "secondaryActivities": 73,
+      "capabilityKnowledge": 74.8
+    },
+    "North America": {
+      "trust": 73,
+      "adoption": 81,
+      "safetyConfidence": 27.3,
+      "expectedBenefits": 79.5,
+      "awareness": 57.9,
+      "secondaryActivities": 68,
+      "capabilityKnowledge": 76.4
+    }
+  },
+  "countries": {
+    "156": {
+      "name": "China",
+      "iso3": "CHN",
+      "region": "Asia",
+      "n": 1056,
+      "lowSample": false,
+      "metrics": {
+        "trust": 55.3,
+        "adoption": 63.2,
+        "safetyConfidence": 36.1,
+        "expectedBenefits": 61.2,
+        "awareness": 71.8,
+        "secondaryActivities": 53.7,
+        "capabilityKnowledge": 76.6
+      },
+      "behaviors": {
+        "takingCareOfChildren": 13.3,
+        "talkingWithFellowTravelers": 29.6,
+        "internetOrVideo": 56.4,
+        "playingGames": 15.7,
+        "socializing": 34.6,
+        "eatingOrDrinking": 42.3,
+        "observingLandscape": 26.4,
+        "relaxingOrResting": 34.2,
+        "readingBook": 15.7,
+        "working": 16.6,
+        "other": 0.9
+      },
+      "misconceptions": {
+        "laneKeeping": 7.2,
+        "overtaking": 33,
+        "allConditions": 53.3,
+        "takeoverAnytime": 11.4,
+        "otherActivitiesButNoSleeping": 15.2
+      },
+      "demographics": {
+        "meanAge": 43.5,
+        "genderShares": {
+          "code1": 47.5,
+          "code2": 51.8,
+          "code3": 0.7
+        },
+        "meanIncomeCode": 4.6,
+        "licensedShare": 95.1,
+        "meanAnnualDistanceCode": 4.3,
+        "meanEducationCode": 3
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 106,
+            "metrics": {
+              "trust": 61,
+              "adoption": 66.7,
+              "safetyConfidence": 38.1,
+              "expectedBenefits": 64.6,
+              "awareness": 62.3,
+              "secondaryActivities": 55,
+              "capabilityKnowledge": 69.1
+            },
+            "metricN": {
+              "trust": 106,
+              "adoption": 106,
+              "safetyConfidence": 106,
+              "expectedBenefits": 106,
+              "awareness": 106,
+              "secondaryActivities": 105,
+              "capabilityKnowledge": 106
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 241,
+            "metrics": {
+              "trust": 62.1,
+              "adoption": 70.2,
+              "safetyConfidence": 33.6,
+              "expectedBenefits": 67.4,
+              "awareness": 66,
+              "secondaryActivities": 58.6,
+              "capabilityKnowledge": 73.5
+            },
+            "metricN": {
+              "trust": 241,
+              "adoption": 241,
+              "safetyConfidence": 241,
+              "expectedBenefits": 241,
+              "awareness": 241,
+              "secondaryActivities": 237,
+              "capabilityKnowledge": 241
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 208,
+            "metrics": {
+              "trust": 55.3,
+              "adoption": 64.4,
+              "safetyConfidence": 35.7,
+              "expectedBenefits": 62,
+              "awareness": 73.1,
+              "secondaryActivities": 58.1,
+              "capabilityKnowledge": 77.3
+            },
+            "metricN": {
+              "trust": 206,
+              "adoption": 207,
+              "safetyConfidence": 205,
+              "expectedBenefits": 207,
+              "awareness": 208,
+              "secondaryActivities": 208,
+              "capabilityKnowledge": 208
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 202,
+            "metrics": {
+              "trust": 52.9,
+              "adoption": 61.9,
+              "safetyConfidence": 35.3,
+              "expectedBenefits": 59.8,
+              "awareness": 76.2,
+              "secondaryActivities": 51.9,
+              "capabilityKnowledge": 77.3
+            },
+            "metricN": {
+              "trust": 202,
+              "adoption": 202,
+              "safetyConfidence": 202,
+              "expectedBenefits": 202,
+              "awareness": 202,
+              "secondaryActivities": 202,
+              "capabilityKnowledge": 202
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 299,
+            "metrics": {
+              "trust": 49.4,
+              "adoption": 56.2,
+              "safetyConfidence": 38.3,
+              "expectedBenefits": 55.3,
+              "awareness": 75.9,
+              "secondaryActivities": 47.6,
+              "capabilityKnowledge": 80.7
+            },
+            "metricN": {
+              "trust": 299,
+              "adoption": 299,
+              "safetyConfidence": 299,
+              "expectedBenefits": 299,
+              "awareness": 299,
+              "secondaryActivities": 298,
+              "capabilityKnowledge": 299
+            }
+          }
+        ]
+      }
+    },
+    "246": {
+      "name": "Finland",
+      "iso3": "FIN",
+      "region": "Europe",
+      "n": 1177,
+      "lowSample": false,
+      "metrics": {
+        "trust": 52.2,
+        "adoption": 59.5,
+        "safetyConfidence": 39.1,
+        "expectedBenefits": 59.3,
+        "awareness": 76.8,
+        "secondaryActivities": 51.6,
+        "capabilityKnowledge": 77.6
+      },
+      "behaviors": {
+        "takingCareOfChildren": 8.5,
+        "talkingWithFellowTravelers": 42.7,
+        "internetOrVideo": 48.5,
+        "playingGames": 13,
+        "socializing": 30.8,
+        "eatingOrDrinking": 31.7,
+        "observingLandscape": 28.8,
+        "relaxingOrResting": 32.6,
+        "readingBook": 16.2,
+        "working": 17.5,
+        "other": 1.1
+      },
+      "misconceptions": {
+        "laneKeeping": 7.7,
+        "overtaking": 38.6,
+        "allConditions": 36.2,
+        "takeoverAnytime": 12.7,
+        "otherActivitiesButNoSleeping": 18.6
+      },
+      "demographics": {
+        "meanAge": 42.5,
+        "genderShares": {
+          "code1": 51.7,
+          "code2": 48.1,
+          "code3": 0.3
+        },
+        "meanIncomeCode": 3.4,
+        "licensedShare": 94.7,
+        "meanAnnualDistanceCode": 3.3,
+        "meanEducationCode": 2.8
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 159,
+            "metrics": {
+              "trust": 54.8,
+              "adoption": 62.3,
+              "safetyConfidence": 38.7,
+              "expectedBenefits": 60.4,
+              "awareness": 73,
+              "secondaryActivities": 52.7,
+              "capabilityKnowledge": 73.1
+            },
+            "metricN": {
+              "trust": 157,
+              "adoption": 157,
+              "safetyConfidence": 157,
+              "expectedBenefits": 158,
+              "awareness": 159,
+              "secondaryActivities": 157,
+              "capabilityKnowledge": 159
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 279,
+            "metrics": {
+              "trust": 58.1,
+              "adoption": 64.7,
+              "safetyConfidence": 36.6,
+              "expectedBenefits": 62.8,
+              "awareness": 75.6,
+              "secondaryActivities": 58.5,
+              "capabilityKnowledge": 76.5
+            },
+            "metricN": {
+              "trust": 275,
+              "adoption": 276,
+              "safetyConfidence": 276,
+              "expectedBenefits": 277,
+              "awareness": 279,
+              "secondaryActivities": 275,
+              "capabilityKnowledge": 278
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 199,
+            "metrics": {
+              "trust": 54.1,
+              "adoption": 63,
+              "safetyConfidence": 40.2,
+              "expectedBenefits": 61.2,
+              "awareness": 76.4,
+              "secondaryActivities": 56.3,
+              "capabilityKnowledge": 76.6
+            },
+            "metricN": {
+              "trust": 198,
+              "adoption": 197,
+              "safetyConfidence": 198,
+              "expectedBenefits": 197,
+              "awareness": 199,
+              "secondaryActivities": 196,
+              "capabilityKnowledge": 199
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 266,
+            "metrics": {
+              "trust": 49.7,
+              "adoption": 59.1,
+              "safetyConfidence": 40.1,
+              "expectedBenefits": 60,
+              "awareness": 76.7,
+              "secondaryActivities": 51.5,
+              "capabilityKnowledge": 79.6
+            },
+            "metricN": {
+              "trust": 265,
+              "adoption": 264,
+              "safetyConfidence": 265,
+              "expectedBenefits": 264,
+              "awareness": 266,
+              "secondaryActivities": 263,
+              "capabilityKnowledge": 266
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 274,
+            "metrics": {
+              "trust": 45.7,
+              "adoption": 50.6,
+              "safetyConfidence": 40.3,
+              "expectedBenefits": 53.1,
+              "awareness": 80.7,
+              "secondaryActivities": 40.5,
+              "capabilityKnowledge": 80.1
+            },
+            "metricN": {
+              "trust": 272,
+              "adoption": 271,
+              "safetyConfidence": 271,
+              "expectedBenefits": 271,
+              "awareness": 274,
+              "secondaryActivities": 267,
+              "capabilityKnowledge": 274
+            }
+          }
+        ]
+      }
+    },
+    "250": {
+      "name": "France",
+      "iso3": "FRA",
+      "region": "Europe",
+      "n": 1133,
+      "lowSample": false,
+      "metrics": {
+        "trust": 51.4,
+        "adoption": 48.3,
+        "safetyConfidence": 37.1,
+        "expectedBenefits": 60.3,
+        "awareness": 86.7,
+        "secondaryActivities": 50.4,
+        "capabilityKnowledge": 76.8
+      },
+      "behaviors": {
+        "takingCareOfChildren": 14.5,
+        "talkingWithFellowTravelers": 44.5,
+        "internetOrVideo": 40.3,
+        "playingGames": 6.2,
+        "socializing": 35.3,
+        "eatingOrDrinking": 34.6,
+        "observingLandscape": 36.3,
+        "relaxingOrResting": 37.9,
+        "readingBook": 17.8,
+        "working": 22.3,
+        "other": 0.5
+      },
+      "misconceptions": {
+        "laneKeeping": 7.2,
+        "overtaking": 51.4,
+        "allConditions": 31.9,
+        "takeoverAnytime": 8.7,
+        "otherActivitiesButNoSleeping": 18.5
+      },
+      "demographics": {
+        "meanAge": 43.9,
+        "genderShares": {
+          "code1": 49.6,
+          "code2": 50.4,
+          "code3": 0
+        },
+        "meanIncomeCode": 5.2,
+        "licensedShare": 97.9,
+        "meanAnnualDistanceCode": 4,
+        "meanEducationCode": 2.6
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 169,
+            "metrics": {
+              "trust": 56.1,
+              "adoption": 53.1,
+              "safetyConfidence": 36.1,
+              "expectedBenefits": 62.4,
+              "awareness": 78.1,
+              "secondaryActivities": 51.3,
+              "capabilityKnowledge": 69.8
+            },
+            "metricN": {
+              "trust": 169,
+              "adoption": 169,
+              "safetyConfidence": 169,
+              "expectedBenefits": 169,
+              "awareness": 169,
+              "secondaryActivities": 167,
+              "capabilityKnowledge": 169
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 171,
+            "metrics": {
+              "trust": 55.6,
+              "adoption": 53.2,
+              "safetyConfidence": 36.4,
+              "expectedBenefits": 61.5,
+              "awareness": 78.9,
+              "secondaryActivities": 53.8,
+              "capabilityKnowledge": 74.2
+            },
+            "metricN": {
+              "trust": 170,
+              "adoption": 169,
+              "safetyConfidence": 170,
+              "expectedBenefits": 170,
+              "awareness": 171,
+              "secondaryActivities": 169,
+              "capabilityKnowledge": 171
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 202,
+            "metrics": {
+              "trust": 51.6,
+              "adoption": 49.6,
+              "safetyConfidence": 38.3,
+              "expectedBenefits": 61,
+              "awareness": 84.7,
+              "secondaryActivities": 55.5,
+              "capabilityKnowledge": 78.5
+            },
+            "metricN": {
+              "trust": 201,
+              "adoption": 202,
+              "safetyConfidence": 201,
+              "expectedBenefits": 202,
+              "awareness": 202,
+              "secondaryActivities": 201,
+              "capabilityKnowledge": 202
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 256,
+            "metrics": {
+              "trust": 51.9,
+              "adoption": 48.1,
+              "safetyConfidence": 35.3,
+              "expectedBenefits": 61.6,
+              "awareness": 89.5,
+              "secondaryActivities": 52,
+              "capabilityKnowledge": 77.7
+            },
+            "metricN": {
+              "trust": 254,
+              "adoption": 255,
+              "safetyConfidence": 255,
+              "expectedBenefits": 256,
+              "awareness": 256,
+              "secondaryActivities": 252,
+              "capabilityKnowledge": 256
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 335,
+            "metrics": {
+              "trust": 46.3,
+              "adoption": 42.7,
+              "safetyConfidence": 38.6,
+              "expectedBenefits": 57.2,
+              "awareness": 94,
+              "secondaryActivities": 43.7,
+              "capabilityKnowledge": 80.1
+            },
+            "metricN": {
+              "trust": 335,
+              "adoption": 334,
+              "safetyConfidence": 335,
+              "expectedBenefits": 334,
+              "awareness": 335,
+              "secondaryActivities": 325,
+              "capabilityKnowledge": 335
+            }
+          }
+        ]
+      }
+    },
+    "276": {
+      "name": "Germany",
+      "iso3": "DEU",
+      "region": "Europe",
+      "n": 1164,
+      "lowSample": false,
+      "metrics": {
+        "trust": 56.7,
+        "adoption": 60.5,
+        "safetyConfidence": 38.5,
+        "expectedBenefits": 62,
+        "awareness": 77.7,
+        "secondaryActivities": 53.7,
+        "capabilityKnowledge": 70.5
+      },
+      "behaviors": {
+        "takingCareOfChildren": 17.8,
+        "talkingWithFellowTravelers": 51.7,
+        "internetOrVideo": 45.6,
+        "playingGames": 15.1,
+        "socializing": 19.2,
+        "eatingOrDrinking": 28.2,
+        "observingLandscape": 41.3,
+        "relaxingOrResting": 36.6,
+        "readingBook": 14.5,
+        "working": 8.8,
+        "other": 0.6
+      },
+      "misconceptions": {
+        "laneKeeping": 12.9,
+        "overtaking": 37.5,
+        "allConditions": 63.2,
+        "takeoverAnytime": 10.9,
+        "otherActivitiesButNoSleeping": 22.9
+      },
+      "demographics": {
+        "meanAge": 42.7,
+        "genderShares": {
+          "code1": 47.6,
+          "code2": 52.1,
+          "code3": 0.3
+        },
+        "meanIncomeCode": 3.8,
+        "licensedShare": 96.9,
+        "meanAnnualDistanceCode": 3.8,
+        "meanEducationCode": 2.8
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 135,
+            "metrics": {
+              "trust": 60.1,
+              "adoption": 65.9,
+              "safetyConfidence": 36.1,
+              "expectedBenefits": 64.5,
+              "awareness": 75.6,
+              "secondaryActivities": 58.9,
+              "capabilityKnowledge": 66.9
+            },
+            "metricN": {
+              "trust": 135,
+              "adoption": 134,
+              "safetyConfidence": 135,
+              "expectedBenefits": 134,
+              "awareness": 135,
+              "secondaryActivities": 132,
+              "capabilityKnowledge": 133
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 227,
+            "metrics": {
+              "trust": 60.5,
+              "adoption": 66.5,
+              "safetyConfidence": 35.6,
+              "expectedBenefits": 65.6,
+              "awareness": 70,
+              "secondaryActivities": 59.8,
+              "capabilityKnowledge": 69.9
+            },
+            "metricN": {
+              "trust": 226,
+              "adoption": 226,
+              "safetyConfidence": 226,
+              "expectedBenefits": 226,
+              "awareness": 227,
+              "secondaryActivities": 224,
+              "capabilityKnowledge": 223
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 280,
+            "metrics": {
+              "trust": 60.7,
+              "adoption": 65.5,
+              "safetyConfidence": 37.6,
+              "expectedBenefits": 66.8,
+              "awareness": 78.2,
+              "secondaryActivities": 57.5,
+              "capabilityKnowledge": 70.9
+            },
+            "metricN": {
+              "trust": 280,
+              "adoption": 279,
+              "safetyConfidence": 280,
+              "expectedBenefits": 280,
+              "awareness": 280,
+              "secondaryActivities": 277,
+              "capabilityKnowledge": 272
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 252,
+            "metrics": {
+              "trust": 55.6,
+              "adoption": 59.7,
+              "safetyConfidence": 38.4,
+              "expectedBenefits": 61.7,
+              "awareness": 81,
+              "secondaryActivities": 52.2,
+              "capabilityKnowledge": 71.6
+            },
+            "metricN": {
+              "trust": 251,
+              "adoption": 251,
+              "safetyConfidence": 251,
+              "expectedBenefits": 251,
+              "awareness": 252,
+              "secondaryActivities": 247,
+              "capabilityKnowledge": 245
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 270,
+            "metrics": {
+              "trust": 48.7,
+              "adoption": 48.4,
+              "safetyConfidence": 43,
+              "expectedBenefits": 53.1,
+              "awareness": 81.9,
+              "secondaryActivities": 43.3,
+              "capabilityKnowledge": 71.5
+            },
+            "metricN": {
+              "trust": 270,
+              "adoption": 270,
+              "safetyConfidence": 270,
+              "expectedBenefits": 270,
+              "awareness": 270,
+              "secondaryActivities": 264,
+              "capabilityKnowledge": 262
+            }
+          }
+        ]
+      }
+    },
+    "348": {
+      "name": "Hungary",
+      "iso3": "HUN",
+      "region": "Europe",
+      "n": 1004,
+      "lowSample": false,
+      "metrics": {
+        "trust": 72.7,
+        "adoption": 76.8,
+        "safetyConfidence": 26.5,
+        "expectedBenefits": 76.8,
+        "awareness": 80.7,
+        "secondaryActivities": 71.2,
+        "capabilityKnowledge": 70.5
+      },
+      "behaviors": {
+        "takingCareOfChildren": 15.2,
+        "talkingWithFellowTravelers": 37.9,
+        "internetOrVideo": 37.3,
+        "playingGames": 13.7,
+        "socializing": 29.2,
+        "eatingOrDrinking": 13.3,
+        "observingLandscape": 47.2,
+        "relaxingOrResting": 37.6,
+        "readingBook": 7.2,
+        "working": 14.2,
+        "other": 0.1
+      },
+      "misconceptions": {
+        "laneKeeping": 14.5,
+        "overtaking": 37.7,
+        "allConditions": 49.2,
+        "takeoverAnytime": 17.7,
+        "otherActivitiesButNoSleeping": 29.5
+      },
+      "demographics": {
+        "meanAge": 37.2,
+        "genderShares": {
+          "code1": 50.4,
+          "code2": 49.5,
+          "code3": 0.1
+        },
+        "meanIncomeCode": 3.2,
+        "licensedShare": 91.6,
+        "meanAnnualDistanceCode": 3.4,
+        "meanEducationCode": 1.9
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 182,
+            "metrics": {
+              "trust": 68.2,
+              "adoption": 73,
+              "safetyConfidence": 29.6,
+              "expectedBenefits": 74.1,
+              "awareness": 75.8,
+              "secondaryActivities": 67.8,
+              "capabilityKnowledge": 71.7
+            },
+            "metricN": {
+              "trust": 182,
+              "adoption": 182,
+              "safetyConfidence": 182,
+              "expectedBenefits": 182,
+              "awareness": 182,
+              "secondaryActivities": 180,
+              "capabilityKnowledge": 182
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 231,
+            "metrics": {
+              "trust": 72.8,
+              "adoption": 79.1,
+              "safetyConfidence": 25.5,
+              "expectedBenefits": 78.3,
+              "awareness": 88.3,
+              "secondaryActivities": 72.1,
+              "capabilityKnowledge": 78.2
+            },
+            "metricN": {
+              "trust": 230,
+              "adoption": 230,
+              "safetyConfidence": 230,
+              "expectedBenefits": 230,
+              "awareness": 231,
+              "secondaryActivities": 230,
+              "capabilityKnowledge": 231
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 329,
+            "metrics": {
+              "trust": 74,
+              "adoption": 77.3,
+              "safetyConfidence": 26.3,
+              "expectedBenefits": 77.4,
+              "awareness": 76.6,
+              "secondaryActivities": 70.8,
+              "capabilityKnowledge": 69.4
+            },
+            "metricN": {
+              "trust": 329,
+              "adoption": 329,
+              "safetyConfidence": 329,
+              "expectedBenefits": 329,
+              "awareness": 329,
+              "secondaryActivities": 329,
+              "capabilityKnowledge": 329
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 163,
+            "metrics": {
+              "trust": 74,
+              "adoption": 76.2,
+              "safetyConfidence": 25.9,
+              "expectedBenefits": 76.3,
+              "awareness": 79.1,
+              "secondaryActivities": 74.7,
+              "capabilityKnowledge": 65.8
+            },
+            "metricN": {
+              "trust": 163,
+              "adoption": 163,
+              "safetyConfidence": 163,
+              "expectedBenefits": 163,
+              "awareness": 163,
+              "secondaryActivities": 162,
+              "capabilityKnowledge": 163
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 99,
+            "metrics": {
+              "trust": 74.5,
+              "adoption": 77.8,
+              "safetyConfidence": 24.7,
+              "expectedBenefits": 76.6,
+              "awareness": 87.9,
+              "secondaryActivities": 70.7,
+              "capabilityKnowledge": 61.8
+            },
+            "metricN": {
+              "trust": 99,
+              "adoption": 99,
+              "safetyConfidence": 99,
+              "expectedBenefits": 99,
+              "awareness": 99,
+              "secondaryActivities": 99,
+              "capabilityKnowledge": 99
+            }
+          }
+        ]
+      }
+    },
+    "356": {
+      "name": "India",
+      "iso3": "IND",
+      "region": "Asia",
+      "n": 1146,
+      "lowSample": false,
+      "metrics": {
+        "trust": 58,
+        "adoption": 66.8,
+        "safetyConfidence": 34.6,
+        "expectedBenefits": 66.3,
+        "awareness": 78.9,
+        "secondaryActivities": 50.5,
+        "capabilityKnowledge": 75.7
+      },
+      "behaviors": {
+        "takingCareOfChildren": 25.7,
+        "talkingWithFellowTravelers": 57.7,
+        "internetOrVideo": 25.5,
+        "playingGames": 8.1,
+        "socializing": 22.7,
+        "eatingOrDrinking": 34.5,
+        "observingLandscape": 50,
+        "relaxingOrResting": 28.8,
+        "readingBook": 9.7,
+        "working": 16.2,
+        "other": 1.4
+      },
+      "misconceptions": {
+        "laneKeeping": 6.5,
+        "overtaking": 47.8,
+        "allConditions": 30.5,
+        "takeoverAnytime": 14.7,
+        "otherActivitiesButNoSleeping": 23.5
+      },
+      "demographics": {
+        "meanAge": 41.9,
+        "genderShares": {
+          "code1": 49.1,
+          "code2": 50.9,
+          "code3": 0
+        },
+        "meanIncomeCode": 4.6,
+        "licensedShare": 92,
+        "meanAnnualDistanceCode": 3.5,
+        "meanEducationCode": 2.6
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 132,
+            "metrics": {
+              "trust": 56.2,
+              "adoption": 65.4,
+              "safetyConfidence": 34.9,
+              "expectedBenefits": 64.8,
+              "awareness": 81.1,
+              "secondaryActivities": 52.5,
+              "capabilityKnowledge": 73.1
+            },
+            "metricN": {
+              "trust": 131,
+              "adoption": 130,
+              "safetyConfidence": 131,
+              "expectedBenefits": 131,
+              "awareness": 132,
+              "secondaryActivities": 129,
+              "capabilityKnowledge": 132
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 277,
+            "metrics": {
+              "trust": 57.3,
+              "adoption": 65.9,
+              "safetyConfidence": 35.5,
+              "expectedBenefits": 66.6,
+              "awareness": 72.2,
+              "secondaryActivities": 53.1,
+              "capabilityKnowledge": 73.4
+            },
+            "metricN": {
+              "trust": 277,
+              "adoption": 276,
+              "safetyConfidence": 277,
+              "expectedBenefits": 276,
+              "awareness": 277,
+              "secondaryActivities": 273,
+              "capabilityKnowledge": 277
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 262,
+            "metrics": {
+              "trust": 60.2,
+              "adoption": 69.1,
+              "safetyConfidence": 34,
+              "expectedBenefits": 67.2,
+              "awareness": 82.4,
+              "secondaryActivities": 53.9,
+              "capabilityKnowledge": 77.7
+            },
+            "metricN": {
+              "trust": 262,
+              "adoption": 261,
+              "safetyConfidence": 261,
+              "expectedBenefits": 261,
+              "awareness": 262,
+              "secondaryActivities": 261,
+              "capabilityKnowledge": 262
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 211,
+            "metrics": {
+              "trust": 57.1,
+              "adoption": 66.1,
+              "safetyConfidence": 33.5,
+              "expectedBenefits": 66.2,
+              "awareness": 81,
+              "secondaryActivities": 47.7,
+              "capabilityKnowledge": 77.2
+            },
+            "metricN": {
+              "trust": 210,
+              "adoption": 210,
+              "safetyConfidence": 210,
+              "expectedBenefits": 210,
+              "awareness": 211,
+              "secondaryActivities": 210,
+              "capabilityKnowledge": 211
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 264,
+            "metrics": {
+              "trust": 58.2,
+              "adoption": 66.8,
+              "safetyConfidence": 35.2,
+              "expectedBenefits": 66,
+              "awareness": 79.5,
+              "secondaryActivities": 45.4,
+              "capabilityKnowledge": 76.3
+            },
+            "metricN": {
+              "trust": 264,
+              "adoption": 264,
+              "safetyConfidence": 264,
+              "expectedBenefits": 264,
+              "awareness": 264,
+              "secondaryActivities": 261,
+              "capabilityKnowledge": 264
+            }
+          }
+        ]
+      }
+    },
+    "360": {
+      "name": "Indonesia",
+      "iso3": "IDN",
+      "region": "Asia",
+      "n": 1186,
+      "lowSample": false,
+      "metrics": {
+        "trust": 59.3,
+        "adoption": 65.6,
+        "safetyConfidence": 34.6,
+        "expectedBenefits": 67.1,
+        "awareness": 72.1,
+        "secondaryActivities": 55.8,
+        "capabilityKnowledge": 73.1
+      },
+      "behaviors": {
+        "takingCareOfChildren": 12.1,
+        "talkingWithFellowTravelers": 39.4,
+        "internetOrVideo": 50.2,
+        "playingGames": 7.7,
+        "socializing": 20.9,
+        "eatingOrDrinking": 26.6,
+        "observingLandscape": 50.9,
+        "relaxingOrResting": 33.7,
+        "readingBook": 15.2,
+        "working": 15.6,
+        "other": 1.1
+      },
+      "misconceptions": {
+        "laneKeeping": 6.6,
+        "overtaking": 36.6,
+        "allConditions": 60.6,
+        "takeoverAnytime": 11.2,
+        "otherActivitiesButNoSleeping": 21.9
+      },
+      "demographics": {
+        "meanAge": 42.7,
+        "genderShares": {
+          "code1": 50,
+          "code2": 49.7,
+          "code3": 0.3
+        },
+        "meanIncomeCode": 3.3,
+        "licensedShare": 98.4,
+        "meanAnnualDistanceCode": 3.9,
+        "meanEducationCode": 2.9
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 120,
+            "metrics": {
+              "trust": 62.3,
+              "adoption": 68.9,
+              "safetyConfidence": 35.2,
+              "expectedBenefits": 65.8,
+              "awareness": 78.3,
+              "secondaryActivities": 54.3,
+              "capabilityKnowledge": 73.4
+            },
+            "metricN": {
+              "trust": 119,
+              "adoption": 120,
+              "safetyConfidence": 119,
+              "expectedBenefits": 120,
+              "awareness": 120,
+              "secondaryActivities": 116,
+              "capabilityKnowledge": 120
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 247,
+            "metrics": {
+              "trust": 61.9,
+              "adoption": 66.3,
+              "safetyConfidence": 35,
+              "expectedBenefits": 67.5,
+              "awareness": 65.2,
+              "secondaryActivities": 63.1,
+              "capabilityKnowledge": 70.1
+            },
+            "metricN": {
+              "trust": 245,
+              "adoption": 245,
+              "safetyConfidence": 245,
+              "expectedBenefits": 245,
+              "awareness": 247,
+              "secondaryActivities": 245,
+              "capabilityKnowledge": 247
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 283,
+            "metrics": {
+              "trust": 61.3,
+              "adoption": 66.7,
+              "safetyConfidence": 35,
+              "expectedBenefits": 67.3,
+              "awareness": 72.4,
+              "secondaryActivities": 57.1,
+              "capabilityKnowledge": 71.5
+            },
+            "metricN": {
+              "trust": 281,
+              "adoption": 281,
+              "safetyConfidence": 279,
+              "expectedBenefits": 281,
+              "awareness": 283,
+              "secondaryActivities": 278,
+              "capabilityKnowledge": 283
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 277,
+            "metrics": {
+              "trust": 58.9,
+              "adoption": 67.5,
+              "safetyConfidence": 33.4,
+              "expectedBenefits": 69.1,
+              "awareness": 73.6,
+              "secondaryActivities": 55.2,
+              "capabilityKnowledge": 73.7
+            },
+            "metricN": {
+              "trust": 277,
+              "adoption": 277,
+              "safetyConfidence": 277,
+              "expectedBenefits": 277,
+              "awareness": 277,
+              "secondaryActivities": 277,
+              "capabilityKnowledge": 277
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 259,
+            "metrics": {
+              "trust": 53.7,
+              "adoption": 60.1,
+              "safetyConfidence": 34.9,
+              "expectedBenefits": 64.7,
+              "awareness": 73.7,
+              "secondaryActivities": 48.7,
+              "capabilityKnowledge": 76.6
+            },
+            "metricN": {
+              "trust": 259,
+              "adoption": 259,
+              "safetyConfidence": 259,
+              "expectedBenefits": 259,
+              "awareness": 259,
+              "secondaryActivities": 258,
+              "capabilityKnowledge": 259
+            }
+          }
+        ]
+      }
+    },
+    "380": {
+      "name": "Italy",
+      "iso3": "ITA",
+      "region": "Europe",
+      "n": 1021,
+      "lowSample": false,
+      "metrics": {
+        "trust": 47.2,
+        "adoption": 51.1,
+        "safetyConfidence": 41.7,
+        "expectedBenefits": 53.3,
+        "awareness": 84.9,
+        "secondaryActivities": 40.9,
+        "capabilityKnowledge": 87.6
+      },
+      "behaviors": {
+        "takingCareOfChildren": 1.4,
+        "talkingWithFellowTravelers": 39.7,
+        "internetOrVideo": 41.5,
+        "playingGames": 4.8,
+        "socializing": 37.7,
+        "eatingOrDrinking": 22.6,
+        "observingLandscape": 49.8,
+        "relaxingOrResting": 27.8,
+        "readingBook": 14.5,
+        "working": 27.8,
+        "other": 5
+      },
+      "misconceptions": {
+        "laneKeeping": 4.8,
+        "overtaking": 22,
+        "allConditions": 5.2,
+        "takeoverAnytime": 5.6,
+        "otherActivitiesButNoSleeping": 22.5
+      },
+      "demographics": {
+        "meanAge": 50.2,
+        "genderShares": {
+          "code1": 58.8,
+          "code2": 41.2,
+          "code3": 0
+        },
+        "meanIncomeCode": 4.7,
+        "licensedShare": 100,
+        "meanAnnualDistanceCode": 4.1,
+        "meanEducationCode": 2.4
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 24,
+            "metrics": {
+              "trust": 50.8,
+              "adoption": 55.6,
+              "safetyConfidence": 39.9,
+              "expectedBenefits": 59,
+              "awareness": 95.8,
+              "secondaryActivities": 51,
+              "capabilityKnowledge": 92.5
+            },
+            "metricN": {
+              "trust": 24,
+              "adoption": 24,
+              "safetyConfidence": 23,
+              "expectedBenefits": 24,
+              "awareness": 24,
+              "secondaryActivities": 24,
+              "capabilityKnowledge": 24
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 102,
+            "metrics": {
+              "trust": 50,
+              "adoption": 54.6,
+              "safetyConfidence": 40.6,
+              "expectedBenefits": 55.4,
+              "awareness": 82.4,
+              "secondaryActivities": 51.5,
+              "capabilityKnowledge": 93.5
+            },
+            "metricN": {
+              "trust": 100,
+              "adoption": 102,
+              "safetyConfidence": 100,
+              "expectedBenefits": 102,
+              "awareness": 102,
+              "secondaryActivities": 102,
+              "capabilityKnowledge": 97
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 206,
+            "metrics": {
+              "trust": 50.6,
+              "adoption": 55.1,
+              "safetyConfidence": 41.6,
+              "expectedBenefits": 55.1,
+              "awareness": 87.9,
+              "secondaryActivities": 47.1,
+              "capabilityKnowledge": 90.3
+            },
+            "metricN": {
+              "trust": 205,
+              "adoption": 206,
+              "safetyConfidence": 205,
+              "expectedBenefits": 206,
+              "awareness": 206,
+              "secondaryActivities": 204,
+              "capabilityKnowledge": 202
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 261,
+            "metrics": {
+              "trust": 46.2,
+              "adoption": 51.3,
+              "safetyConfidence": 42,
+              "expectedBenefits": 53.9,
+              "awareness": 83.5,
+              "secondaryActivities": 39.8,
+              "capabilityKnowledge": 86.9
+            },
+            "metricN": {
+              "trust": 259,
+              "adoption": 261,
+              "safetyConfidence": 258,
+              "expectedBenefits": 260,
+              "awareness": 261,
+              "secondaryActivities": 258,
+              "capabilityKnowledge": 246
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 428,
+            "metrics": {
+              "trust": 45.3,
+              "adoption": 47.9,
+              "safetyConfidence": 41.9,
+              "expectedBenefits": 51.3,
+              "awareness": 84.3,
+              "secondaryActivities": 35.3,
+              "capabilityKnowledge": 85
+            },
+            "metricN": {
+              "trust": 424,
+              "adoption": 426,
+              "safetyConfidence": 423,
+              "expectedBenefits": 426,
+              "awareness": 428,
+              "secondaryActivities": 419,
+              "capabilityKnowledge": 406
+            }
+          }
+        ]
+      }
+    },
+    "392": {
+      "name": "Japan",
+      "iso3": "JPN",
+      "region": "Asia",
+      "n": 1074,
+      "lowSample": false,
+      "metrics": {
+        "trust": 64.1,
+        "adoption": 69.6,
+        "safetyConfidence": 29.1,
+        "expectedBenefits": 71.9,
+        "awareness": 73.3,
+        "secondaryActivities": 60.3,
+        "capabilityKnowledge": 76.7
+      },
+      "behaviors": {
+        "takingCareOfChildren": 8.5,
+        "talkingWithFellowTravelers": 48.7,
+        "internetOrVideo": 51.2,
+        "playingGames": 11.2,
+        "socializing": 24.2,
+        "eatingOrDrinking": 22.1,
+        "observingLandscape": 41.5,
+        "relaxingOrResting": 42.3,
+        "readingBook": 15.2,
+        "working": 17.4,
+        "other": 1
+      },
+      "misconceptions": {
+        "laneKeeping": 6,
+        "overtaking": 27.5,
+        "allConditions": 47.3,
+        "takeoverAnytime": 7.4,
+        "otherActivitiesButNoSleeping": 28.8
+      },
+      "demographics": {
+        "meanAge": 42.2,
+        "genderShares": {
+          "code1": 50.5,
+          "code2": 49.3,
+          "code3": 0.2
+        },
+        "meanIncomeCode": 5.4,
+        "licensedShare": 99.1,
+        "meanAnnualDistanceCode": 4,
+        "meanEducationCode": 2.2
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 92,
+            "metrics": {
+              "trust": 66,
+              "adoption": 68.7,
+              "safetyConfidence": 30.3,
+              "expectedBenefits": 71.5,
+              "awareness": 75,
+              "secondaryActivities": 52.5,
+              "capabilityKnowledge": 77.8
+            },
+            "metricN": {
+              "trust": 91,
+              "adoption": 92,
+              "safetyConfidence": 92,
+              "expectedBenefits": 92,
+              "awareness": 92,
+              "secondaryActivities": 91,
+              "capabilityKnowledge": 92
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 238,
+            "metrics": {
+              "trust": 64.4,
+              "adoption": 71.1,
+              "safetyConfidence": 28.5,
+              "expectedBenefits": 72.6,
+              "awareness": 70.2,
+              "secondaryActivities": 62.2,
+              "capabilityKnowledge": 74.8
+            },
+            "metricN": {
+              "trust": 238,
+              "adoption": 238,
+              "safetyConfidence": 238,
+              "expectedBenefits": 238,
+              "awareness": 238,
+              "secondaryActivities": 237,
+              "capabilityKnowledge": 238
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 278,
+            "metrics": {
+              "trust": 66.1,
+              "adoption": 72,
+              "safetyConfidence": 28.3,
+              "expectedBenefits": 73.2,
+              "awareness": 71.6,
+              "secondaryActivities": 65.8,
+              "capabilityKnowledge": 78.1
+            },
+            "metricN": {
+              "trust": 278,
+              "adoption": 278,
+              "safetyConfidence": 278,
+              "expectedBenefits": 278,
+              "awareness": 278,
+              "secondaryActivities": 278,
+              "capabilityKnowledge": 278
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 238,
+            "metrics": {
+              "trust": 63.2,
+              "adoption": 70,
+              "safetyConfidence": 28.6,
+              "expectedBenefits": 73,
+              "awareness": 74.8,
+              "secondaryActivities": 60.2,
+              "capabilityKnowledge": 78.7
+            },
+            "metricN": {
+              "trust": 238,
+              "adoption": 238,
+              "safetyConfidence": 238,
+              "expectedBenefits": 237,
+              "awareness": 238,
+              "secondaryActivities": 237,
+              "capabilityKnowledge": 238
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 228,
+            "metrics": {
+              "trust": 61.5,
+              "adoption": 64.8,
+              "safetyConfidence": 30.8,
+              "expectedBenefits": 68.7,
+              "awareness": 76.3,
+              "secondaryActivities": 54.6,
+              "capabilityKnowledge": 74.5
+            },
+            "metricN": {
+              "trust": 228,
+              "adoption": 228,
+              "safetyConfidence": 228,
+              "expectedBenefits": 228,
+              "awareness": 228,
+              "secondaryActivities": 228,
+              "capabilityKnowledge": 228
+            }
+          }
+        ]
+      }
+    },
+    "643": {
+      "name": "Russia",
+      "iso3": "RUS",
+      "region": "Europe",
+      "n": 1057,
+      "lowSample": false,
+      "metrics": {
+        "trust": 71,
+        "adoption": 79.7,
+        "safetyConfidence": 27.1,
+        "expectedBenefits": 79.7,
+        "awareness": 71,
+        "secondaryActivities": 70.9,
+        "capabilityKnowledge": 69
+      },
+      "behaviors": {
+        "takingCareOfChildren": 12.5,
+        "talkingWithFellowTravelers": 41.7,
+        "internetOrVideo": 58.3,
+        "playingGames": 14.5,
+        "socializing": 27.6,
+        "eatingOrDrinking": 26.7,
+        "observingLandscape": 37.8,
+        "relaxingOrResting": 39.8,
+        "readingBook": 13.7,
+        "working": 18.1,
+        "other": 0.3
+      },
+      "misconceptions": {
+        "laneKeeping": 35.9,
+        "overtaking": 35.4,
+        "allConditions": 46.9,
+        "takeoverAnytime": 16.1,
+        "otherActivitiesButNoSleeping": 20.7
+      },
+      "demographics": {
+        "meanAge": 37.5,
+        "genderShares": {
+          "code1": 49.4,
+          "code2": 50.4,
+          "code3": 0.2
+        },
+        "meanIncomeCode": 5.6,
+        "licensedShare": 93.9,
+        "meanAnnualDistanceCode": 4.3,
+        "meanEducationCode": 2.1
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 184,
+            "metrics": {
+              "trust": 69.6,
+              "adoption": 77,
+              "safetyConfidence": 29.2,
+              "expectedBenefits": 75.3,
+              "awareness": 65.8,
+              "secondaryActivities": 66.8,
+              "capabilityKnowledge": 68.1
+            },
+            "metricN": {
+              "trust": 184,
+              "adoption": 184,
+              "safetyConfidence": 184,
+              "expectedBenefits": 184,
+              "awareness": 184,
+              "secondaryActivities": 184,
+              "capabilityKnowledge": 184
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 273,
+            "metrics": {
+              "trust": 75.6,
+              "adoption": 82.9,
+              "safetyConfidence": 23.7,
+              "expectedBenefits": 83,
+              "awareness": 71.4,
+              "secondaryActivities": 75.5,
+              "capabilityKnowledge": 66.5
+            },
+            "metricN": {
+              "trust": 273,
+              "adoption": 273,
+              "safetyConfidence": 273,
+              "expectedBenefits": 273,
+              "awareness": 273,
+              "secondaryActivities": 272,
+              "capabilityKnowledge": 273
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 316,
+            "metrics": {
+              "trust": 70.6,
+              "adoption": 80.4,
+              "safetyConfidence": 25.6,
+              "expectedBenefits": 80.6,
+              "awareness": 69.3,
+              "secondaryActivities": 71.7,
+              "capabilityKnowledge": 67.8
+            },
+            "metricN": {
+              "trust": 316,
+              "adoption": 316,
+              "safetyConfidence": 316,
+              "expectedBenefits": 316,
+              "awareness": 316,
+              "secondaryActivities": 314,
+              "capabilityKnowledge": 316
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 156,
+            "metrics": {
+              "trust": 68.7,
+              "adoption": 78.4,
+              "safetyConfidence": 30.7,
+              "expectedBenefits": 78.8,
+              "awareness": 75,
+              "secondaryActivities": 68.9,
+              "capabilityKnowledge": 72.9
+            },
+            "metricN": {
+              "trust": 156,
+              "adoption": 156,
+              "safetyConfidence": 156,
+              "expectedBenefits": 156,
+              "awareness": 156,
+              "secondaryActivities": 156,
+              "capabilityKnowledge": 156
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 128,
+            "metrics": {
+              "trust": 67.2,
+              "adoption": 77,
+              "safetyConfidence": 30.7,
+              "expectedBenefits": 78.2,
+              "awareness": 76.6,
+              "secondaryActivities": 67.4,
+              "capabilityKnowledge": 74.2
+            },
+            "metricN": {
+              "trust": 128,
+              "adoption": 128,
+              "safetyConfidence": 128,
+              "expectedBenefits": 128,
+              "awareness": 128,
+              "secondaryActivities": 128,
+              "capabilityKnowledge": 128
+            }
+          }
+        ]
+      }
+    },
+    "710": {
+      "name": "South Africa",
+      "iso3": "ZAF",
+      "region": "Africa",
+      "n": 1059,
+      "lowSample": false,
+      "metrics": {
+        "trust": 73.7,
+        "adoption": 79.9,
+        "safetyConfidence": 23.9,
+        "expectedBenefits": 81.1,
+        "awareness": 69.8,
+        "secondaryActivities": 73,
+        "capabilityKnowledge": 74.8
+      },
+      "behaviors": {
+        "takingCareOfChildren": 7.4,
+        "talkingWithFellowTravelers": 29.4,
+        "internetOrVideo": 59.8,
+        "playingGames": 14.8,
+        "socializing": 35.2,
+        "eatingOrDrinking": 35.5,
+        "observingLandscape": 42.6,
+        "relaxingOrResting": 34.5,
+        "readingBook": 8,
+        "working": 20.8,
+        "other": 0.3
+      },
+      "misconceptions": {
+        "laneKeeping": 5.9,
+        "overtaking": 35.1,
+        "allConditions": 62,
+        "takeoverAnytime": 12.1,
+        "otherActivitiesButNoSleeping": 13
+      },
+      "demographics": {
+        "meanAge": 35.3,
+        "genderShares": {
+          "code1": 50.9,
+          "code2": 49.1,
+          "code3": 0
+        },
+        "meanIncomeCode": 6.8,
+        "licensedShare": 95.8,
+        "meanAnnualDistanceCode": 4.2,
+        "meanEducationCode": 2
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 204,
+            "metrics": {
+              "trust": 72,
+              "adoption": 78.1,
+              "safetyConfidence": 25,
+              "expectedBenefits": 79.3,
+              "awareness": 72.5,
+              "secondaryActivities": 69.4,
+              "capabilityKnowledge": 74.4
+            },
+            "metricN": {
+              "trust": 204,
+              "adoption": 204,
+              "safetyConfidence": 204,
+              "expectedBenefits": 204,
+              "awareness": 204,
+              "secondaryActivities": 204,
+              "capabilityKnowledge": 204
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 304,
+            "metrics": {
+              "trust": 76.8,
+              "adoption": 81.7,
+              "safetyConfidence": 22.9,
+              "expectedBenefits": 82.2,
+              "awareness": 68.4,
+              "secondaryActivities": 76.2,
+              "capabilityKnowledge": 74.2
+            },
+            "metricN": {
+              "trust": 304,
+              "adoption": 304,
+              "safetyConfidence": 304,
+              "expectedBenefits": 304,
+              "awareness": 304,
+              "secondaryActivities": 304,
+              "capabilityKnowledge": 304
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 365,
+            "metrics": {
+              "trust": 73,
+              "adoption": 79.9,
+              "safetyConfidence": 24.1,
+              "expectedBenefits": 81.7,
+              "awareness": 68.8,
+              "secondaryActivities": 72.8,
+              "capabilityKnowledge": 74.4
+            },
+            "metricN": {
+              "trust": 365,
+              "adoption": 365,
+              "safetyConfidence": 365,
+              "expectedBenefits": 365,
+              "awareness": 365,
+              "secondaryActivities": 365,
+              "capabilityKnowledge": 365
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 114,
+            "metrics": {
+              "trust": 71.4,
+              "adoption": 80,
+              "safetyConfidence": 23.4,
+              "expectedBenefits": 80.8,
+              "awareness": 64,
+              "secondaryActivities": 69.2,
+              "capabilityKnowledge": 75
+            },
+            "metricN": {
+              "trust": 114,
+              "adoption": 114,
+              "safetyConfidence": 114,
+              "expectedBenefits": 114,
+              "awareness": 114,
+              "secondaryActivities": 113,
+              "capabilityKnowledge": 114
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 72,
+            "metrics": {
+              "trust": 73,
+              "adoption": 77,
+              "safetyConfidence": 24.5,
+              "expectedBenefits": 79.7,
+              "awareness": 81.9,
+              "secondaryActivities": 76.4,
+              "capabilityKnowledge": 79.4
+            },
+            "metricN": {
+              "trust": 72,
+              "adoption": 72,
+              "safetyConfidence": 72,
+              "expectedBenefits": 72,
+              "awareness": 72,
+              "secondaryActivities": 72,
+              "capabilityKnowledge": 72
+            }
+          }
+        ]
+      }
+    },
+    "724": {
+      "name": "Spain",
+      "iso3": "ESP",
+      "region": "Europe",
+      "n": 1054,
+      "lowSample": false,
+      "metrics": {
+        "trust": 79.7,
+        "adoption": 81.9,
+        "safetyConfidence": 21.5,
+        "expectedBenefits": 81.1,
+        "awareness": 81,
+        "secondaryActivities": 77.9,
+        "capabilityKnowledge": 73.6
+      },
+      "behaviors": {
+        "takingCareOfChildren": 39.9,
+        "talkingWithFellowTravelers": 30.5,
+        "internetOrVideo": 54.3,
+        "playingGames": 19.4,
+        "socializing": 36.9,
+        "eatingOrDrinking": 26.4,
+        "observingLandscape": 22.2,
+        "relaxingOrResting": 32.1,
+        "readingBook": 11.8,
+        "working": 15.8,
+        "other": 0.6
+      },
+      "misconceptions": {
+        "laneKeeping": 5.2,
+        "overtaking": 20.1,
+        "allConditions": 76.3,
+        "takeoverAnytime": 12.9,
+        "otherActivitiesButNoSleeping": 15.7
+      },
+      "demographics": {
+        "meanAge": 35.3,
+        "genderShares": {
+          "code1": 51.2,
+          "code2": 48.7,
+          "code3": 0.1
+        },
+        "meanIncomeCode": 4.1,
+        "licensedShare": 96.7,
+        "meanAnnualDistanceCode": 4.1,
+        "meanEducationCode": 1.9
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 233,
+            "metrics": {
+              "trust": 74.3,
+              "adoption": 78.6,
+              "safetyConfidence": 25.3,
+              "expectedBenefits": 75.9,
+              "awareness": 80.7,
+              "secondaryActivities": 72.4,
+              "capabilityKnowledge": 71
+            },
+            "metricN": {
+              "trust": 233,
+              "adoption": 233,
+              "safetyConfidence": 233,
+              "expectedBenefits": 232,
+              "awareness": 233,
+              "secondaryActivities": 231,
+              "capabilityKnowledge": 233
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 288,
+            "metrics": {
+              "trust": 82.7,
+              "adoption": 83.4,
+              "safetyConfidence": 18.9,
+              "expectedBenefits": 83.3,
+              "awareness": 85.8,
+              "secondaryActivities": 80.3,
+              "capabilityKnowledge": 72.5
+            },
+            "metricN": {
+              "trust": 288,
+              "adoption": 288,
+              "safetyConfidence": 288,
+              "expectedBenefits": 288,
+              "awareness": 288,
+              "secondaryActivities": 286,
+              "capabilityKnowledge": 288
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 335,
+            "metrics": {
+              "trust": 83,
+              "adoption": 84.8,
+              "safetyConfidence": 19.1,
+              "expectedBenefits": 84.2,
+              "awareness": 80.9,
+              "secondaryActivities": 83,
+              "capabilityKnowledge": 75.9
+            },
+            "metricN": {
+              "trust": 335,
+              "adoption": 335,
+              "safetyConfidence": 335,
+              "expectedBenefits": 335,
+              "awareness": 335,
+              "secondaryActivities": 334,
+              "capabilityKnowledge": 335
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 97,
+            "metrics": {
+              "trust": 78.3,
+              "adoption": 81.7,
+              "safetyConfidence": 24,
+              "expectedBenefits": 81.1,
+              "awareness": 82.5,
+              "secondaryActivities": 76.3,
+              "capabilityKnowledge": 70.9
+            },
+            "metricN": {
+              "trust": 97,
+              "adoption": 97,
+              "safetyConfidence": 97,
+              "expectedBenefits": 97,
+              "awareness": 97,
+              "secondaryActivities": 95,
+              "capabilityKnowledge": 97
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 101,
+            "metrics": {
+              "trust": 74.2,
+              "adoption": 75.8,
+              "safetyConfidence": 25.8,
+              "expectedBenefits": 76.3,
+              "awareness": 67.3,
+              "secondaryActivities": 68.3,
+              "capabilityKnowledge": 77.3
+            },
+            "metricN": {
+              "trust": 101,
+              "adoption": 101,
+              "safetyConfidence": 101,
+              "expectedBenefits": 101,
+              "awareness": 101,
+              "secondaryActivities": 101,
+              "capabilityKnowledge": 101
+            }
+          }
+        ]
+      }
+    },
+    "752": {
+      "name": "Sweden",
+      "iso3": "SWE",
+      "region": "Europe",
+      "n": 1074,
+      "lowSample": false,
+      "metrics": {
+        "trust": 56.4,
+        "adoption": 62.6,
+        "safetyConfidence": 39.5,
+        "expectedBenefits": 61.8,
+        "awareness": 72.4,
+        "secondaryActivities": 54.1,
+        "capabilityKnowledge": 75.1
+      },
+      "behaviors": {
+        "takingCareOfChildren": 9.2,
+        "talkingWithFellowTravelers": 30.9,
+        "internetOrVideo": 54.7,
+        "playingGames": 15.9,
+        "socializing": 25.1,
+        "eatingOrDrinking": 41.5,
+        "observingLandscape": 35.4,
+        "relaxingOrResting": 46.9,
+        "readingBook": 10.1,
+        "working": 10.5,
+        "other": 0.7
+      },
+      "misconceptions": {
+        "laneKeeping": 8.7,
+        "overtaking": 59.9,
+        "allConditions": 23.3,
+        "takeoverAnytime": 13.8,
+        "otherActivitiesButNoSleeping": 24.4
+      },
+      "demographics": {
+        "meanAge": 45,
+        "genderShares": {
+          "code1": 49.3,
+          "code2": 50.5,
+          "code3": 0.2
+        },
+        "meanIncomeCode": 5.7,
+        "licensedShare": 99.1,
+        "meanAnnualDistanceCode": 3,
+        "meanEducationCode": 2.4
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 86,
+            "metrics": {
+              "trust": 55.3,
+              "adoption": 63.2,
+              "safetyConfidence": 43.2,
+              "expectedBenefits": 58.1,
+              "awareness": 64,
+              "secondaryActivities": 59.9,
+              "capabilityKnowledge": 67.8
+            },
+            "metricN": {
+              "trust": 86,
+              "adoption": 86,
+              "safetyConfidence": 86,
+              "expectedBenefits": 86,
+              "awareness": 86,
+              "secondaryActivities": 86,
+              "capabilityKnowledge": 86
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 213,
+            "metrics": {
+              "trust": 56.5,
+              "adoption": 64.6,
+              "safetyConfidence": 39,
+              "expectedBenefits": 62.7,
+              "awareness": 77,
+              "secondaryActivities": 58,
+              "capabilityKnowledge": 74.4
+            },
+            "metricN": {
+              "trust": 213,
+              "adoption": 213,
+              "safetyConfidence": 213,
+              "expectedBenefits": 213,
+              "awareness": 213,
+              "secondaryActivities": 212,
+              "capabilityKnowledge": 213
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 204,
+            "metrics": {
+              "trust": 56,
+              "adoption": 63.8,
+              "safetyConfidence": 39.7,
+              "expectedBenefits": 62.5,
+              "awareness": 72.5,
+              "secondaryActivities": 57.7,
+              "capabilityKnowledge": 74.8
+            },
+            "metricN": {
+              "trust": 204,
+              "adoption": 204,
+              "safetyConfidence": 204,
+              "expectedBenefits": 204,
+              "awareness": 204,
+              "secondaryActivities": 204,
+              "capabilityKnowledge": 204
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 248,
+            "metrics": {
+              "trust": 57.6,
+              "adoption": 63.2,
+              "safetyConfidence": 39.2,
+              "expectedBenefits": 62.1,
+              "awareness": 66.9,
+              "secondaryActivities": 54.6,
+              "capabilityKnowledge": 74.8
+            },
+            "metricN": {
+              "trust": 248,
+              "adoption": 248,
+              "safetyConfidence": 248,
+              "expectedBenefits": 248,
+              "awareness": 248,
+              "secondaryActivities": 248,
+              "capabilityKnowledge": 248
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 323,
+            "metrics": {
+              "trust": 55.8,
+              "adoption": 60,
+              "safetyConfidence": 38.9,
+              "expectedBenefits": 61.4,
+              "awareness": 75.9,
+              "secondaryActivities": 47.1,
+              "capabilityKnowledge": 77.9
+            },
+            "metricN": {
+              "trust": 323,
+              "adoption": 323,
+              "safetyConfidence": 323,
+              "expectedBenefits": 323,
+              "awareness": 323,
+              "secondaryActivities": 323,
+              "capabilityKnowledge": 323
+            }
+          }
+        ]
+      }
+    },
+    "792": {
+      "name": "Turkey",
+      "iso3": "TUR",
+      "region": "Asia",
+      "n": 1079,
+      "lowSample": false,
+      "metrics": {
+        "trust": 65,
+        "adoption": 74.4,
+        "safetyConfidence": 32,
+        "expectedBenefits": 72.4,
+        "awareness": 78.9,
+        "secondaryActivities": 65.1,
+        "capabilityKnowledge": 78.8
+      },
+      "behaviors": {
+        "takingCareOfChildren": 17.1,
+        "talkingWithFellowTravelers": 51.5,
+        "internetOrVideo": 35.9,
+        "playingGames": 5.6,
+        "socializing": 43.2,
+        "eatingOrDrinking": 21.9,
+        "observingLandscape": 39,
+        "relaxingOrResting": 31,
+        "readingBook": 14.7,
+        "working": 27.2,
+        "other": 0.3
+      },
+      "misconceptions": {
+        "laneKeeping": 1,
+        "overtaking": 25.3,
+        "allConditions": 49.9,
+        "takeoverAnytime": 12.2,
+        "otherActivitiesButNoSleeping": 19.9
+      },
+      "demographics": {
+        "meanAge": 37.7,
+        "genderShares": {
+          "code1": 46.2,
+          "code2": 53.8,
+          "code3": 0.1
+        },
+        "meanIncomeCode": 4.8,
+        "licensedShare": 98.4,
+        "meanAnnualDistanceCode": 3.9,
+        "meanEducationCode": 2
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 150,
+            "metrics": {
+              "trust": 69.1,
+              "adoption": 76,
+              "safetyConfidence": 29.4,
+              "expectedBenefits": 72.1,
+              "awareness": 80.7,
+              "secondaryActivities": 66.3,
+              "capabilityKnowledge": 78.8
+            },
+            "metricN": {
+              "trust": 150,
+              "adoption": 150,
+              "safetyConfidence": 150,
+              "expectedBenefits": 150,
+              "awareness": 150,
+              "secondaryActivities": 150,
+              "capabilityKnowledge": 150
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 334,
+            "metrics": {
+              "trust": 66.8,
+              "adoption": 76.4,
+              "safetyConfidence": 30.9,
+              "expectedBenefits": 75,
+              "awareness": 75.1,
+              "secondaryActivities": 68.9,
+              "capabilityKnowledge": 80.3
+            },
+            "metricN": {
+              "trust": 334,
+              "adoption": 334,
+              "safetyConfidence": 334,
+              "expectedBenefits": 334,
+              "awareness": 334,
+              "secondaryActivities": 334,
+              "capabilityKnowledge": 334
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 311,
+            "metrics": {
+              "trust": 64.5,
+              "adoption": 74.2,
+              "safetyConfidence": 32.6,
+              "expectedBenefits": 73.1,
+              "awareness": 72.7,
+              "secondaryActivities": 64.2,
+              "capabilityKnowledge": 78.3
+            },
+            "metricN": {
+              "trust": 311,
+              "adoption": 311,
+              "safetyConfidence": 311,
+              "expectedBenefits": 311,
+              "awareness": 311,
+              "secondaryActivities": 310,
+              "capabilityKnowledge": 311
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 159,
+            "metrics": {
+              "trust": 62.3,
+              "adoption": 72.6,
+              "safetyConfidence": 34.1,
+              "expectedBenefits": 70.4,
+              "awareness": 88.1,
+              "secondaryActivities": 63.4,
+              "capabilityKnowledge": 77.7
+            },
+            "metricN": {
+              "trust": 159,
+              "adoption": 159,
+              "safetyConfidence": 159,
+              "expectedBenefits": 159,
+              "awareness": 159,
+              "secondaryActivities": 158,
+              "capabilityKnowledge": 159
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 125,
+            "metrics": {
+              "trust": 59.7,
+              "adoption": 70,
+              "safetyConfidence": 33.8,
+              "expectedBenefits": 66.3,
+              "awareness": 90.4,
+              "secondaryActivities": 58.1,
+              "capabilityKnowledge": 77.4
+            },
+            "metricN": {
+              "trust": 125,
+              "adoption": 125,
+              "safetyConfidence": 125,
+              "expectedBenefits": 125,
+              "awareness": 125,
+              "secondaryActivities": 124,
+              "capabilityKnowledge": 125
+            }
+          }
+        ]
+      }
+    },
+    "826": {
+      "name": "United Kingdom",
+      "iso3": "GBR",
+      "region": "Europe",
+      "n": 1070,
+      "lowSample": false,
+      "metrics": {
+        "trust": 68.2,
+        "adoption": 77.1,
+        "safetyConfidence": 27.5,
+        "expectedBenefits": 74.9,
+        "awareness": 72.4,
+        "secondaryActivities": 63,
+        "capabilityKnowledge": 76.1
+      },
+      "behaviors": {
+        "takingCareOfChildren": 21.2,
+        "talkingWithFellowTravelers": 28.1,
+        "internetOrVideo": 45.9,
+        "playingGames": 11.8,
+        "socializing": 35.3,
+        "eatingOrDrinking": 34.3,
+        "observingLandscape": 35.6,
+        "relaxingOrResting": 30.2,
+        "readingBook": 15.5,
+        "working": 31.9,
+        "other": 0.2
+      },
+      "misconceptions": {
+        "laneKeeping": 6.2,
+        "overtaking": 30.7,
+        "allConditions": 53.9,
+        "takeoverAnytime": 13.8,
+        "otherActivitiesButNoSleeping": 13.4
+      },
+      "demographics": {
+        "meanAge": 35.5,
+        "genderShares": {
+          "code1": 47.6,
+          "code2": 52.4,
+          "code3": 0
+        },
+        "meanIncomeCode": 4.5,
+        "licensedShare": 92.2,
+        "meanAnnualDistanceCode": 4.1,
+        "meanEducationCode": 2.7
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 281,
+            "metrics": {
+              "trust": 69,
+              "adoption": 78.3,
+              "safetyConfidence": 26.2,
+              "expectedBenefits": 76.2,
+              "awareness": 77.9,
+              "secondaryActivities": 60.1,
+              "capabilityKnowledge": 74.1
+            },
+            "metricN": {
+              "trust": 281,
+              "adoption": 281,
+              "safetyConfidence": 281,
+              "expectedBenefits": 281,
+              "awareness": 281,
+              "secondaryActivities": 280,
+              "capabilityKnowledge": 281
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 249,
+            "metrics": {
+              "trust": 70.3,
+              "adoption": 78.8,
+              "safetyConfidence": 26.3,
+              "expectedBenefits": 76.1,
+              "awareness": 67.5,
+              "secondaryActivities": 65.7,
+              "capabilityKnowledge": 74.5
+            },
+            "metricN": {
+              "trust": 249,
+              "adoption": 249,
+              "safetyConfidence": 249,
+              "expectedBenefits": 249,
+              "awareness": 249,
+              "secondaryActivities": 248,
+              "capabilityKnowledge": 249
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 276,
+            "metrics": {
+              "trust": 68.3,
+              "adoption": 75.8,
+              "safetyConfidence": 27.6,
+              "expectedBenefits": 74.5,
+              "awareness": 71.4,
+              "secondaryActivities": 64.6,
+              "capabilityKnowledge": 75.8
+            },
+            "metricN": {
+              "trust": 275,
+              "adoption": 276,
+              "safetyConfidence": 276,
+              "expectedBenefits": 276,
+              "awareness": 276,
+              "secondaryActivities": 274,
+              "capabilityKnowledge": 276
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 158,
+            "metrics": {
+              "trust": 65.7,
+              "adoption": 76.5,
+              "safetyConfidence": 29.2,
+              "expectedBenefits": 74.2,
+              "awareness": 72.8,
+              "secondaryActivities": 64.6,
+              "capabilityKnowledge": 80.1
+            },
+            "metricN": {
+              "trust": 158,
+              "adoption": 158,
+              "safetyConfidence": 158,
+              "expectedBenefits": 158,
+              "awareness": 158,
+              "secondaryActivities": 158,
+              "capabilityKnowledge": 158
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 106,
+            "metrics": {
+              "trust": 64.6,
+              "adoption": 74.5,
+              "safetyConfidence": 31,
+              "expectedBenefits": 70.8,
+              "awareness": 71.7,
+              "secondaryActivities": 58.1,
+              "capabilityKnowledge": 79.7
+            },
+            "metricN": {
+              "trust": 106,
+              "adoption": 106,
+              "safetyConfidence": 106,
+              "expectedBenefits": 106,
+              "awareness": 106,
+              "secondaryActivities": 105,
+              "capabilityKnowledge": 106
+            }
+          }
+        ]
+      }
+    },
+    "840": {
+      "name": "United States",
+      "iso3": "USA",
+      "region": "North America",
+      "n": 1060,
+      "lowSample": false,
+      "metrics": {
+        "trust": 73,
+        "adoption": 81,
+        "safetyConfidence": 27.3,
+        "expectedBenefits": 79.5,
+        "awareness": 57.9,
+        "secondaryActivities": 68,
+        "capabilityKnowledge": 76.4
+      },
+      "behaviors": {
+        "takingCareOfChildren": 37.5,
+        "talkingWithFellowTravelers": 48,
+        "internetOrVideo": 43.2,
+        "playingGames": 11,
+        "socializing": 25.3,
+        "eatingOrDrinking": 21.4,
+        "observingLandscape": 49.4,
+        "relaxingOrResting": 34,
+        "readingBook": 9.5,
+        "working": 11,
+        "other": 0.4
+      },
+      "misconceptions": {
+        "laneKeeping": 3,
+        "overtaking": 18.3,
+        "allConditions": 70.5,
+        "takeoverAnytime": 16.8,
+        "otherActivitiesButNoSleeping": 14
+      },
+      "demographics": {
+        "meanAge": 37.1,
+        "genderShares": {
+          "code1": 50.1,
+          "code2": 49.8,
+          "code3": 0.1
+        },
+        "meanIncomeCode": 6.3,
+        "licensedShare": 98,
+        "meanAnnualDistanceCode": 4.6,
+        "meanEducationCode": 2
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 175,
+            "metrics": {
+              "trust": 72.6,
+              "adoption": 78.9,
+              "safetyConfidence": 27,
+              "expectedBenefits": 78,
+              "awareness": 59.4,
+              "secondaryActivities": 64,
+              "capabilityKnowledge": 78.3
+            },
+            "metricN": {
+              "trust": 175,
+              "adoption": 175,
+              "safetyConfidence": 175,
+              "expectedBenefits": 175,
+              "awareness": 175,
+              "secondaryActivities": 173,
+              "capabilityKnowledge": 175
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 275,
+            "metrics": {
+              "trust": 73.5,
+              "adoption": 81.3,
+              "safetyConfidence": 27.3,
+              "expectedBenefits": 79.1,
+              "awareness": 58.9,
+              "secondaryActivities": 69.6,
+              "capabilityKnowledge": 76.4
+            },
+            "metricN": {
+              "trust": 275,
+              "adoption": 275,
+              "safetyConfidence": 275,
+              "expectedBenefits": 275,
+              "awareness": 275,
+              "secondaryActivities": 274,
+              "capabilityKnowledge": 275
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 343,
+            "metrics": {
+              "trust": 72.6,
+              "adoption": 81,
+              "safetyConfidence": 28.2,
+              "expectedBenefits": 79,
+              "awareness": 56.6,
+              "secondaryActivities": 68.4,
+              "capabilityKnowledge": 75.4
+            },
+            "metricN": {
+              "trust": 343,
+              "adoption": 343,
+              "safetyConfidence": 343,
+              "expectedBenefits": 343,
+              "awareness": 343,
+              "secondaryActivities": 340,
+              "capabilityKnowledge": 343
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 143,
+            "metrics": {
+              "trust": 73.7,
+              "adoption": 83.4,
+              "safetyConfidence": 24.5,
+              "expectedBenefits": 82,
+              "awareness": 58.7,
+              "secondaryActivities": 69.4,
+              "capabilityKnowledge": 76.4
+            },
+            "metricN": {
+              "trust": 143,
+              "adoption": 143,
+              "safetyConfidence": 143,
+              "expectedBenefits": 143,
+              "awareness": 143,
+              "secondaryActivities": 143,
+              "capabilityKnowledge": 143
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 124,
+            "metrics": {
+              "trust": 73.2,
+              "adoption": 80.7,
+              "safetyConfidence": 28.3,
+              "expectedBenefits": 80.6,
+              "awareness": 56.5,
+              "secondaryActivities": 66.9,
+              "capabilityKnowledge": 77
+            },
+            "metricN": {
+              "trust": 124,
+              "adoption": 124,
+              "safetyConfidence": 124,
+              "expectedBenefits": 124,
+              "awareness": 124,
+              "secondaryActivities": 124,
+              "capabilityKnowledge": 124
+            }
+          }
+        ]
+      }
+    },
+    "076": {
+      "name": "Brazil",
+      "iso3": "BRA",
+      "region": "South America",
+      "n": 1217,
+      "lowSample": false,
+      "metrics": {
+        "trust": 55.5,
+        "adoption": 60.7,
+        "safetyConfidence": 37,
+        "expectedBenefits": 59.9,
+        "awareness": 74.3,
+        "secondaryActivities": 53.3,
+        "capabilityKnowledge": 71.1
+      },
+      "behaviors": {
+        "takingCareOfChildren": 20.3,
+        "talkingWithFellowTravelers": 34.9,
+        "internetOrVideo": 45.2,
+        "playingGames": 14.1,
+        "socializing": 22.7,
+        "eatingOrDrinking": 34.3,
+        "observingLandscape": 33.1,
+        "relaxingOrResting": 33.9,
+        "readingBook": 14.3,
+        "working": 12,
+        "other": 1.4
+      },
+      "misconceptions": {
+        "laneKeeping": 8.1,
+        "overtaking": 32.2,
+        "allConditions": 66.4,
+        "takeoverAnytime": 12.9,
+        "otherActivitiesButNoSleeping": 21.1
+      },
+      "demographics": {
+        "meanAge": 41.2,
+        "genderShares": {
+          "code1": 49.1,
+          "code2": 50.8,
+          "code3": 0.1
+        },
+        "meanIncomeCode": 4.4,
+        "licensedShare": 94.6,
+        "meanAnnualDistanceCode": 3.4,
+        "meanEducationCode": 2.4
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18-24",
+            "n": 135,
+            "metrics": {
+              "trust": 59.5,
+              "adoption": 63.5,
+              "safetyConfidence": 37.1,
+              "expectedBenefits": 60.6,
+              "awareness": 68.9,
+              "secondaryActivities": 57.5,
+              "capabilityKnowledge": 68.4
+            },
+            "metricN": {
+              "trust": 135,
+              "adoption": 135,
+              "safetyConfidence": 134,
+              "expectedBenefits": 135,
+              "awareness": 135,
+              "secondaryActivities": 133,
+              "capabilityKnowledge": 135
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25-34",
+            "n": 295,
+            "metrics": {
+              "trust": 60.3,
+              "adoption": 65.5,
+              "safetyConfidence": 36.2,
+              "expectedBenefits": 63.7,
+              "awareness": 69.8,
+              "secondaryActivities": 56.9,
+              "capabilityKnowledge": 66.7
+            },
+            "metricN": {
+              "trust": 294,
+              "adoption": 294,
+              "safetyConfidence": 294,
+              "expectedBenefits": 294,
+              "awareness": 295,
+              "secondaryActivities": 295,
+              "capabilityKnowledge": 295
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35-44",
+            "n": 324,
+            "metrics": {
+              "trust": 59.3,
+              "adoption": 64.6,
+              "safetyConfidence": 35,
+              "expectedBenefits": 63.4,
+              "awareness": 72.2,
+              "secondaryActivities": 55.7,
+              "capabilityKnowledge": 71
+            },
+            "metricN": {
+              "trust": 323,
+              "adoption": 322,
+              "safetyConfidence": 323,
+              "expectedBenefits": 323,
+              "awareness": 324,
+              "secondaryActivities": 322,
+              "capabilityKnowledge": 324
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45-54",
+            "n": 223,
+            "metrics": {
+              "trust": 53.2,
+              "adoption": 59.9,
+              "safetyConfidence": 37.6,
+              "expectedBenefits": 59.8,
+              "awareness": 78.9,
+              "secondaryActivities": 54.6,
+              "capabilityKnowledge": 73.8
+            },
+            "metricN": {
+              "trust": 222,
+              "adoption": 223,
+              "safetyConfidence": 223,
+              "expectedBenefits": 223,
+              "awareness": 223,
+              "secondaryActivities": 223,
+              "capabilityKnowledge": 223
+            }
+          },
+          {
+            "key": "55+",
+            "label": "55+",
+            "n": 240,
+            "metrics": {
+              "trust": 44.4,
+              "adoption": 48.6,
+              "safetyConfidence": 39.8,
+              "expectedBenefits": 50.5,
+              "awareness": 81.3,
+              "secondaryActivities": 41.7,
+              "capabilityKnowledge": 75.8
+            },
+            "metricN": {
+              "trust": 240,
+              "adoption": 240,
+              "safetyConfidence": 240,
+              "expectedBenefits": 240,
+              "awareness": 240,
+              "secondaryActivities": 235,
+              "capabilityKnowledge": 240
+            }
+          }
+        ]
+      }
+    }
+  }
+}

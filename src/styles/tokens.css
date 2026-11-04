@@ -1,0 +1,25 @@
+:root {
+  --bg-page: #07080a;
+  --bg-card: #101318;
+  --bg-raised: #151a22;
+  --bg-hover: #c9c8c2;
+  --border-subtle: rgba(255,255,255,.09);
+  --border-strong: rgba(109,167,236,.5);
+  --text-primary: #eef1f5;
+  --text-secondary: #b9c0c9;
+  --text-muted: #9ca6b4;
+  --accent: #6da7ec;
+  --accent-warm: #e66767;
+  --accent-dim: rgba(109,167,236,.13);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 10px; --radius-card: 12px; --radius-lg: 18px; --radius-pill: 999px;
+  --shadow-card: 0 12px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.04);
+  --glow-card: linear-gradient(125deg, rgba(255,255,255,.035), transparent 32%);
+  --font-sans: 'Barlow', 'Inter', system-ui, sans-serif;
+  --font-mono: 'Barlow', 'Inter', system-ui, sans-serif;
+  --text-xs: .75rem; --text-sm: .86rem; --text-base: 1rem; --text-lg: 1.25rem;
+  --duration-fast: 160ms; --duration: 200ms; --duration-view: 300ms;
+  --ease: cubic-bezier(.2,.75,.2,1);
+  --content-width: 1280px;
+}

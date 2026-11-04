@@ -1,0 +1,12 @@
+
+/* Fonts are bundled locally (from @fontsource) so the site works offline. */
+@font-face { font-family: "Inter"; font-weight: 400; font-display: swap; src: url(/fonts/preview-0.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; font-display: swap; src: url(/fonts/preview-1.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; font-display: swap; src: url(/fonts/preview-2.woff2) format("woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 400; font-display: swap; src: url(/fonts/preview-3.woff2) format("woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 500; font-display: swap; src: url(/fonts/preview-4.woff2) format("woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 600; font-display: swap; src: url(/fonts/preview-5.woff2) format("woff2"); }
+@font-face { font-family: "Barlow Semi Condensed"; font-weight: 500; font-display: swap; src: url(/fonts/preview-6.woff2) format("woff2"); }
+@font-face { font-family: "Barlow Semi Condensed"; font-weight: 600; font-display: swap; src: url(/fonts/preview-7.woff2) format("woff2"); }
+@font-face { font-family: "Barlow Semi Condensed"; font-weight: 700; font-display: swap; src: url(/fonts/preview-8.woff2) format("woff2"); }
+
