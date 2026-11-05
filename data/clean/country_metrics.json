@@ -1,0 +1,2090 @@
+{
+  "metrics": [
+    {
+      "key": "trust",
+      "label": "Trust",
+      "description": "Mean of respondents’ trust-composite scores, using the available trust items. Higher values indicate greater agreement.",
+      "higherIsBetter": true,
+      "min": 1,
+      "max": 5
+    },
+    {
+      "key": "adoption",
+      "label": "Adoption intention",
+      "description": "Mean of the respondent-level composite for future use, use with access, everyday use, and purchase intention. Higher values indicate stronger intention.",
+      "higherIsBetter": true,
+      "min": 1,
+      "max": 5
+    },
+    {
+      "key": "tripPurpose",
+      "label": "Trip-purpose intention",
+      "description": "Mean willingness across commute, business travel, errands, leisure, and vacation purposes. Higher values indicate stronger intention.",
+      "higherIsBetter": true,
+      "min": 1,
+      "max": 5
+    },
+    {
+      "key": "safetyConfidence",
+      "label": "Perceived safety",
+      "description": "Mean agreement with the item “I would feel safe using the car.” This is a single-item measure, not a multi-item safety composite.",
+      "higherIsBetter": true,
+      "min": 1,
+      "max": 5
+    }
+  ],
+  "global": {
+    "trust": 3.464,
+    "adoption": 3.533,
+    "tripPurpose": 3.666,
+    "safetyConfidence": 3.474
+  },
+  "globalMetricN": {
+    "trust": 18589,
+    "adoption": 18595,
+    "tripPurpose": 18564,
+    "safetyConfidence": 18484
+  },
+  "globalUseIntention": 3.649,
+  "globalUseIntentionN": 18591,
+  "globalDetails": {
+    "behaviors": {
+      "commute": 3.659,
+      "businessTravel": 3.675,
+      "errands": 3.612,
+      "leisure": 3.69,
+      "vacation": 3.721
+    }
+  },
+  "regions": {
+    "Africa": {
+      "trust": 3.761,
+      "adoption": 3.895,
+      "tripPurpose": 3.96,
+      "safetyConfidence": 3.811
+    },
+    "Asia": {
+      "trust": 3.879,
+      "adoption": 3.931,
+      "tripPurpose": 3.954,
+      "safetyConfidence": 3.881
+    },
+    "Europe": {
+      "trust": 3.21,
+      "adoption": 3.266,
+      "tripPurpose": 3.465,
+      "safetyConfidence": 3.211
+    },
+    "North America": {
+      "trust": 3.092,
+      "adoption": 3.191,
+      "tripPurpose": 3.365,
+      "safetyConfidence": 3.158
+    },
+    "South America": {
+      "trust": 3.925,
+      "adoption": 4.095,
+      "tripPurpose": 4.158,
+      "safetyConfidence": 3.95
+    }
+  },
+  "countries": {
+    "826": {
+      "name": "United Kingdom",
+      "iso3": "GBR",
+      "region": "Europe",
+      "n": 1217,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.109,
+        "adoption": 3.154,
+        "tripPurpose": 3.28,
+        "safetyConfidence": 3.137
+      },
+      "metricN": {
+        "trust": 1214,
+        "adoption": 1215,
+        "tripPurpose": 1214,
+        "safetyConfidence": 1203
+      },
+      "useIntention": 3.242,
+      "useIntentionN": 1215,
+      "behaviors": {
+        "commute": 3.243,
+        "businessTravel": 3.253,
+        "errands": 3.255,
+        "leisure": 3.32,
+        "vacation": 3.308
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 135,
+            "metrics": {
+              "trust": 3.317,
+              "adoption": 3.33,
+              "tripPurpose": 3.408,
+              "safetyConfidence": 3.341
+            },
+            "metricN": {
+              "trust": 135,
+              "adoption": 135,
+              "tripPurpose": 135,
+              "safetyConfidence": 132
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 295,
+            "metrics": {
+              "trust": 3.355,
+              "adoption": 3.374,
+              "tripPurpose": 3.495,
+              "safetyConfidence": 3.408
+            },
+            "metricN": {
+              "trust": 294,
+              "adoption": 294,
+              "tripPurpose": 294,
+              "safetyConfidence": 292
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 324,
+            "metrics": {
+              "trust": 3.296,
+              "adoption": 3.349,
+              "tripPurpose": 3.5,
+              "safetyConfidence": 3.32
+            },
+            "metricN": {
+              "trust": 323,
+              "adoption": 323,
+              "tripPurpose": 323,
+              "safetyConfidence": 319
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 223,
+            "metrics": {
+              "trust": 3.024,
+              "adoption": 3.142,
+              "tripPurpose": 3.239,
+              "safetyConfidence": 3.023
+            },
+            "metricN": {
+              "trust": 222,
+              "adoption": 223,
+              "tripPurpose": 222,
+              "safetyConfidence": 222
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 240,
+            "metrics": {
+              "trust": 2.52,
+              "adoption": 2.533,
+              "tripPurpose": 2.686,
+              "safetyConfidence": 2.555
+            },
+            "metricN": {
+              "trust": 240,
+              "adoption": 240,
+              "tripPurpose": 240,
+              "safetyConfidence": 238
+            }
+          }
+        ]
+      }
+    },
+    "380": {
+      "name": "Italy",
+      "iso3": "ITA",
+      "region": "Europe",
+      "n": 1186,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.369,
+        "adoption": 3.412,
+        "tripPurpose": 3.597,
+        "safetyConfidence": 3.403
+      },
+      "metricN": {
+        "trust": 1181,
+        "adoption": 1182,
+        "tripPurpose": 1178,
+        "safetyConfidence": 1173
+      },
+      "useIntention": 3.514,
+      "useIntentionN": 1182,
+      "behaviors": {
+        "commute": 3.581,
+        "businessTravel": 3.661,
+        "errands": 3.499,
+        "leisure": 3.566,
+        "vacation": 3.667
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 120,
+            "metrics": {
+              "trust": 3.482,
+              "adoption": 3.558,
+              "tripPurpose": 3.636,
+              "safetyConfidence": 3.534
+            },
+            "metricN": {
+              "trust": 119,
+              "adoption": 120,
+              "tripPurpose": 120,
+              "safetyConfidence": 118
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 247,
+            "metrics": {
+              "trust": 3.478,
+              "adoption": 3.462,
+              "tripPurpose": 3.68,
+              "safetyConfidence": 3.514
+            },
+            "metricN": {
+              "trust": 245,
+              "adoption": 245,
+              "tripPurpose": 244,
+              "safetyConfidence": 243
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 283,
+            "metrics": {
+              "trust": 3.454,
+              "adoption": 3.488,
+              "tripPurpose": 3.679,
+              "safetyConfidence": 3.468
+            },
+            "metricN": {
+              "trust": 281,
+              "adoption": 281,
+              "tripPurpose": 279,
+              "safetyConfidence": 278
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 277,
+            "metrics": {
+              "trust": 3.365,
+              "adoption": 3.479,
+              "tripPurpose": 3.658,
+              "safetyConfidence": 3.413
+            },
+            "metricN": {
+              "trust": 277,
+              "adoption": 277,
+              "tripPurpose": 276,
+              "safetyConfidence": 276
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 259,
+            "metrics": {
+              "trust": 3.125,
+              "adoption": 3.144,
+              "tripPurpose": 3.348,
+              "safetyConfidence": 3.159
+            },
+            "metricN": {
+              "trust": 259,
+              "adoption": 259,
+              "tripPurpose": 259,
+              "safetyConfidence": 258
+            }
+          }
+        ]
+      }
+    },
+    "752": {
+      "name": "Sweden",
+      "iso3": "SWE",
+      "region": "Europe",
+      "n": 1177,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.019,
+        "adoption": 3.071,
+        "tripPurpose": 3.299,
+        "safetyConfidence": 3.052
+      },
+      "metricN": {
+        "trust": 1167,
+        "adoption": 1167,
+        "tripPurpose": 1163,
+        "safetyConfidence": 1161
+      },
+      "useIntention": 3.207,
+      "useIntentionN": 1167,
+      "behaviors": {
+        "commute": 3.226,
+        "businessTravel": 3.222,
+        "errands": 3.318,
+        "leisure": 3.346,
+        "vacation": 3.281
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 159,
+            "metrics": {
+              "trust": 3.188,
+              "adoption": 3.313,
+              "tripPurpose": 3.483,
+              "safetyConfidence": 3.197
+            },
+            "metricN": {
+              "trust": 157,
+              "adoption": 157,
+              "tripPurpose": 158,
+              "safetyConfidence": 157
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 279,
+            "metrics": {
+              "trust": 3.301,
+              "adoption": 3.376,
+              "tripPurpose": 3.629,
+              "safetyConfidence": 3.28
+            },
+            "metricN": {
+              "trust": 275,
+              "adoption": 277,
+              "tripPurpose": 275,
+              "safetyConfidence": 271
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 199,
+            "metrics": {
+              "trust": 3.101,
+              "adoption": 3.146,
+              "tripPurpose": 3.361,
+              "safetyConfidence": 3.182
+            },
+            "metricN": {
+              "trust": 198,
+              "adoption": 197,
+              "tripPurpose": 196,
+              "safetyConfidence": 198
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 266,
+            "metrics": {
+              "trust": 2.898,
+              "adoption": 2.977,
+              "tripPurpose": 3.233,
+              "safetyConfidence": 2.955
+            },
+            "metricN": {
+              "trust": 265,
+              "adoption": 265,
+              "tripPurpose": 263,
+              "safetyConfidence": 265
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 274,
+            "metrics": {
+              "trust": 2.695,
+              "adoption": 2.656,
+              "tripPurpose": 2.874,
+              "safetyConfidence": 2.737
+            },
+            "metricN": {
+              "trust": 272,
+              "adoption": 271,
+              "tripPurpose": 271,
+              "safetyConfidence": 270
+            }
+          }
+        ]
+      }
+    },
+    "250": {
+      "name": "France",
+      "iso3": "FRA",
+      "region": "Europe",
+      "n": 1164,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.192,
+        "adoption": 3.156,
+        "tripPurpose": 3.393,
+        "safetyConfidence": 3.145
+      },
+      "metricN": {
+        "trust": 1162,
+        "adoption": 1161,
+        "tripPurpose": 1158,
+        "safetyConfidence": 1152
+      },
+      "useIntention": 3.274,
+      "useIntentionN": 1161,
+      "behaviors": {
+        "commute": 3.397,
+        "businessTravel": 3.229,
+        "errands": 3.365,
+        "leisure": 3.441,
+        "vacation": 3.452
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 135,
+            "metrics": {
+              "trust": 3.382,
+              "adoption": 3.347,
+              "tripPurpose": 3.554,
+              "safetyConfidence": 3.343
+            },
+            "metricN": {
+              "trust": 135,
+              "adoption": 134,
+              "tripPurpose": 134,
+              "safetyConfidence": 134
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 227,
+            "metrics": {
+              "trust": 3.36,
+              "adoption": 3.41,
+              "tripPurpose": 3.666,
+              "safetyConfidence": 3.32
+            },
+            "metricN": {
+              "trust": 226,
+              "adoption": 226,
+              "tripPurpose": 226,
+              "safetyConfidence": 222
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 280,
+            "metrics": {
+              "trust": 3.409,
+              "adoption": 3.412,
+              "tripPurpose": 3.659,
+              "safetyConfidence": 3.324
+            },
+            "metricN": {
+              "trust": 280,
+              "adoption": 280,
+              "tripPurpose": 278,
+              "safetyConfidence": 278
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 252,
+            "metrics": {
+              "trust": 3.138,
+              "adoption": 3.089,
+              "tripPurpose": 3.315,
+              "safetyConfidence": 3.096
+            },
+            "metricN": {
+              "trust": 251,
+              "adoption": 251,
+              "tripPurpose": 250,
+              "safetyConfidence": 249
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 270,
+            "metrics": {
+              "trust": 2.78,
+              "adoption": 2.643,
+              "tripPurpose": 2.885,
+              "safetyConfidence": 2.762
+            },
+            "metricN": {
+              "trust": 270,
+              "adoption": 270,
+              "tripPurpose": 270,
+              "safetyConfidence": 269
+            }
+          }
+        ]
+      }
+    },
+    "348": {
+      "name": "Hungary",
+      "iso3": "HUN",
+      "region": "Europe",
+      "n": 1146,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.369,
+        "adoption": 3.527,
+        "tripPurpose": 3.697,
+        "safetyConfidence": 3.364
+      },
+      "metricN": {
+        "trust": 1144,
+        "adoption": 1140,
+        "tripPurpose": 1134,
+        "safetyConfidence": 1135
+      },
+      "useIntention": 3.71,
+      "useIntentionN": 1139,
+      "behaviors": {
+        "commute": 3.676,
+        "businessTravel": 3.729,
+        "errands": 3.636,
+        "leisure": 3.705,
+        "vacation": 3.759
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 132,
+            "metrics": {
+              "trust": 3.186,
+              "adoption": 3.51,
+              "tripPurpose": 3.598,
+              "safetyConfidence": 3.215
+            },
+            "metricN": {
+              "trust": 131,
+              "adoption": 130,
+              "tripPurpose": 131,
+              "safetyConfidence": 130
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 277,
+            "metrics": {
+              "trust": 3.302,
+              "adoption": 3.473,
+              "tripPurpose": 3.636,
+              "safetyConfidence": 3.285
+            },
+            "metricN": {
+              "trust": 277,
+              "adoption": 276,
+              "tripPurpose": 276,
+              "safetyConfidence": 274
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 262,
+            "metrics": {
+              "trust": 3.492,
+              "adoption": 3.612,
+              "tripPurpose": 3.798,
+              "safetyConfidence": 3.469
+            },
+            "metricN": {
+              "trust": 262,
+              "adoption": 261,
+              "tripPurpose": 259,
+              "safetyConfidence": 260
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 211,
+            "metrics": {
+              "trust": 3.329,
+              "adoption": 3.544,
+              "tripPurpose": 3.656,
+              "safetyConfidence": 3.346
+            },
+            "metricN": {
+              "trust": 210,
+              "adoption": 210,
+              "tripPurpose": 209,
+              "safetyConfidence": 208
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 264,
+            "metrics": {
+              "trust": 3.442,
+              "adoption": 3.492,
+              "tripPurpose": 3.744,
+              "safetyConfidence": 3.43
+            },
+            "metricN": {
+              "trust": 264,
+              "adoption": 263,
+              "tripPurpose": 259,
+              "safetyConfidence": 263
+            }
+          }
+        ]
+      }
+    },
+    "276": {
+      "name": "Germany",
+      "iso3": "DEU",
+      "region": "Europe",
+      "n": 1133,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.001,
+        "adoption": 3.133,
+        "tripPurpose": 3.294,
+        "safetyConfidence": 3.048
+      },
+      "metricN": {
+        "trust": 1127,
+        "adoption": 1130,
+        "tripPurpose": 1129,
+        "safetyConfidence": 1113
+      },
+      "useIntention": 3.381,
+      "useIntentionN": 1127,
+      "behaviors": {
+        "commute": 3.26,
+        "businessTravel": 3.403,
+        "errands": 3.194,
+        "leisure": 3.299,
+        "vacation": 3.335
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 169,
+            "metrics": {
+              "trust": 3.193,
+              "adoption": 3.407,
+              "tripPurpose": 3.478,
+              "safetyConfidence": 3.272
+            },
+            "metricN": {
+              "trust": 168,
+              "adoption": 168,
+              "tripPurpose": 169,
+              "safetyConfidence": 162
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 171,
+            "metrics": {
+              "trust": 3.175,
+              "adoption": 3.384,
+              "tripPurpose": 3.464,
+              "safetyConfidence": 3.213
+            },
+            "metricN": {
+              "trust": 170,
+              "adoption": 170,
+              "tripPurpose": 169,
+              "safetyConfidence": 169
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 202,
+            "metrics": {
+              "trust": 3.037,
+              "adoption": 3.207,
+              "tripPurpose": 3.375,
+              "safetyConfidence": 3.152
+            },
+            "metricN": {
+              "trust": 201,
+              "adoption": 202,
+              "tripPurpose": 202,
+              "safetyConfidence": 198
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 256,
+            "metrics": {
+              "trust": 3.033,
+              "adoption": 3.157,
+              "tripPurpose": 3.369,
+              "safetyConfidence": 3.06
+            },
+            "metricN": {
+              "trust": 254,
+              "adoption": 256,
+              "tripPurpose": 255,
+              "safetyConfidence": 252
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 335,
+            "metrics": {
+              "trust": 2.771,
+              "adoption": 2.803,
+              "tripPurpose": 3.009,
+              "safetyConfidence": 2.783
+            },
+            "metricN": {
+              "trust": 334,
+              "adoption": 334,
+              "tripPurpose": 334,
+              "safetyConfidence": 332
+            }
+          }
+        ]
+      }
+    },
+    "643": {
+      "name": "Russia",
+      "iso3": "RUS",
+      "region": "Europe",
+      "n": 1079,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.565,
+        "adoption": 3.568,
+        "tripPurpose": 3.821,
+        "safetyConfidence": 3.43
+      },
+      "metricN": {
+        "trust": 1079,
+        "adoption": 1079,
+        "tripPurpose": 1078,
+        "safetyConfidence": 1075
+      },
+      "useIntention": 3.781,
+      "useIntentionN": 1079,
+      "behaviors": {
+        "commute": 3.851,
+        "businessTravel": 3.823,
+        "errands": 3.854,
+        "leisure": 3.857,
+        "vacation": 3.712
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 150,
+            "metrics": {
+              "trust": 3.761,
+              "adoption": 3.615,
+              "tripPurpose": 3.871,
+              "safetyConfidence": 3.66
+            },
+            "metricN": {
+              "trust": 150,
+              "adoption": 150,
+              "tripPurpose": 150,
+              "safetyConfidence": 150
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 334,
+            "metrics": {
+              "trust": 3.665,
+              "adoption": 3.686,
+              "tripPurpose": 3.906,
+              "safetyConfidence": 3.548
+            },
+            "metricN": {
+              "trust": 334,
+              "adoption": 334,
+              "tripPurpose": 334,
+              "safetyConfidence": 334
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 311,
+            "metrics": {
+              "trust": 3.53,
+              "adoption": 3.56,
+              "tripPurpose": 3.838,
+              "safetyConfidence": 3.373
+            },
+            "metricN": {
+              "trust": 311,
+              "adoption": 311,
+              "tripPurpose": 310,
+              "safetyConfidence": 308
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 159,
+            "metrics": {
+              "trust": 3.451,
+              "adoption": 3.534,
+              "tripPurpose": 3.753,
+              "safetyConfidence": 3.316
+            },
+            "metricN": {
+              "trust": 159,
+              "adoption": 159,
+              "tripPurpose": 159,
+              "safetyConfidence": 158
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 125,
+            "metrics": {
+              "trust": 3.292,
+              "adoption": 3.259,
+              "tripPurpose": 3.576,
+              "safetyConfidence": 3.12
+            },
+            "metricN": {
+              "trust": 125,
+              "adoption": 125,
+              "tripPurpose": 125,
+              "safetyConfidence": 125
+            }
+          }
+        ]
+      }
+    },
+    "392": {
+      "name": "Japan",
+      "iso3": "JPN",
+      "region": "Asia",
+      "n": 1074,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.142,
+        "adoption": 3.214,
+        "tripPurpose": 3.375,
+        "safetyConfidence": 3.194
+      },
+      "metricN": {
+        "trust": 1074,
+        "adoption": 1074,
+        "tripPurpose": 1070,
+        "safetyConfidence": 1072
+      },
+      "useIntention": 3.278,
+      "useIntentionN": 1074,
+      "behaviors": {
+        "commute": 3.299,
+        "businessTravel": 3.256,
+        "errands": 3.364,
+        "leisure": 3.406,
+        "vacation": 3.531
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 86,
+            "metrics": {
+              "trust": 3.055,
+              "adoption": 3.074,
+              "tripPurpose": 3.208,
+              "safetyConfidence": 3.058
+            },
+            "metricN": {
+              "trust": 86,
+              "adoption": 86,
+              "tripPurpose": 86,
+              "safetyConfidence": 86
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 213,
+            "metrics": {
+              "trust": 3.131,
+              "adoption": 3.273,
+              "tripPurpose": 3.433,
+              "safetyConfidence": 3.155
+            },
+            "metricN": {
+              "trust": 213,
+              "adoption": 213,
+              "tripPurpose": 211,
+              "safetyConfidence": 213
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 204,
+            "metrics": {
+              "trust": 3.143,
+              "adoption": 3.265,
+              "tripPurpose": 3.427,
+              "safetyConfidence": 3.206
+            },
+            "metricN": {
+              "trust": 204,
+              "adoption": 204,
+              "tripPurpose": 203,
+              "safetyConfidence": 204
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 248,
+            "metrics": {
+              "trust": 3.2,
+              "adoption": 3.243,
+              "tripPurpose": 3.367,
+              "safetyConfidence": 3.223
+            },
+            "metricN": {
+              "trust": 248,
+              "adoption": 248,
+              "tripPurpose": 247,
+              "safetyConfidence": 247
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 323,
+            "metrics": {
+              "trust": 3.128,
+              "adoption": 3.158,
+              "tripPurpose": 3.354,
+              "safetyConfidence": 3.227
+            },
+            "metricN": {
+              "trust": 323,
+              "adoption": 323,
+              "tripPurpose": 323,
+              "safetyConfidence": 322
+            }
+          }
+        ]
+      }
+    },
+    "724": {
+      "name": "Spain",
+      "iso3": "ESP",
+      "region": "Europe",
+      "n": 1074,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.515,
+        "adoption": 3.478,
+        "tripPurpose": 3.676,
+        "safetyConfidence": 3.536
+      },
+      "metricN": {
+        "trust": 1073,
+        "adoption": 1073,
+        "tripPurpose": 1074,
+        "safetyConfidence": 1068
+      },
+      "useIntention": 3.648,
+      "useIntentionN": 1073,
+      "behaviors": {
+        "commute": 3.656,
+        "businessTravel": 3.722,
+        "errands": 3.541,
+        "leisure": 3.684,
+        "vacation": 3.761
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 92,
+            "metrics": {
+              "trust": 3.616,
+              "adoption": 3.489,
+              "tripPurpose": 3.745,
+              "safetyConfidence": 3.622
+            },
+            "metricN": {
+              "trust": 91,
+              "adoption": 92,
+              "tripPurpose": 92,
+              "safetyConfidence": 90
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 238,
+            "metrics": {
+              "trust": 3.519,
+              "adoption": 3.567,
+              "tripPurpose": 3.732,
+              "safetyConfidence": 3.532
+            },
+            "metricN": {
+              "trust": 238,
+              "adoption": 237,
+              "tripPurpose": 238,
+              "safetyConfidence": 237
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 278,
+            "metrics": {
+              "trust": 3.635,
+              "adoption": 3.591,
+              "tripPurpose": 3.783,
+              "safetyConfidence": 3.674
+            },
+            "metricN": {
+              "trust": 278,
+              "adoption": 278,
+              "tripPurpose": 278,
+              "safetyConfidence": 276
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 238,
+            "metrics": {
+              "trust": 3.455,
+              "adoption": 3.446,
+              "tripPurpose": 3.654,
+              "safetyConfidence": 3.485
+            },
+            "metricN": {
+              "trust": 238,
+              "adoption": 238,
+              "tripPurpose": 238,
+              "safetyConfidence": 237
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 228,
+            "metrics": {
+              "trust": 3.387,
+              "adoption": 3.277,
+              "tripPurpose": 3.48,
+              "safetyConfidence": 3.39
+            },
+            "metricN": {
+              "trust": 228,
+              "adoption": 228,
+              "tripPurpose": 228,
+              "safetyConfidence": 228
+            }
+          }
+        ]
+      }
+    },
+    "710": {
+      "name": "South Africa",
+      "iso3": "ZAF",
+      "region": "Africa",
+      "n": 1070,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.761,
+        "adoption": 3.895,
+        "tripPurpose": 3.96,
+        "safetyConfidence": 3.811
+      },
+      "metricN": {
+        "trust": 1069,
+        "adoption": 1069,
+        "tripPurpose": 1070,
+        "safetyConfidence": 1066
+      },
+      "useIntention": 3.98,
+      "useIntentionN": 1069,
+      "behaviors": {
+        "commute": 3.964,
+        "businessTravel": 3.987,
+        "errands": 3.889,
+        "leisure": 3.975,
+        "vacation": 3.983
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 281,
+            "metrics": {
+              "trust": 3.777,
+              "adoption": 4.017,
+              "tripPurpose": 4.006,
+              "safetyConfidence": 3.803
+            },
+            "metricN": {
+              "trust": 281,
+              "adoption": 281,
+              "tripPurpose": 281,
+              "safetyConfidence": 279
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 249,
+            "metrics": {
+              "trust": 3.815,
+              "adoption": 3.967,
+              "tripPurpose": 3.994,
+              "safetyConfidence": 3.871
+            },
+            "metricN": {
+              "trust": 249,
+              "adoption": 249,
+              "tripPurpose": 249,
+              "safetyConfidence": 248
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 276,
+            "metrics": {
+              "trust": 3.767,
+              "adoption": 3.859,
+              "tripPurpose": 3.99,
+              "safetyConfidence": 3.833
+            },
+            "metricN": {
+              "trust": 275,
+              "adoption": 275,
+              "tripPurpose": 276,
+              "safetyConfidence": 275
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 158,
+            "metrics": {
+              "trust": 3.704,
+              "adoption": 3.819,
+              "tripPurpose": 3.909,
+              "safetyConfidence": 3.753
+            },
+            "metricN": {
+              "trust": 158,
+              "adoption": 158,
+              "tripPurpose": 158,
+              "safetyConfidence": 158
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 106,
+            "metrics": {
+              "trust": 3.66,
+              "adoption": 3.613,
+              "tripPurpose": 3.755,
+              "safetyConfidence": 3.717
+            },
+            "metricN": {
+              "trust": 106,
+              "adoption": 106,
+              "tripPurpose": 106,
+              "safetyConfidence": 106
+            }
+          }
+        ]
+      }
+    },
+    "792": {
+      "name": "Turkey",
+      "iso3": "TUR",
+      "region": "Asia",
+      "n": 1060,
+      "lowSample": false,
+      "metrics": {
+        "trust": 4.098,
+        "adoption": 4.144,
+        "tripPurpose": 4.145,
+        "safetyConfidence": 4.11
+      },
+      "metricN": {
+        "trust": 1060,
+        "adoption": 1060,
+        "tripPurpose": 1059,
+        "safetyConfidence": 1058
+      },
+      "useIntention": 4.205,
+      "useIntentionN": 1060,
+      "behaviors": {
+        "commute": 4.134,
+        "businessTravel": 4.161,
+        "errands": 4.064,
+        "leisure": 4.129,
+        "vacation": 4.247
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 175,
+            "metrics": {
+              "trust": 4.047,
+              "adoption": 4.053,
+              "tripPurpose": 4.149,
+              "safetyConfidence": 4.092
+            },
+            "metricN": {
+              "trust": 175,
+              "adoption": 175,
+              "tripPurpose": 174,
+              "safetyConfidence": 174
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 275,
+            "metrics": {
+              "trust": 4.114,
+              "adoption": 4.19,
+              "tripPurpose": 4.161,
+              "safetyConfidence": 4.127
+            },
+            "metricN": {
+              "trust": 275,
+              "adoption": 275,
+              "tripPurpose": 275,
+              "safetyConfidence": 275
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 343,
+            "metrics": {
+              "trust": 4.098,
+              "adoption": 4.123,
+              "tripPurpose": 4.145,
+              "safetyConfidence": 4.111
+            },
+            "metricN": {
+              "trust": 343,
+              "adoption": 343,
+              "tripPurpose": 343,
+              "safetyConfidence": 343
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 143,
+            "metrics": {
+              "trust": 4.091,
+              "adoption": 4.195,
+              "tripPurpose": 4.16,
+              "safetyConfidence": 4.063
+            },
+            "metricN": {
+              "trust": 143,
+              "adoption": 143,
+              "tripPurpose": 143,
+              "safetyConfidence": 142
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 124,
+            "metrics": {
+              "trust": 4.139,
+              "adoption": 4.164,
+              "tripPurpose": 4.092,
+              "safetyConfidence": 4.145
+            },
+            "metricN": {
+              "trust": 124,
+              "adoption": 124,
+              "tripPurpose": 124,
+              "safetyConfidence": 124
+            }
+          }
+        ]
+      }
+    },
+    "360": {
+      "name": "Indonesia",
+      "iso3": "IDN",
+      "region": "Asia",
+      "n": 1059,
+      "lowSample": false,
+      "metrics": {
+        "trust": 4.033,
+        "adoption": 4.101,
+        "tripPurpose": 4.052,
+        "safetyConfidence": 4.027
+      },
+      "metricN": {
+        "trust": 1059,
+        "adoption": 1057,
+        "tripPurpose": 1058,
+        "safetyConfidence": 1055
+      },
+      "useIntention": 4.145,
+      "useIntentionN": 1057,
+      "behaviors": {
+        "commute": 4.117,
+        "businessTravel": 4.055,
+        "errands": 3.985,
+        "leisure": 4.068,
+        "vacation": 4.051
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 204,
+            "metrics": {
+              "trust": 3.915,
+              "adoption": 3.995,
+              "tripPurpose": 3.941,
+              "safetyConfidence": 3.907
+            },
+            "metricN": {
+              "trust": 204,
+              "adoption": 202,
+              "tripPurpose": 204,
+              "safetyConfidence": 204
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 304,
+            "metrics": {
+              "trust": 4.152,
+              "adoption": 4.216,
+              "tripPurpose": 4.156,
+              "safetyConfidence": 4.139
+            },
+            "metricN": {
+              "trust": 304,
+              "adoption": 304,
+              "tripPurpose": 304,
+              "safetyConfidence": 302
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 365,
+            "metrics": {
+              "trust": 4.022,
+              "adoption": 4.113,
+              "tripPurpose": 4.063,
+              "safetyConfidence": 4.008
+            },
+            "metricN": {
+              "trust": 365,
+              "adoption": 365,
+              "tripPurpose": 364,
+              "safetyConfidence": 364
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 114,
+            "metrics": {
+              "trust": 3.994,
+              "adoption": 4.048,
+              "tripPurpose": 4.009,
+              "safetyConfidence": 3.991
+            },
+            "metricN": {
+              "trust": 114,
+              "adoption": 114,
+              "tripPurpose": 114,
+              "safetyConfidence": 113
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 72,
+            "metrics": {
+              "trust": 3.986,
+              "adoption": 3.939,
+              "tripPurpose": 3.931,
+              "safetyConfidence": 4.056
+            },
+            "metricN": {
+              "trust": 72,
+              "adoption": 72,
+              "tripPurpose": 72,
+              "safetyConfidence": 72
+            }
+          }
+        ]
+      }
+    },
+    "076": {
+      "name": "Brazil",
+      "iso3": "BRA",
+      "region": "South America",
+      "n": 1057,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.925,
+        "adoption": 4.095,
+        "tripPurpose": 4.158,
+        "safetyConfidence": 3.95
+      },
+      "metricN": {
+        "trust": 1057,
+        "adoption": 1057,
+        "tripPurpose": 1057,
+        "safetyConfidence": 1054
+      },
+      "useIntention": 4.196,
+      "useIntentionN": 1057,
+      "behaviors": {
+        "commute": 4.134,
+        "businessTravel": 4.162,
+        "errands": 4.119,
+        "leisure": 4.177,
+        "vacation": 4.197
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 184,
+            "metrics": {
+              "trust": 3.82,
+              "adoption": 3.976,
+              "tripPurpose": 4.035,
+              "safetyConfidence": 3.864
+            },
+            "metricN": {
+              "trust": 184,
+              "adoption": 184,
+              "tripPurpose": 184,
+              "safetyConfidence": 184
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 273,
+            "metrics": {
+              "trust": 4.119,
+              "adoption": 4.273,
+              "tripPurpose": 4.319,
+              "safetyConfidence": 4.159
+            },
+            "metricN": {
+              "trust": 273,
+              "adoption": 273,
+              "tripPurpose": 273,
+              "safetyConfidence": 270
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 316,
+            "metrics": {
+              "trust": 3.927,
+              "adoption": 4.129,
+              "tripPurpose": 4.203,
+              "safetyConfidence": 3.962
+            },
+            "metricN": {
+              "trust": 316,
+              "adoption": 316,
+              "tripPurpose": 316,
+              "safetyConfidence": 316
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 156,
+            "metrics": {
+              "trust": 3.827,
+              "adoption": 4.014,
+              "tripPurpose": 4.025,
+              "safetyConfidence": 3.814
+            },
+            "metricN": {
+              "trust": 156,
+              "adoption": 156,
+              "tripPurpose": 156,
+              "safetyConfidence": 156
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 128,
+            "metrics": {
+              "trust": 3.777,
+              "adoption": 3.902,
+              "tripPurpose": 4.04,
+              "safetyConfidence": 3.766
+            },
+            "metricN": {
+              "trust": 128,
+              "adoption": 128,
+              "tripPurpose": 128,
+              "safetyConfidence": 128
+            }
+          }
+        ]
+      }
+    },
+    "840": {
+      "name": "United States",
+      "iso3": "USA",
+      "region": "North America",
+      "n": 1056,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.092,
+        "adoption": 3.191,
+        "tripPurpose": 3.365,
+        "safetyConfidence": 3.158
+      },
+      "metricN": {
+        "trust": 1054,
+        "adoption": 1055,
+        "tripPurpose": 1055,
+        "safetyConfidence": 1049
+      },
+      "useIntention": 3.323,
+      "useIntentionN": 1055,
+      "behaviors": {
+        "commute": 3.363,
+        "businessTravel": 3.18,
+        "errands": 3.355,
+        "leisure": 3.405,
+        "vacation": 3.421
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 106,
+            "metrics": {
+              "trust": 3.398,
+              "adoption": 3.439,
+              "tripPurpose": 3.6,
+              "safetyConfidence": 3.509
+            },
+            "metricN": {
+              "trust": 106,
+              "adoption": 106,
+              "tripPurpose": 106,
+              "safetyConfidence": 106
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 241,
+            "metrics": {
+              "trust": 3.418,
+              "adoption": 3.551,
+              "tripPurpose": 3.669,
+              "safetyConfidence": 3.433
+            },
+            "metricN": {
+              "trust": 241,
+              "adoption": 241,
+              "tripPurpose": 241,
+              "safetyConfidence": 240
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 208,
+            "metrics": {
+              "trust": 3.138,
+              "adoption": 3.281,
+              "tripPurpose": 3.434,
+              "safetyConfidence": 3.183
+            },
+            "metricN": {
+              "trust": 206,
+              "adoption": 207,
+              "tripPurpose": 207,
+              "safetyConfidence": 202
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 202,
+            "metrics": {
+              "trust": 2.965,
+              "adoption": 3.106,
+              "tripPurpose": 3.272,
+              "safetyConfidence": 3.05
+            },
+            "metricN": {
+              "trust": 202,
+              "adoption": 202,
+              "tripPurpose": 202,
+              "safetyConfidence": 202
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 299,
+            "metrics": {
+              "trust": 2.777,
+              "adoption": 2.81,
+              "tripPurpose": 3.053,
+              "safetyConfidence": 2.87
+            },
+            "metricN": {
+              "trust": 299,
+              "adoption": 299,
+              "tripPurpose": 299,
+              "safetyConfidence": 299
+            }
+          }
+        ]
+      }
+    },
+    "356": {
+      "name": "India",
+      "iso3": "IND",
+      "region": "Asia",
+      "n": 1054,
+      "lowSample": false,
+      "metrics": {
+        "trust": 4.199,
+        "adoption": 4.238,
+        "tripPurpose": 4.205,
+        "safetyConfidence": 4.215
+      },
+      "metricN": {
+        "trust": 1054,
+        "adoption": 1054,
+        "tripPurpose": 1053,
+        "safetyConfidence": 1039
+      },
+      "useIntention": 4.245,
+      "useIntentionN": 1054,
+      "behaviors": {
+        "commute": 4.198,
+        "businessTravel": 4.229,
+        "errands": 4.094,
+        "leisure": 4.233,
+        "vacation": 4.274
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 233,
+            "metrics": {
+              "trust": 3.964,
+              "adoption": 4.035,
+              "tripPurpose": 3.973,
+              "safetyConfidence": 3.974
+            },
+            "metricN": {
+              "trust": 233,
+              "adoption": 233,
+              "tripPurpose": 233,
+              "safetyConfidence": 229
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 288,
+            "metrics": {
+              "trust": 4.313,
+              "adoption": 4.333,
+              "tripPurpose": 4.358,
+              "safetyConfidence": 4.35
+            },
+            "metricN": {
+              "trust": 288,
+              "adoption": 288,
+              "tripPurpose": 287,
+              "safetyConfidence": 283
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 335,
+            "metrics": {
+              "trust": 4.355,
+              "adoption": 4.39,
+              "tripPurpose": 4.339,
+              "safetyConfidence": 4.362
+            },
+            "metricN": {
+              "trust": 335,
+              "adoption": 335,
+              "tripPurpose": 335,
+              "safetyConfidence": 329
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 97,
+            "metrics": {
+              "trust": 4.134,
+              "adoption": 4.193,
+              "tripPurpose": 4.137,
+              "safetyConfidence": 4.155
+            },
+            "metricN": {
+              "trust": 97,
+              "adoption": 97,
+              "tripPurpose": 97,
+              "safetyConfidence": 97
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 101,
+            "metrics": {
+              "trust": 3.963,
+              "adoption": 3.97,
+              "tripPurpose": 3.92,
+              "safetyConfidence": 3.96
+            },
+            "metricN": {
+              "trust": 101,
+              "adoption": 101,
+              "tripPurpose": 101,
+              "safetyConfidence": 101
+            }
+          }
+        ]
+      }
+    },
+    "246": {
+      "name": "Finland",
+      "iso3": "FIN",
+      "region": "Europe",
+      "n": 1021,
+      "lowSample": false,
+      "metrics": {
+        "trust": 2.732,
+        "adoption": 2.889,
+        "tripPurpose": 3.136,
+        "safetyConfidence": 2.763
+      },
+      "metricN": {
+        "trust": 1012,
+        "adoption": 1019,
+        "tripPurpose": 1013,
+        "safetyConfidence": 1009
+      },
+      "useIntention": 3.015,
+      "useIntentionN": 1019,
+      "behaviors": {
+        "commute": 2.947,
+        "businessTravel": 3.068,
+        "errands": 3.009,
+        "leisure": 3.229,
+        "vacation": 3.324
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 24,
+            "metrics": {
+              "trust": 2.969,
+              "adoption": 2.795,
+              "tripPurpose": 3.149,
+              "safetyConfidence": 3.087
+            },
+            "metricN": {
+              "trust": 24,
+              "adoption": 24,
+              "tripPurpose": 24,
+              "safetyConfidence": 23
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 102,
+            "metrics": {
+              "trust": 2.893,
+              "adoption": 2.97,
+              "tripPurpose": 3.123,
+              "safetyConfidence": 2.99
+            },
+            "metricN": {
+              "trust": 100,
+              "adoption": 102,
+              "tripPurpose": 102,
+              "safetyConfidence": 100
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 206,
+            "metrics": {
+              "trust": 2.907,
+              "adoption": 3.03,
+              "tripPurpose": 3.236,
+              "safetyConfidence": 2.893
+            },
+            "metricN": {
+              "trust": 205,
+              "adoption": 206,
+              "tripPurpose": 206,
+              "safetyConfidence": 205
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 261,
+            "metrics": {
+              "trust": 2.659,
+              "adoption": 2.933,
+              "tripPurpose": 3.172,
+              "safetyConfidence": 2.702
+            },
+            "metricN": {
+              "trust": 259,
+              "adoption": 261,
+              "tripPurpose": 259,
+              "safetyConfidence": 258
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 428,
+            "metrics": {
+              "trust": 2.64,
+              "adoption": 2.78,
+              "tripPurpose": 3.067,
+              "safetyConfidence": 2.667
+            },
+            "metricN": {
+              "trust": 424,
+              "adoption": 426,
+              "tripPurpose": 422,
+              "safetyConfidence": 423
+            }
+          }
+        ]
+      }
+    },
+    "156": {
+      "name": "China",
+      "iso3": "CHN",
+      "region": "Asia",
+      "n": 1004,
+      "lowSample": false,
+      "metrics": {
+        "trust": 3.939,
+        "adoption": 3.971,
+        "tripPurpose": 4.006,
+        "safetyConfidence": 3.872
+      },
+      "metricN": {
+        "trust": 1003,
+        "adoption": 1003,
+        "tripPurpose": 1001,
+        "safetyConfidence": 1002
+      },
+      "useIntention": 4.05,
+      "useIntentionN": 1003,
+      "behaviors": {
+        "commute": 4.055,
+        "businessTravel": 3.91,
+        "errands": 3.993,
+        "leisure": 4.016,
+        "vacation": 4.07
+      },
+      "subgroups": {
+        "age": [
+          {
+            "key": "18-24",
+            "label": "18–24",
+            "n": 182,
+            "metrics": {
+              "trust": 3.713,
+              "adoption": 3.801,
+              "tripPurpose": 3.795,
+              "safetyConfidence": 3.626
+            },
+            "metricN": {
+              "trust": 182,
+              "adoption": 182,
+              "tripPurpose": 182,
+              "safetyConfidence": 182
+            }
+          },
+          {
+            "key": "25-34",
+            "label": "25–34",
+            "n": 231,
+            "metrics": {
+              "trust": 3.958,
+              "adoption": 4.027,
+              "tripPurpose": 4.024,
+              "safetyConfidence": 3.869
+            },
+            "metricN": {
+              "trust": 230,
+              "adoption": 230,
+              "tripPurpose": 229,
+              "safetyConfidence": 229
+            }
+          },
+          {
+            "key": "35-44",
+            "label": "35–44",
+            "n": 329,
+            "metrics": {
+              "trust": 3.989,
+              "adoption": 3.998,
+              "tripPurpose": 4.03,
+              "safetyConfidence": 3.93
+            },
+            "metricN": {
+              "trust": 329,
+              "adoption": 329,
+              "tripPurpose": 329,
+              "safetyConfidence": 329
+            }
+          },
+          {
+            "key": "45-54",
+            "label": "45–54",
+            "n": 163,
+            "metrics": {
+              "trust": 4.022,
+              "adoption": 4.003,
+              "tripPurpose": 4.091,
+              "safetyConfidence": 3.957
+            },
+            "metricN": {
+              "trust": 163,
+              "adoption": 163,
+              "tripPurpose": 163,
+              "safetyConfidence": 163
+            }
+          },
+          {
+            "key": "55-69",
+            "label": "55–69",
+            "n": 99,
+            "metrics": {
+              "trust": 4.01,
+              "adoption": 4.013,
+              "tripPurpose": 4.138,
+              "safetyConfidence": 4.0
+            },
+            "metricN": {
+              "trust": 99,
+              "adoption": 99,
+              "tripPurpose": 98,
+              "safetyConfidence": 99
+            }
+          }
+        ]
+      }
+    }
+  },
+  "meta": {
+    "sourceFile": "l3pilot_clean_countries.json",
+    "respondents": 18631,
+    "countryCount": 17,
+    "scale": "1-5 Likert; no 0-100 transformation",
+    "countryJoinKey": "country_label",
+    "missingValues": "Null/non-numeric values excluded from each mean; composite scores retain their precomputed respondent-level item averaging."
+  }
+}
