@@ -1,0 +1,63 @@
+/* Opening finding: five-category willingness-to-use distribution, shown as 25 cars. */
+.willingness-car-chart { display: flex; flex-direction: column; gap: 12px; min-height: 100%; }
+.willingness-scroll { overflow-y: auto; }
+.car-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; padding: 4px 0 2px; }
+.car-legend-button {
+  display: inline-flex; align-items: center; gap: 7px; padding: 3px 1px;
+  border: 0; border-radius: 5px; background: transparent; color: var(--text-secondary);
+  font: 500 12px var(--ui); cursor: pointer; transition: opacity .18s ease, color .18s ease;
+}
+.car-legend-button strong { color: var(--text-primary); font-weight: 600; font-variant-numeric: tabular-nums; }
+.car-legend-swatch { display: inline-block; width: 12px; height: 12px; flex: 0 0 12px; border-radius: 3px; background: var(--seat-color); }
+.car-legend-button:hover { color: #fff; }
+.car-legend-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.car-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 16px 14px; padding: 12px 6px 4px; }
+.car-unit {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  min-width: 0; height: 72px; padding: 7px 18px;
+  border: 1px solid #303946; border-radius: 22px; background: #191f28;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 4px 10px rgba(0,0,0,.12);
+}
+.car-wheel { position: absolute; width: 17px; height: 7px; border-radius: 4px; background: #06080b; }
+.car-wheel-top-left { top: -6px; left: 17px; }
+.car-wheel-top-right { top: -6px; right: 17px; }
+.car-wheel-bottom-left { bottom: -6px; left: 17px; }
+.car-wheel-bottom-right { bottom: -6px; right: 17px; }
+.car-rail { position: absolute; top: 10px; bottom: 10px; width: 10px; border-radius: 5px; background: #293341; }
+.car-rail-left { left: 9px; }
+.car-rail-right { right: 9px; }
+.car-seats { display: grid; grid-template-columns: repeat(2, 21px); grid-template-rows: repeat(2, 21px); gap: 6px 7px; }
+.car-seat { display: block; width: 21px; height: 21px; border-radius: 5px; border: 1px solid rgba(0,0,0,.22); box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: opacity .18s ease, transform .18s ease, box-shadow .18s ease; }
+.car-seat[data-category="0"] { background: #9d5662; }
+.car-seat[data-category="1"] { background: #e66767; }
+.car-seat[data-category="2"] { background: #c9c8c2; }
+.car-seat[data-category="3"] { background: #3d8de7; }
+.car-seat[data-category="4"] { background: #32ad9b; }
+.car-legend-button[data-category="0"] .car-legend-swatch { --seat-color: #9d5662; }
+.car-legend-button[data-category="1"] .car-legend-swatch { --seat-color: #e66767; }
+.car-legend-button[data-category="2"] .car-legend-swatch { --seat-color: #c9c8c2; }
+.car-legend-button[data-category="3"] .car-legend-swatch { --seat-color: #3d8de7; }
+.car-legend-button[data-category="4"] .car-legend-swatch { --seat-color: #32ad9b; }
+.car-mark.is-dimmed { opacity: .17; }
+.car-seat.is-highlighted { transform: scale(1.1); box-shadow: 0 0 0 2px rgba(255,255,255,.88), 0 0 13px currentColor; }
+.car-caption { margin: 0; padding: 2px 4px 8px; color: var(--text-muted); font: 11px/1.4 var(--ui); }
+.car-tooltip { position: absolute; z-index: 10; pointer-events: none; }
+.willingness-shell .screen-left { overflow-y: auto; }
+@media (max-width: 1100px) {
+  .car-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px 10px; }
+}
+@media (max-width: 760px), (max-height: 560px) {
+  .car-legend { gap: 4px 10px; }
+  .car-legend-button { gap: 5px; font-size: 10px; }
+  .car-legend-swatch { width: 9px; height: 9px; flex-basis: 9px; }
+  .car-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px 8px; padding: 10px 2px 4px; }
+  .car-unit { height: 58px; padding: 6px 13px; border-radius: 17px; }
+  .car-rail { top: 8px; bottom: 8px; width: 7px; }
+  .car-rail-left { left: 6px; }
+  .car-rail-right { right: 6px; }
+  .car-seats { grid-template-columns: repeat(2, 16px); grid-template-rows: repeat(2, 16px); gap: 4px; }
+  .car-seat { width: 16px; height: 16px; border-radius: 4px; }
+  .car-wheel { width: 13px; height: 5px; }
+  .car-wheel-top-left, .car-wheel-bottom-left { left: 12px; }
+  .car-wheel-top-right, .car-wheel-bottom-right { right: 12px; }
+}

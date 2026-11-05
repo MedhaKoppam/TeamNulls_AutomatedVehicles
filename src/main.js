@@ -1,11 +1,13 @@
 import './styles/main.css';
+import './styles/willingness.css';
 import * as d3 from 'd3';
 import { loadData, loadMapData, loadRespondents } from './data.js';
 import { requireElement } from './dom.js';
 import { getState, setSelectedCountry, setSelectedMetric, subscribe } from './state.js';
 import { renderCountryDrilldown } from './charts/countryDrilldown.js';
 import { renderCommercialGap } from './charts/commercialGap.js';
-import { getStoryboardStats, renderCountryMeasureDots, renderTrustSafetyScatter, renderTrustUseScatter, renderWillingnessDistribution } from './charts/storyboardCharts.js';
+import { getStoryboardStats, renderCountryMeasureDots, renderTrustSafetyScatter, renderTrustUseScatter } from './charts/storyboardCharts.js';
+import { renderWillingnessCars } from './charts/willingnessCars.js';
 import { sceneMarkup } from './scene/markup.js';
 import { Road } from './scene/road.js';
 import { Cockpit } from './scene/cockpit.js';
@@ -20,14 +22,33 @@ function chartStep(id, number, nav, title, copy, howto, chartTitle) {
   </section>`;
 }
 
+function willingnessIntroStep(stats) {
+  const roundedAgree = Math.round(stats.agree);
+  const roundedNeutral = Math.round(stats.neutral);
+  const exact = (item) => item.share.toFixed(1);
+  const neutral = stats.distribution[2];
+  const agree = stats.distribution[3];
+  const stronglyAgree = stats.distribution[4];
+  return `<section class="step chart-step willingness-intro-step" id="willingness-intro" data-nav="Willingness" aria-labelledby="willingness-intro-title">
+    <article class="screen screen-left"><p class="kicker">Finding 01 <span>/ 06</span></p><h2 id="willingness-intro-title">${roundedAgree}% would use a self-driving car, and ${roundedNeutral}% are neutral</h2>
+      <p>Among ${stats.n.toLocaleString()} valid responses, <strong>${exact(agree)}% agree</strong> and <strong>${exact(stronglyAgree)}% strongly agree</strong> that they would use a self-driving car in the future. Another ${exact(neutral)}% are neutral, while ${stats.disagree.toFixed(1)}% disagree.</p>
+      <p class="howto">Hover over a seat or a legend item to highlight one response group. Each car represents four seats.</p>
+    </article>
+    <div class="screen screen-right chart-shell willingness-shell">
+      <div class="screen-head"><h3>Every 100 respondents, seated in 25 cars</h3><span class="data-badge">L3Pilot survey</span></div>
+      <div class="chart-scroll willingness-scroll" tabindex="0" role="region" aria-label="A 100-seat illustration of the five-point willingness-to-use response distribution. Hover or focus a legend item to highlight its category."><div class="chart-meta"></div><div class="chart willingness-car-chart" id="willingness-intro-chart"></div></div>
+      <div class="screen-foot"><span>${stats.n.toLocaleString()} valid responses · five-point agreement scale</span><span>100-seat illustration, rounded</span></div>
+    </div>
+  </section>`;
+}
+
 function buildPage(stats, total) {
-  const pct = (v) => `${v.toFixed(1)}%`;
   app.innerHTML = `${sceneMarkup}<main id="story">
     <section class="step step-hero" data-nav="Start" aria-labelledby="page-title"><div class="hero"><p class="hero-course">CS 6730 Data Visualization &nbsp;|&nbsp; Team Nulls</p><p class="hero-team">${team}</p><h1 id="page-title">Would you get in?</h1><p class="hero-sub">How trust and safety shape acceptance of autonomous vehicles across 17 countries.</p><button class="start-cue" type="button" data-goto="1">Scroll to start the drive <span aria-hidden="true">↓</span></button></div></section>
     <section class="step step-intro" data-nav="Intro" aria-label="Introduction"><div class="hud"><p>Designing a self-driving car means designing for how people feel about it: whether they trust it, whether they feel safe in it, and whether those feelings hold from one market to the next. We looked at <strong>${total.toLocaleString()} survey responses from 17 countries</strong> to see where they line up and where they don't.</p></div></section>
-    ${chartStep('country-trust', '01', 'By country', 'Compare country profiles', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of seven measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles')}
-    ${chartStep('commercial-gap', '02', 'Use vs buy', 'People may use it before they buy it', 'Use and purchase are not the same decision. Compare each country’s average intention to use and to buy. Filter by age and income to see how the commercial gap changes.', 'Use the age and income filters together. Hover or focus a dot for its sample size and use-to-buy gap. Reset to compare all respondents.', 'Intention to use vs. intention to buy')}
-    ${chartStep('would-get-in', '03', 'Willingness', 'Would you get in?', `Of ${stats.n.toLocaleString()} valid responses, <strong>${pct(stats.agree)} agree</strong>, ${pct(stats.neutral)} are neutral, and ${pct(stats.disagree)} disagree. The neutral group may still be open to change.`, 'Hover or focus a segment to see the exact percentage for each response on the five-point agreement scale.', 'Willingness to use a self-driving car')}
+    ${willingnessIntroStep(stats)}
+    ${chartStep('country-trust', '02', 'By country', 'Compare country profiles', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of seven measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles')}
+    ${chartStep('commercial-gap', '03', 'Use vs buy', 'People may use it before they buy it', 'Use and purchase are not the same decision. Compare each country’s average intention to use and to buy. Filter by age and income to see how the commercial gap changes.', 'Use the age and income filters together. Hover or focus a dot for its sample size and use-to-buy gap. Reset to compare all respondents.', 'Intention to use vs. intention to buy')}
     ${chartStep('trust-use', '04', 'Trust', 'Several factors shape willingness', `Countries with higher average trust also report higher average willingness to use. These measures move together closely (<strong>r = ${stats.correlation.toFixed(3)}</strong>). The line shows a pattern, not cause and effect.`, 'Hover or focus a country dot for its mean trust, willingness, and sample size.', 'Mean trust vs. willingness, per country')}
     ${chartStep('trust-safety', '05', 'Safety', 'Safety is one part of trust', `<strong>${stats.highestUse.name}</strong> has the highest mean willingness to use (${stats.highestUse.use.toFixed(2)} / 5). It is highlighted here. The direct perceived-safety item is also included in the trust composite, so read it as one facet of trust rather than a separate construct.`, 'Use the dotted average guides to compare country positions. Hover or focus a dot for details.', 'Mean trust vs. perceived safety')}
     ${chartStep('country-measures', '06', 'Compare', 'Willingness has several parts', 'Compare intended use, trust, and safety concern on the same five-point scale. Each symbol represents a different measure, so the comparison remains readable without relying on color alone.', 'Read across each country row. Hover or focus any symbol for its exact score and sample size.', 'Three measures, seventeen countries')}
@@ -84,7 +105,9 @@ function renderMapSummary(container, mapData, state) {
 
 async function initialize() {
   const [data, mapData, respondents] = await Promise.all([loadData(), loadMapData(), loadRespondents()]);
-  buildPage(getStoryboardStats(data, mapData.metrics), data.length);
+  const stats = getStoryboardStats(data, mapData.metrics);
+  buildPage(stats, data.length);
+  renderWillingnessCars(requireElement('#willingness-intro-chart'), stats);
   const map = requireElement('#country-trust-chart');
   map.closest('.chart-scroll')?.classList.add('map-chart-scroll');
   const actions = { setMetric: setSelectedMetric, setCountry: setSelectedCountry };
@@ -100,7 +123,6 @@ async function initialize() {
   updateMap(getState());
   document.querySelector('.pin-clear').addEventListener('click', () => setSelectedCountry(null));
   renderCommercialGap(requireElement('#commercial-gap-chart'), respondents);
-  renderWillingnessDistribution(requireElement('#would-get-in-chart'), data);
   renderTrustUseScatter(requireElement('#trust-use-chart'), data, mapData.metrics);
   renderTrustSafetyScatter(requireElement('#trust-safety-chart'), data, mapData.metrics);
   renderCountryMeasureDots(requireElement('#country-measures-chart'), data, mapData.metrics);
