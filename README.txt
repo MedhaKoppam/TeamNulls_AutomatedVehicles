@@ -1,32 +1,43 @@
-Team Nulls - L3Pilot country map on the original 1-5 scale
+DVP country-map correction: original 1-5 survey scale
 
-This update replaces the project’s existing public/data/l3pilot_clean.json
-with the uploaded l3pilot_clean_countries.json respondent-level file. It contains 18,631 records and 17 cleaned country labels. Country joins
-are based on country_label, not numeric country_code, because the numeric
-assignments in this upload differ from the older repository mapping.
+This bundle corrects the previous map update. It is based on the attached
+l3pilot_clean_countries.json and aggregates countries using country_label,
+not the old numeric country_code mapping.
 
-All map averages retain the original 1-5 scale. No Likert-to-100 conversion is
-performed. Null and non-numeric values are excluded from each mean. The upload's
-precomputed respondent-level composite values are used as supplied.
+WHAT CHANGES
+- Replaces public/data/l3pilot_clean.json with the attached cleaned respondent data.
+- Replaces public/data/country_metrics.json with 1-5 respondent-level country means.
+- Sets the default map metric to Intention to use (the direct future-use item).
+- Fixes the color domain to the full Likert scale: 1 = strongly disagree,
+  3 = neutral, 5 = strongly agree. It does not auto-scale to the observed
+  country minimum and maximum.
+- Updates highest/lowest/global summary numbers, accessible labels, and
+  country profile charts to report scores out of 5.
+- Uses cleaned country labels to associate data with map geometry:
+  UK -> United Kingdom and USA -> United States.
+- Allows vertical scrolling when a country profile is open.
+- Adds a small map instruction: Click a country on the map to explore its profile.
 
-Map measures:
-- Trust: trust_composite_score
-- Adoption intention: intention_composite_score
-- Trip-purpose intention: trip_purpose_intention_score
-- Perceived safety: trust_safe_using_car_score (a single item that also
-  contributes to the trust composite; it is not a separate safety composite)
+VERIFIED RESULT FROM THE ATTACHED DATA
+- India has the highest mean direct intention-to-use score: 4.324 / 5
+  (1,045 valid responses).
+- The next highest are Turkey 4.252 / 5 and Indonesia 4.229 / 5.
+- Global mean direct intention to use: 3.556 / 5 (18,452 valid responses).
+- Finland is lowest: 2.690 / 5 (1,003 valid responses).
 
-The map, country profiles, country-level trust/use/safety comparisons, and
-five-point willingness distribution use the uploaded dataset. The separate
-use-vs-buy chart remains on the project's existing respondents.json asset:
-the uploaded file does not contain the income-tier field used by that chart's
-current filters, so this update leaves that chart and its filters unchanged.
+HOW TO APPLY
+1. Extract this ZIP anywhere convenient, such as Downloads or Desktop.
+2. Open Terminal in the root of your TeamNulls_AutomatedVehicles repository
+   (the folder containing package.json and src/).
+3. Run the updater using its path inside the extracted folder. For example:
+      python3 ~/Downloads/DVP-country-map-fix/apply_1_to_5_fix.py
+   Adjust the path if you extracted it somewhere else. Do not move the script
+   or its public/ folder into the project first; it reads its bundled data
+   relative to its own location and writes the files into the current project.
+4. Run:
+      npm run build
+5. Review the changed files in GitHub Desktop, then commit and push to main.
 
-Apply:
-1. Extract this ZIP into the root of your TeamNulls_AutomatedVehicles repo.
-2. From Terminal, cd to the repo root.
-3. Run: python3 apply_1_to_5_update.py
-4. Run: npm run build
-5. Review the changes in GitHub Desktop, commit, and push to main.
-
-This bundle does not change the original upstream DVP repository.
+The updater checks that the current source sections match before changing
+source files. If it reports a mismatch, it stops before writing any project
+files; do not force it. This bundle does not push to GitHub or deploy to Vercel.
