@@ -48,10 +48,10 @@ function countryBumpStep() {
   return `<section class="step chart-step bump-step" id="country-rank-insights" data-nav="Country ranks" aria-labelledby="country-bump-title">
     <article class="screen screen-left">
       <p class="kicker">Finding 04 <span>/ 04</span></p>
-      <h2 id="country-bump-title">Trust and safety confidence move in different directions</h2>
-      <p>Each line follows one country across three rankings. Rank 1 is the most positive score. Safety confidence is reverse-scored from concerns about safety, system failures and taking back control, so a higher score means fewer concerns.</p>
-      <p class="callout">Across the 17 country averages, trust and safety-confidence ranks have a strong inverse association. This is a descriptive country-level pattern, not evidence that one measure causes the other.</p>
-      <div class="bump-howto">
+      <h2 id="country-bump-title">Trust and safety shape AV acceptance differently across countries</h2>
+<p>Each line follows one country across three rankings. Rank 1 is the most positive score. Safety confidence is reverse-scored from concerns about safety, system failures and taking back control, so a higher score means fewer concerns.</p>
+<p class="callout">Across the 17 country averages, trust aligns more closely with willingness to use, while safety concerns show a weaker association with stated intention to use. This suggests that trust and safety shape AV acceptance differently across countries. This is a descriptive country-level pattern, not evidence that either measure causes acceptance.</p>
+<div class="bump-howto">
         <strong>How to explore</strong>
         <ol>
           <li>Drag <strong>up or down</strong> on a vertical rank axis to select a range. No left-to-right selection is needed.</li>
@@ -96,7 +96,7 @@ function countryBumpStep() {
                 <div class="bump-insight-card-heading"><h5>Social influence</h5><p>How respondents view the opinions and expectations of people around them.</p></div>
                 <div id="bump-social-chart" class="bump-mini-chart"></div>
                 <div class="bump-likert-legend" aria-label="Strongly disagree, disagree, neutral, agree, strongly agree">
-                  ${['Strongly disagree','Disagree','Neutral','Agree','Strongly agree'].map((label, index) => `<span title="${label}"><i style="--response-color:${['#9d5662','#e66767','#c9c8c2','#3d8de7','#32ad9b'][index]}"></i>${label}</span>`).join('')}
+                  ${['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree'].map((label, index) => `<span title="${label}"><i style="--response-color:${['#9d5662', '#e66767', '#c9c8c2', '#3d8de7', '#32ad9b'][index]}"></i>${label}</span>`).join('')}
                 </div>
               </article>
             </div>
@@ -209,11 +209,13 @@ async function initialize() {
   });
   const steps = [...document.querySelectorAll('.step')];
   const road = new Road(requireElement('#road'), requireElement('#mirror'));
-  const cockpit = new Cockpit({ steps, road, onStepChange(index) {
-    document.querySelector('.mobile-chapter').textContent = steps[index].dataset.nav;
-    document.querySelector('[data-previous]').disabled = index === 0;
-    document.querySelector('[data-next]').disabled = index === steps.length - 1;
-  } });
+  const cockpit = new Cockpit({
+    steps, road, onStepChange(index) {
+      document.querySelector('.mobile-chapter').textContent = steps[index].dataset.nav;
+      document.querySelector('[data-previous]').disabled = index === 0;
+      document.querySelector('[data-next]').disabled = index === steps.length - 1;
+    }
+  });
   document.querySelector('[data-previous]').addEventListener('click', () => cockpit.goTo(cockpit.active - 1));
   document.querySelector('[data-next]').addEventListener('click', () => cockpit.goTo(cockpit.active + 1));
   document.querySelectorAll('[data-goto]').forEach((button) => button.addEventListener('click', () => cockpit.goTo(Number(button.dataset.goto))));
