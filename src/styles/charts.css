@@ -263,3 +263,53 @@
   #country-trust-chart .global-summary strong { font-size: 13px; }
   #country-trust-chart .global-summary span:last-child { font-size: 8px; }
 }
+
+
+/* Five-point map scale, readable click guidance, and scrollable country profiles. */
+#country-trust-chart .world-map-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+#country-trust-chart .map-instruction {
+  flex: 0 0 auto;
+  margin: 0 0 5px;
+  color: var(--text-muted);
+  font: 11px/1.35 var(--ui);
+}
+#country-trust-chart .world-map-pane > .drilldown-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+}
+#country-trust-chart .map-color-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 3px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.chart-scroll.map-profile-scroll {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+  align-items: stretch;
+}
+#country-trust-chart.showing-country-profile {
+  height: auto !important;
+  min-height: 100%;
+  flex: 0 0 auto !important;
+  overflow: visible !important;
+}
+#country-trust-chart.showing-country-profile .profile-view,
+#country-trust-chart.showing-country-profile .country-profile,
+#country-trust-chart.showing-country-profile .profile-body,
+#country-trust-chart.showing-country-profile .profile-panels {
+  min-height: max-content;
+  overflow: visible;
+}
+#country-trust-chart.showing-country-profile .profile-panel {
+  overflow-x: auto;
+  overflow-y: visible;
+}
