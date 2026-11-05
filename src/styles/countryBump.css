@@ -71,3 +71,28 @@
 #country-trust-chart .country.hovered { stroke: #e5a65d !important; stroke-width: 2.2 !important; stroke-opacity: 1 !important; }
 @media (max-width: 1100px) { .bump-insight-grid { grid-template-columns: 1fr; } .bump-correlation-strip .bump-correlation-note { margin-left: 0; } }
 @media (max-width: 760px), (max-height: 560px) { .bump-insights-header { display: grid; } .bump-selection-actions { display: flex; align-items: center; justify-content: space-between; width: 100%; } .bump-correlation-strip { gap: 6px 11px; } .bump-chart-note { font-size: 9px; } .bump-insight-card { padding: 9px; } .bump-howto { font-size: 12px; } }
+
+/* Country insights open as a separate detail view, like the map's country profile. */
+.bump-rank-view { display: flex; flex-direction: column; gap: 10px; }
+.bump-selection-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 10px; border: 1px solid var(--border-subtle); border-radius: 9px; background: rgba(255,255,255,.025); }
+.bump-selection-toolbar .bump-selection-copy { margin: 0; }
+.bump-selection-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 7px; flex: 0 0 auto; }
+.bump-view-insights, .bump-back { border: 1px solid var(--border-subtle); border-radius: 999px; padding: 7px 12px; color: var(--text-primary); background: var(--bg-raised); font: 600 10px var(--ui); cursor: pointer; }
+.bump-view-insights { color: #dff8f2; border-color: rgba(50,173,155,.55); background: rgba(50,173,155,.13); }
+.bump-view-insights:hover, .bump-back:hover { border-color: var(--accent); color: #fff; }
+.bump-view-insights:focus-visible, .bump-back:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bump-back { white-space: nowrap; }
+.bump-insights { min-height: 100%; }
+.bump-insights .bump-insight-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+.bump-group-legend { align-items: center; }
+.bump-group-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.bump-group-legend i { flex: 0 0 auto; }
+@media (max-width: 1100px) {
+  .bump-insights .bump-insight-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px), (max-height: 560px) {
+  .bump-selection-toolbar { align-items: flex-start; flex-direction: column; }
+  .bump-selection-actions { width: 100%; justify-content: flex-start; }
+  .bump-insights-header { grid-template-columns: 1fr; }
+  .bump-back { justify-self: start; }
+}

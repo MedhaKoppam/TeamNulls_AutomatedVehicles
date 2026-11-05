@@ -85,8 +85,8 @@ function drawEnjoyment(host, selected, others, definitions) {
         .attr('y1', yMid).attr('y2', yMid);
     }
     [
-      { name: 'Selected countries', value: selectedMean, color: GROUP_COLORS.selected, y: yMid - 4, group: selected },
-      { name: 'Remaining countries', value: otherMean, color: GROUP_COLORS.others, y: yMid + 4, group: others },
+      { name: selected.name, value: selectedMean, color: GROUP_COLORS.selected, y: yMid - 4, group: selected },
+      { name: others.name, value: otherMean, color: GROUP_COLORS.others, y: yMid + 4, group: others },
     ].forEach((point) => {
       if (!Number.isFinite(point.value)) return;
       svg.append('circle').attr('class', 'bump-dumbbell-point').attr('cx', x(point.value)).attr('cy', point.y)
@@ -113,8 +113,8 @@ function drawSocial(host, selected, others, definitions) {
     svg.append('text').attr('class', 'bump-social-label').attr('x', margin.left - 8).attr('y', y + 13)
       .attr('text-anchor', 'end').text(item.shortLabel || item.label);
     [
-      { name: 'Selected', values: selected.distribution('socialInfluence', item.key), group: selected, y: y + 20 },
-      { name: 'Others', values: others.distribution('socialInfluence', item.key), group: others, y: y + 34 },
+      { name: selected.name, values: selected.distribution('socialInfluence', item.key), group: selected, y: y + 20 },
+      { name: others.name, values: others.distribution('socialInfluence', item.key), group: others, y: y + 34 },
     ].forEach((series) => {
       let offset = 0;
       series.values.forEach((share, responseIndex) => {
@@ -123,7 +123,7 @@ function drawSocial(host, selected, others, definitions) {
           .attr('x', x0).attr('y', series.y).attr('width', Math.max(0, x1 - x0)).attr('height', 8)
           .attr('fill', LIKERT_COLORS[responseIndex]).attr('rx', 1).attr('tabindex', 0)
           .attr('aria-label', `${item.label}, ${series.group.name}: ${LIKERT_LABELS[responseIndex]}, ${(share * 100).toFixed(1)} percent`);
-        segment.append('title').text(`${item.label}\n${series.group.name}\n${LIKERT_LABELS[responseIndex]}: ${(share * 100).toFixed(1)}%`);
+        segment.append('title').text(`${item.label}\n${series.group.name}\n${LIKERT_LABELS[responseIndex]}: ${(share * 100).toFixed(1)}%\n${series.group.count} countries · ${series.group.n('socialInfluence', item.key).toLocaleString()} valid responses`);
         offset += share;
       });
       svg.append('text').attr('class', 'bump-social-series-label').attr('x', margin.left - 8).attr('y', series.y + 7)
@@ -133,7 +133,7 @@ function drawSocial(host, selected, others, definitions) {
 }
 
 export function renderCountryBump(container, metricSource, insightData, {
-  onCountryClick = () => {}, onCountryHover = () => {}, onBrushSelection = () => {},
+  onCountryHover = () => {}, onBrushSelection = () => {},
 } = {}) {
   const insightByIso = new Map(insightData.countries.map((country) => [country.iso3, country]));
   const rows = makeRows(metricSource, insightByIso);
@@ -144,9 +144,16 @@ export function renderCountryBump(container, metricSource, insightData, {
   const chartHost = container.querySelector('#bump-chart-svg');
   const enjoyHost = container.querySelector('#bump-enjoyment-chart');
   const socialHost = container.querySelector('#bump-social-chart');
+  const rankView = container.querySelector('#bump-rank-view');
+  const insightsView = container.querySelector('#bump-insights');
   const selectionCopy = container.querySelector('#bump-selection-copy');
   const selectionStatus = container.querySelector('#bump-selection-status');
   const clearButton = container.querySelector('.bump-clear');
+  const backButton = container.querySelector('#bump-back-to-ranks');
+  const insightsTitle = container.querySelector('#bump-insights-title');
+  const insightsCopy = container.querySelector('#bump-insights-copy');
+  const focusedLegend = container.querySelector('#bump-focused-legend');
+  const comparisonLegend = container.querySelector('#bump-comparison-legend');
   const tooltip = d3.select(container).selectAll('.bump-tooltip').data([null]).join('div')
     .attr('class', 'tooltip bump-tooltip').style('opacity', 0);
   const ranges = new Map();
@@ -172,7 +179,7 @@ export function renderCountryBump(container, metricSource, insightData, {
   const svg = d3.select(chartHost).selectAll('svg').data([null]).join('svg')
     .attr('class', 'country-bump-svg').attr('width', width).attr('height', height)
     .attr('viewBox', `0 0 ${width} ${height}`).attr('role', 'img')
-    .attr('aria-label', 'Bump chart ranking 17 countries by trust, safety confidence and willingness to use. Rank 1 is the most positive score.');
+    .attr('aria-label', 'Bump chart ranking 17 countries by trust, safety confidence and willingness to use. Rank 1 is the most positive score. Vertical brushing selects a range of country ranks.');
   svg.selectAll('*').remove();
 
   const grid = svg.append('g').attr('class', 'bump-rank-grid');
@@ -194,8 +201,8 @@ export function renderCountryBump(container, metricSource, insightData, {
   const pathLines = svg.append('g').attr('class', 'bump-country-lines').selectAll('path').data(rows).join('path')
     .attr('class', 'bump-country-line').attr('data-country', (row) => row.iso3)
     .attr('d', (row) => line(AXES.map((axis) => ({ key: axis.key, rank: row.ranks[axis.key] }))))
-    .attr('tabindex', 0).attr('role', 'button')
-    .attr('aria-label', (row) => `${row.name}: trust rank ${row.ranks.trust}; safety confidence rank ${row.ranks.safetyConfidence}; willingness to use rank ${row.ranks.useIntention}. Click to open country profile.`)
+    .attr('tabindex', 0)
+    .attr('aria-label', (row) => `${row.name}: trust rank ${row.ranks.trust}; safety confidence rank ${row.ranks.safetyConfidence}; willingness to use rank ${row.ranks.useIntention}.`)
     .on('mouseenter focus', (event, row) => {
       hoveredIso = row.iso3;
       const hasBrush = [...ranges.values()].some(Boolean);
@@ -211,11 +218,7 @@ export function renderCountryBump(container, metricSource, insightData, {
       onCountryHover(null);
       tooltip.style('opacity', 0);
     })
-    .on('click keydown', (event, row) => {
-      if (event.type === 'click' || event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault(); onCountryClick(row.iso3);
-      }
-    });
+    ;
 
   const pointLayer = svg.append('g').attr('class', 'bump-country-points');
   AXES.forEach((axis) => {
@@ -224,51 +227,71 @@ export function renderCountryBump(container, metricSource, insightData, {
       .attr('cy', (row) => y(row.ranks[axis.key])).attr('r', 3.8).attr('aria-hidden', 'true');
   });
 
-  function updatePanel(matches, hasBrush) {
-    const excluded = rows.filter((row) => !matches.some((match) => match.iso3 === row.iso3));
-    const selectedGroup = groupRows(matches, insightByIso, 'Selected countries');
-    const othersGroup = groupRows(excluded, insightByIso, 'Remaining countries');
-    if (!hasBrush) {
-      selectionCopy.textContent = 'Brush any rank axis to select countries and populate these two charts.';
-      emptyChart(enjoyHost, 'Brush a rank range to compare perceived enjoyment.');
-      emptyChart(socialHost, 'Brush a rank range to compare social influence.');
-    } else if (!matches.length) {
-      selectionCopy.textContent = 'No countries match every brushed range. Widen a brush or clear one axis.';
-      emptyChart(enjoyHost, 'No countries match this combination of rank ranges.');
-      emptyChart(socialHost, 'No countries match this combination of rank ranges.');
-    } else if (!excluded.length) {
-      selectionCopy.textContent = `${matches.length} countries selected · all 17 countries are included, so there is no remaining-country comparison.`;
-      emptyChart(enjoyHost, 'Narrow the selection to compare it with the remaining countries.');
-      emptyChart(socialHost, 'Narrow the selection to compare it with the remaining countries.');
-    } else {
-      selectionCopy.textContent = `${matches.length} of ${rows.length} countries selected · compared with ${excluded.length} remaining countries. Country averages are equally weighted.`;
-      drawEnjoyment(enjoyHost, selectedGroup, othersGroup, enjoymentItems);
-      drawSocial(socialHost, selectedGroup, othersGroup, socialItems);
-    }
+  function openInsights(focusRows, title, copy) {
+    const focusIso = new Set(focusRows.map((row) => row.iso3));
+    const comparisonRows = rows.filter((row) => !focusIso.has(row.iso3));
+    insightsTitle.textContent = title;
+    insightsCopy.textContent = copy;
+    focusedLegend.textContent = focusRows.length === 1 ? '1 selected country' : `${focusRows.length} selected countries`;
+    comparisonLegend.textContent = comparisonRows.length === 1 ? comparisonRows[0].name : `${comparisonRows.length} other countries`;
+    rankView.hidden = true;
+    insightsView.hidden = false;
+    const focusGroup = groupRows(focusRows, insightByIso, focusedLegend.textContent);
+    const comparisonGroup = groupRows(comparisonRows, insightByIso, comparisonLegend.textContent);
+    requestAnimationFrame(() => {
+      drawEnjoyment(enjoyHost, focusGroup, comparisonGroup, enjoymentItems);
+      drawSocial(socialHost, focusGroup, comparisonGroup, socialItems);
+    });
   }
 
+  function closeInsights() {
+    insightsView.hidden = true;
+    rankView.hidden = false;
+  }
+  backButton.addEventListener('click', closeInsights);
+
   function updateSelection() {
-    const activeRanges = [...ranges.entries()].filter(([, range]) => range);
-    const hasBrush = activeRanges.length > 0;
-    const matches = hasBrush ? rows.filter((row) => activeRanges.every(([key, range]) => row.ranks[key] >= range[0] && row.ranks[key] <= range[1])) : [];
+    const activeRange = [...ranges.entries()].find(([, range]) => range);
+    const hasBrush = !!activeRange;
+    const matches = hasBrush
+      ? rows.filter((row) => row.ranks[activeRange[0]] >= activeRange[1][0] && row.ranks[activeRange[0]] <= activeRange[1][1])
+      : [];
     selectedIso.clear(); matches.forEach((row) => selectedIso.add(row.iso3));
-    const anyHover = hoveredIso;
     pathLines.classed('is-selected', (row) => hasBrush && selectedIso.has(row.iso3))
-      .classed('is-muted', (row) => anyHover ? row.iso3 !== anyHover && (!hasBrush || !selectedIso.has(row.iso3)) : hasBrush && !selectedIso.has(row.iso3));
+      .classed('is-muted', (row) => hoveredIso ? row.iso3 !== hoveredIso && (!hasBrush || !selectedIso.has(row.iso3)) : hasBrush && !selectedIso.has(row.iso3));
     pointLayer.selectAll('.bump-country-point').classed('is-selected', (row) => hasBrush && selectedIso.has(row.iso3))
       .classed('is-muted', (row) => hasBrush && !selectedIso.has(row.iso3));
     selectionStatus.textContent = hasBrush ? `${matches.length} countries match` : 'No rank range selected';
+    if (!hasBrush) {
+      selectionCopy.textContent = 'Drag vertically on one rank axis. Releasing the brush opens insights for every country in that rank range.';
+    } else if (!matches.length) {
+      selectionCopy.textContent = 'No countries fall in this rank range. Make a taller selection or try another axis.';
+    } else {
+      selectionCopy.textContent = `${matches.length} of 17 countries selected on ${AXES.find((axis) => axis.key === activeRange[0]).label}. Releasing the brush opens their insights.`;
+    }
     onBrushSelection(matches.map((row) => row.iso3));
-    updatePanel(matches, hasBrush);
+    return matches;
   }
 
   const brushLayer = svg.append('g').attr('class', 'bump-brushes');
   AXES.forEach((axis) => {
     const axisX = x(axis.key);
-    const brush = d3.brushY().extent([[axisX - 19, top], [axisX + 19, bottom]])
-      .on('brush end', (event) => {
+    // One vertical rank range is active at a time. Starting on another axis
+    // replaces the previous range rather than intersecting with it.
+    const brush = d3.brushY().extent([[axisX - 23, top], [axisX + 23, bottom]])
+      .on('start', (event) => {
         if (!event.sourceEvent) return;
-        if (!event.selection) ranges.set(axis.key, null);
+        brushes.forEach(({ brush: otherBrush, group }, otherKey) => {
+          if (otherKey !== axis.key) {
+            ranges.delete(otherKey);
+            group.call(otherBrush.move, null);
+          }
+        });
+        updateSelection();
+      })
+      .on('brush', (event) => {
+        if (!event.sourceEvent) return;
+        if (!event.selection) ranges.delete(axis.key);
         else {
           const [y0, y1] = event.selection;
           const lower = Math.max(1, Math.ceil(y.invert(y0) - 0.5));
@@ -277,9 +300,21 @@ export function renderCountryBump(container, metricSource, insightData, {
           ranges.set(axis.key, lower <= upper ? [lower, upper] : [center, center]);
         }
         updateSelection();
+      })
+      .on('end', (event) => {
+        if (!event.sourceEvent || !event.selection) return;
+        const focusRows = updateSelection();
+        if (!focusRows.length) return;
+        const axisLabel = axis.label.toLowerCase();
+        const groupTitle = focusRows.length === 1 ? '1 selected country' : `${focusRows.length} selected countries`;
+        openInsights(
+          focusRows,
+          groupTitle,
+          `${groupTitle} in the ${axisLabel} rank range, compared with the remaining ${rows.length - focusRows.length} countries.`,
+        );
       });
     const group = brushLayer.append('g').attr('class', `bump-brush bump-brush-${axis.key}`).call(brush);
-    group.selectAll('.overlay').attr('aria-label', `Brush ${axis.label} ranks`).attr('tabindex', 0);
+    group.selectAll('.overlay').attr('aria-label', `Drag vertically to select a range of ${axis.label} ranks. Releasing opens group insights.`).attr('tabindex', 0);
     brushes.set(axis.key, { brush, group });
   });
 

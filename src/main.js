@@ -54,34 +54,43 @@ function countryBumpStep() {
       <div class="bump-howto">
         <strong>How to explore</strong>
         <ol>
-          <li>Drag vertically on any axis to brush a range of ranks.</li>
-          <li>Brush another axis to narrow the selection. Only countries matching every selected range remain highlighted.</li>
-          <li>The map outlines matching countries. Two charts below compare their perceived enjoyment and social influence with the remaining countries.</li>
-          <li>Click a country line to open its country profile. Use Clear brushes to start again.</li>
+          <li>Drag <strong>up or down</strong> on a vertical rank axis to select a range. No left-to-right selection is needed.</li>
+          <li>When you release, the next screen opens with insights for <strong>all countries</strong> in that rank range.</li>
+          <li>A brush on a different axis replaces the previous selection; it does not narrow or intersect with it.</li>
+          <li>Use “Back to rankings” to choose another axis, or “Clear vertical brushes” to reset.</li>
         </ol>
       </div>
     </article>
     <div class="screen screen-right chart-shell bump-screen">
       <div class="screen-head"><h3>How country rankings shift across the three measures</h3><span class="data-badge">17 countries · 1–5 scale</span></div>
-      <div class="chart-scroll bump-scroll" tabindex="0" role="region" aria-label="Interactive country bump chart. Brush any vertical rank axis to select countries. Add brushes on other axes to narrow the selection. Two linked insight charts update below.">
+      <div class="chart-scroll bump-scroll" tabindex="0" role="region" aria-label="Interactive country bump chart. Drag vertically on one rank axis. Releasing automatically opens insights for every country in that rank range. A new axis selection replaces the previous selection.">
         <div class="bump-explorer" id="country-bump-explorer">
-          <div class="bump-chart-note"><span>Drag on an axis to select a rank range</span><span>Rank 1 = highest / most positive</span></div>
-          <div class="chart bump-chart-host" id="bump-chart-svg"></div>
-          <div class="bump-correlation-strip" aria-label="Country-level rank correlations">
-            <span>Trust ↔ safety confidence <strong id="bump-trust-safety-rho">ρ = ...</strong></span>
-            <span>Trust ↔ willingness <strong id="bump-trust-use-rho">ρ = ...</strong></span>
-            <span class="bump-correlation-note">Spearman rank correlation · 17 country averages</span>
+          <div class="bump-rank-view" id="bump-rank-view">
+            <div class="bump-chart-note"><span>Brush one axis vertically; release to open the selected-country insights</span><span>Rank 1 = highest / most positive</span></div>
+            <div class="chart bump-chart-host" id="bump-chart-svg"></div>
+            <div class="bump-correlation-strip" aria-label="Country-level rank correlations">
+              <span>Trust ↔ safety confidence <strong id="bump-trust-safety-rho">ρ = ...</strong></span>
+              <span>Trust ↔ willingness <strong id="bump-trust-use-rho">ρ = ...</strong></span>
+              <span class="bump-correlation-note">Spearman rank correlation · 17 country averages</span>
+            </div>
+            <div class="bump-selection-toolbar">
+              <p id="bump-selection-copy" class="bump-selection-copy">Drag vertically on one rank axis. Releasing opens insights for every country in that rank range.</p>
+              <div class="bump-selection-actions">
+                <span id="bump-selection-status" class="bump-selection-status">No rank range selected</span>
+                <button class="bump-clear" type="button">Clear vertical brushes</button>
+              </div>
+            </div>
           </div>
-          <section class="bump-insights" aria-labelledby="bump-insights-title">
+          <section class="bump-insights" id="bump-insights" aria-labelledby="bump-insights-title" hidden>
             <div class="bump-insights-header">
-              <div><p class="bump-section-kicker">BRUSH-DRIVEN INSIGHTS</p><h4 id="bump-insights-title">What distinguishes the selected countries?</h4><p id="bump-selection-copy" class="bump-selection-copy">Brush any rank axis to select countries and populate these two charts.</p></div>
-              <div class="bump-selection-actions"><span id="bump-selection-status" class="bump-selection-status">No rank range selected</span><button class="bump-clear" type="button">Clear brushes</button></div>
+              <div><p class="bump-section-kicker">FURTHER COUNTRY INSIGHTS</p><h4 id="bump-insights-title">Further insights</h4><p id="bump-insights-copy" class="bump-selection-copy"></p></div>
+              <button class="bump-back" id="bump-back-to-ranks" type="button">← Back to rankings</button>
             </div>
             <div class="bump-insight-grid">
               <article class="bump-insight-card">
                 <div class="bump-insight-card-heading"><h5>Perceived enjoyment</h5><p>Mean agreement with fun, entertaining and enjoyable statements.</p></div>
                 <div id="bump-enjoyment-chart" class="bump-mini-chart"></div>
-                <div class="bump-group-legend"><span><i class="selected-dot"></i>Selected countries</span><span><i class="others-dot"></i>Remaining countries</span></div>
+                <div class="bump-group-legend"><span><i class="selected-dot"></i><span id="bump-focused-legend">Focus countries</span></span><span><i class="others-dot"></i><span id="bump-comparison-legend">Other countries</span></span></div>
               </article>
               <article class="bump-insight-card">
                 <div class="bump-insight-card-heading"><h5>Social influence</h5><p>How respondents view the opinions and expectations of people around them.</p></div>
@@ -91,11 +100,11 @@ function countryBumpStep() {
                 </div>
               </article>
             </div>
-            <p class="bump-method-note">Insight charts compare country-level response distributions, with each selected country weighted equally. Blank and “I prefer not to respond” answers are excluded.</p>
+            <p class="bump-method-note">Insight charts compare country-level response distributions, with each country weighted equally. Blank and “I prefer not to respond” answers are excluded.</p>
           </section>
         </div>
       </div>
-      <div class="screen-foot"><span>Source: L3Pilot Global User Acceptance Survey</span><span>Brush, compare, then click a country to explore ↓</span></div>
+      <div class="screen-foot"><span>Source: L3Pilot Global User Acceptance Survey</span><span>Brush vertically to open group insights ↓</span></div>
     </div>
   </section>`;
 }
@@ -195,7 +204,6 @@ async function initialize() {
   document.querySelector('.pin-clear').addEventListener('click', () => setSelectedCountry(null));
   renderCommercialGap(requireElement('#commercial-gap-chart'), respondents);
   renderCountryBump(requireElement('#country-bump-explorer'), mapData.metrics, countryInsights, {
-    onCountryClick: (iso3) => setSelectedCountry(iso3),
     onCountryHover: (iso3) => { hoveredBumpCountry = iso3; syncBumpHighlightsToMap(); },
     onBrushSelection: (iso3s) => { brushedCountries = new Set(iso3s); syncBumpHighlightsToMap(); },
   });
