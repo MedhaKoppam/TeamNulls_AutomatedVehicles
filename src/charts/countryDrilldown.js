@@ -4,7 +4,7 @@ import { renderChoropleth, renderMetricControls } from './choropleth.js';
 
 const MIN_N = 15;
 const noMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-const activityLabels = { commute: 'Commute', businessTravel: 'Business travel', errands: 'Errands', leisure: 'Leisure', vacation: 'Vacation' };
+const activityLabels = { takingCareOfChildren: 'Taking care of children', talkingWithFellowTravelers: 'Talking with fellow travelers', internetOrVideo: 'Internet or video', playingGames: 'Playing games', socializing: 'Socializing', eatingOrDrinking: 'Eating or drinking', observingLandscape: 'Observing the landscape', relaxingOrResting: 'Relaxing or resting', readingBook: 'Reading a book', working: 'Working', other: 'Other activities' };
 const metricLines = { trust: ['Trust'], adoption: ['Adoption', 'intention'], safetyConfidence: ['Safety', 'confidence'], expectedBenefits: ['Expected', 'benefits'], awareness: ['Prior', 'awareness'], secondaryActivities: ['Secondary', 'activities'], capabilityKnowledge: ['L3 capability', 'knowledge'] };
 const metricValueText = (metric, value) => metric.unit === 'percent' ? `${value.toFixed(1)}%` : `${value.toFixed(2)} / 5`;
 const metricDifferenceText = (metric, value) => `${value >= 0 ? '+' : ''}${value.toFixed(2)} ${metric.unit === 'percent' ? 'percentage points' : 'scale points'}`;
@@ -21,7 +21,7 @@ function svg(host, name, width, height, label) { return d3.select(host).append('
 // horizontal scrolling on narrow phones rather than shrinking text below 12px.
 function responsive(host, minHeight, draw) {
   const render = () => {
-    const minWidth = host.classList.contains('profile-panel-heat') ? 740 : 480;
+    const minWidth = host.classList.contains('profile-panel-heat') ? 740 : host.classList.contains('profile-panel-spider') ? 620 : 480;
     const width = Math.max(minWidth, Math.floor(host.clientWidth - 48));
     d3.select(host).selectAll('svg').remove();
     draw(width, Math.max(minHeight, 1));
@@ -119,13 +119,13 @@ function renderBehavior(host, source, country) {
       .map(([key, value]) => ({ key, label: activityLabels[key] ?? key, value, global: source.globalDetails.behaviors[key], gap: value - source.globalDetails.behaviors[key] }))
       .sort((a, b) => d3.ascending(a.gap, b.gap));
     const margin = { top: 94, right: 68, bottom: 58, left: Math.min(196, Math.max(112, width * .29)) };
-    const height = margin.top + rows.length * 42 + margin.bottom;
-    const extent = Math.max(.25, d3.max(rows, (row) => Math.abs(row.gap)) || .25);
-    const chart = svg(host, 'behavior-chart', width, height, `Trip-purpose scores in ${country.name}, compared with the global mean`);
+    const height = margin.top + rows.length * 34 + margin.bottom;
+    const extent = Math.max(5, d3.max(rows, (row) => Math.abs(row.gap)) || 5);
+    const chart = svg(host, 'behavior-chart', width, height, `Secondary activities in ${country.name}, compared with global shares`);
     const x = d3.scaleLinear().domain([-extent, extent]).nice().range([margin.left, width - margin.right]);
     const y = d3.scaleBand().domain(rows.map((row) => row.key)).range([margin.top, height - margin.bottom]).padding(.24);
-    chart.append('text').attr('class', 'panel-title').attr('x', margin.left).attr('y', 25).attr('font-size', 18).text('Trip-purpose profile');
-    chart.append('text').attr('class', 'panel-subtitle').attr('x', margin.left).attr('y', 47).attr('font-size', 13).text('Mean agreement for five different reasons to use an automated car.');
+    chart.append('text').attr('class', 'panel-title').attr('x', margin.left).attr('y', 25).attr('font-size', 18).text('Secondary activities while riding');
+    chart.append('text').attr('class', 'panel-subtitle').attr('x', margin.left).attr('y', 47).attr('font-size', 13).text('How each activity compares with the global share of respondents selecting it.');
     chart.append('g').attr('class', 'profile-axis').attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks(5).tickFormat((value) => `${value > 0 ? '+' : ''}${value.toFixed(1)}`)).selectAll('text').attr('font-size', 12);
     chart.append('line').attr('class', 'zero-line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', margin.top - 6).attr('y2', height - margin.bottom);
     chart.selectAll('.behavior-label').data(rows).join('text').attr('class', 'behavior-label').attr('x', margin.left - 12).attr('y', (row) => y(row.key) + y.bandwidth() / 2 + 5).attr('text-anchor', 'end').attr('font-size', 13).text((row) => row.label);
@@ -134,8 +134,8 @@ function renderBehavior(host, source, country) {
       .attr('x', (row) => x(Math.min(0, row.gap))).attr('y', (row) => y(row.key))
       .attr('height', y.bandwidth()).attr('width', 0).attr('rx', 3)
       .attr('tabindex', 0).attr('role', 'graphics-symbol')
-      .attr('aria-label', (row) => `${row.label}: ${row.value.toFixed(2)} / 5, ${row.gap >= 0 ? '+' : ''}${row.gap.toFixed(2)} scale points from global mean`)
-      .on('mouseenter focus', (event, row) => tip(host, event, `<strong>${row.label}</strong><br>${country.name}: ${row.value.toFixed(2)} / 5<br>Global: ${row.global.toFixed(2)} / 5 (${row.gap >= 0 ? '+' : ''}${row.gap.toFixed(2)} scale points)`))
+      .attr('aria-label', (row) => `${row.label}: ${row.value.toFixed(1)}%, global ${row.global.toFixed(1)}%, difference ${row.gap >= 0 ? '+' : ''}${row.gap.toFixed(1)} percentage points`)
+      .on('mouseenter focus', (event, row) => tip(host, event, `<strong>${row.label}</strong><br>${country.name}: ${row.value.toFixed(1)}%<br>Global: ${row.global.toFixed(1)}%<br>Difference: ${row.gap >= 0 ? '+' : ''}${row.gap.toFixed(1)} percentage points`))
       .on('mouseleave blur', () => hideTip(host))
       .transition().duration(noMotion() ? 0 : 260).ease(d3.easeCubicOut)
       .attr('width', (row) => Math.abs(x(row.gap) - x(0)));
@@ -143,50 +143,103 @@ function renderBehavior(host, source, country) {
       .attr('x', (row) => row.gap >= 0 ? x(row.gap) + 7 : x(row.gap) - 7)
       .attr('y', (row) => y(row.key) + y.bandwidth() / 2 + 5)
       .attr('text-anchor', (row) => row.gap >= 0 ? 'start' : 'end').attr('font-size', 12)
-      .text((row) => `${row.gap >= 0 ? '+' : ''}${row.gap.toFixed(2)}`);
-    chart.append('text').attr('class', 'axis-title').attr('x', (margin.left + width - margin.right) / 2).attr('y', height - 10).attr('text-anchor', 'middle').attr('font-size', 13).text('Difference from global mean (scale points)');
+      .text((row) => `${row.gap >= 0 ? '+' : ''}${row.gap.toFixed(1)}`);
+    chart.append('text').attr('class', 'axis-title').attr('x', (margin.left + width - margin.right) / 2).attr('y', height - 10).attr('text-anchor', 'middle').attr('font-size', 13).text('Difference from global share (percentage points)');
     lockTextSizes(chart);
   });
 }
 
-function renderScatter(host, source, country) {
+function renderTripPurposeSpider(host, source, country) {
+  const dimensions = [
+    { key: 'commute', label: 'Commute', lines: ['Commute'] },
+    { key: 'businessTravel', label: 'Business travel', lines: ['Business', 'travel'] },
+    { key: 'errands', label: 'Errands', lines: ['Errands'] },
+    { key: 'leisure', label: 'Leisure', lines: ['Leisure'] },
+    { key: 'vacation', label: 'Vacation', lines: ['Vacation'] },
+  ];
+  const countryItems = country.tripPurposeItems ?? {};
+  const globalItems = source.globalDetails.tripPurposeItems ?? {};
+  const values = dimensions.map((dimension) => ({
+    ...dimension,
+    country: countryItems[dimension.key]?.mean,
+    countryN: countryItems[dimension.key]?.n ?? 0,
+    global: globalItems[dimension.key]?.mean,
+    globalN: globalItems[dimension.key]?.n ?? 0,
+  }));
+
   responsive(host, 430, (width) => {
-    const points = Object.values(source.countries).filter((item) => Number.isFinite(item.metrics.useIntention) && Number.isFinite(item.metrics.tripPurpose));
-    const margin = { top: 82, right: 38, bottom: 64, left: 64 }, height = 440;
-    const x = d3.scaleLinear().domain([1, 5]).range([margin.left, width - margin.right]);
-    const y = d3.scaleLinear().domain([1, 5]).range([height - margin.bottom, margin.top]);
-    const chart = svg(host, 'paradox-chart', width, height, `Intention to use versus trip-purpose intention, with ${country.name} highlighted`);
-    const meanX = d3.mean(points, (item) => item.metrics.tripPurpose);
-    const meanY = d3.mean(points, (item) => item.metrics.useIntention);
-    chart.append('text').attr('class', 'panel-title').attr('x', margin.left).attr('y', 25).attr('font-size', 18).text('Intention across trip purposes');
-    chart.append('text').attr('class', 'panel-subtitle').attr('x', margin.left).attr('y', 47).attr('font-size', 13).text('Compare the direct future-use item with the trip-purpose average.');
-    chart.append('g').attr('class', 'profile-axis').attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).tickValues([1, 2, 3, 4, 5])).selectAll('text').attr('font-size', 12);
-    chart.append('g').attr('class', 'profile-axis').attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(y).tickValues([1, 2, 3, 4, 5])).selectAll('text').attr('font-size', 12);
-    chart.append('line').attr('class', 'quadrant-line').attr('x1', x(meanX)).attr('x2', x(meanX)).attr('y1', margin.top).attr('y2', height - margin.bottom);
-    chart.append('line').attr('class', 'quadrant-line').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y(meanY)).attr('y2', y(meanY));
-    const anchors = new Set([
-      country.iso3,
-      d3.min(points, (item) => item.metrics.tripPurpose).iso3,
-      d3.max(points, (item) => item.metrics.tripPurpose).iso3,
-      d3.min(points, (item) => item.metrics.useIntention).iso3,
-      d3.max(points, (item) => item.metrics.useIntention).iso3,
-    ]);
-    chart.selectAll('.country-dot').data(points).join('circle')
-      .attr('class', (item) => `country-dot${item.iso3 === country.iso3 ? ' selected' : ''}`)
-      .attr('cx', (item) => x(item.metrics.tripPurpose)).attr('cy', (item) => y(item.metrics.useIntention))
-      .attr('r', (item) => item.iso3 === country.iso3 ? 10 : 6.5)
+    const height = 500;
+    const centerX = width / 2;
+    const centerY = 255;
+    const maxRadius = Math.min(142, (width - 220) / 2);
+    const radius = d3.scaleLinear().domain([0, 5]).range([0, maxRadius]);
+    const angle = (index) => -Math.PI / 2 + (index * 2 * Math.PI) / dimensions.length;
+    const point = (value, index) => [centerX + radius(value) * Math.cos(angle(index)), centerY + radius(value) * Math.sin(angle(index))];
+    const polygonPath = (field) => d3.line().curve(d3.curveLinearClosed)(values.map((item, index) => point(Number.isFinite(item[field]) ? item[field] : 0, index)));
+    const chart = svg(host, 'trip-purpose-spider', width, height, `Trip-purpose willingness in ${country.name} compared with the global average on five dimensions, scored from one to five`);
+    chart.append('text').attr('class', 'panel-title').attr('x', 28).attr('y', 27).attr('font-size', 18).text('Willingness by trip purpose');
+    chart.append('text').attr('class', 'panel-subtitle').attr('x', 28).attr('y', 49).attr('font-size', 13).text('Mean agreement for five travel situations. Higher scores indicate greater willingness.');
+
+    const grid = chart.append('g').attr('class', 'spider-grid');
+    grid.selectAll('path.spider-ring').data(d3.range(1, 6)).join('path')
+      .attr('class', 'spider-ring')
+      .attr('d', (level) => d3.line().curve(d3.curveLinearClosed)(dimensions.map((_, index) => point(level, index))))
+      .attr('fill', 'none').attr('stroke', 'currentColor').attr('stroke-opacity', 0.19);
+    grid.selectAll('line.spider-axis').data(dimensions).join('line')
+      .attr('class', 'spider-axis')
+      .attr('x1', centerX).attr('y1', centerY)
+      .attr('x2', (_, index) => point(5, index)[0]).attr('y2', (_, index) => point(5, index)[1])
+      .attr('stroke', 'currentColor').attr('stroke-opacity', 0.24);
+    grid.selectAll('text.spider-tick').data(d3.range(1, 6)).join('text')
+      .attr('class', 'spider-tick')
+      .attr('x', centerX + 7).attr('y', (value) => centerY - radius(value) - 3)
+      .attr('font-size', 10).attr('fill', 'currentColor').attr('opacity', 0.72)
+      .text((value) => value);
+
+    chart.selectAll('text.spider-dimension').data(dimensions).join('text')
+      .attr('class', 'spider-dimension')
+      .attr('x', (_, index) => centerX + (maxRadius + 32) * Math.cos(angle(index)))
+      .attr('y', (_, index) => centerY + (maxRadius + 32) * Math.sin(angle(index)) + (Math.sin(angle(index)) > 0.55 ? 12 : Math.sin(angle(index)) < -0.55 ? -3 : 4))
+      .attr('text-anchor', (_, index) => Math.cos(angle(index)) > 0.3 ? 'start' : Math.cos(angle(index)) < -0.3 ? 'end' : 'middle')
+      .attr('font-size', 12).attr('fill', 'currentColor')
+      .each(function (dimension) { addLines(d3.select(this), dimension.lines, 14); });
+
+    chart.append('path').attr('class', 'spider-global-area').attr('d', polygonPath('global'))
+      .attr('fill', '#e5a65d').attr('fill-opacity', 0.12)
+      .attr('stroke', '#e5a65d').attr('stroke-width', 2).attr('stroke-dasharray', '6 4');
+    chart.append('path').attr('class', 'spider-country-area').attr('d', polygonPath('country'))
+      .attr('fill', '#38a995').attr('fill-opacity', 0.20)
+      .attr('stroke', '#38a995').attr('stroke-width', 2.5);
+
+    const marks = chart.append('g').attr('class', 'spider-points');
+    marks.selectAll('circle.spider-global-point').data(values).join('circle')
+      .attr('class', 'spider-global-point')
+      .attr('cx', (_, index) => point(_.global ?? 0, index)[0]).attr('cy', (_, index) => point(_.global ?? 0, index)[1])
+      .attr('r', 4).attr('fill', '#e5a65d').attr('stroke', '#111820').attr('stroke-width', 1)
       .attr('tabindex', 0).attr('role', 'graphics-symbol')
-      .attr('aria-label', (item) => `${item.name}: trip-purpose intention ${item.metrics.tripPurpose.toFixed(2)} / 5, direct intention to use ${item.metrics.useIntention.toFixed(2)} / 5`)
-      .on('mouseenter focus', (event, item) => tip(host, event, `<strong>${item.name}</strong><br>Trip-purpose intention: ${item.metrics.tripPurpose.toFixed(2)} / 5<br>Intention to use: ${item.metrics.useIntention.toFixed(2)} / 5`))
+      .attr('aria-label', (item) => `Global ${item.label}: ${Number.isFinite(item.global) ? item.global.toFixed(2) + ' out of 5' : 'not available'}, n=${item.globalN}`)
+      .on('mouseenter focus', (event, item) => tip(host, event, `<strong>${item.label}</strong><br>Global average: ${Number.isFinite(item.global) ? item.global.toFixed(2) + ' / 5' : 'Not available'}<br>Valid responses: ${item.globalN.toLocaleString()}`))
       .on('mouseleave blur', () => hideTip(host));
-    chart.selectAll('.anchor-label').data(points.filter((item) => anchors.has(item.iso3))).join('text')
-      .attr('class', (item) => `anchor-label${item.iso3 === country.iso3 ? ' selected' : ''}`)
-      .attr('x', (item) => x(item.metrics.tripPurpose) > width - margin.right - 110 ? x(item.metrics.tripPurpose) - 10 : x(item.metrics.tripPurpose) + 10)
-      .attr('y', (item) => y(item.metrics.useIntention) - 10)
-      .attr('text-anchor', (item) => x(item.metrics.tripPurpose) > width - margin.right - 110 ? 'end' : 'start')
-      .attr('font-size', 12).text((item) => item.name);
-    chart.append('text').attr('class', 'axis-title').attr('x', width / 2).attr('y', height - 12).attr('text-anchor', 'middle').attr('font-size', 13).text('Mean trip-purpose intention (1–5)');
-    chart.append('text').attr('class', 'axis-title').attr('transform', `translate(18,${height / 2}) rotate(-90)`).attr('text-anchor', 'middle').attr('font-size', 13).text('Mean intention to use (1–5)');
+    marks.selectAll('circle.spider-country-point').data(values).join('circle')
+      .attr('class', 'spider-country-point')
+      .attr('cx', (_, index) => point(_.country ?? 0, index)[0]).attr('cy', (_, index) => point(_.country ?? 0, index)[1])
+      .attr('r', 5).attr('fill', '#38a995').attr('stroke', '#f4f6f7').attr('stroke-width', 1.2)
+      .attr('tabindex', 0).attr('role', 'graphics-symbol')
+      .attr('aria-label', (item) => `${country.name} ${item.label}: ${Number.isFinite(item.country) ? item.country.toFixed(2) + ' out of 5' : 'not available'}, global ${Number.isFinite(item.global) ? item.global.toFixed(2) + ' out of 5' : 'not available'}, difference ${Number.isFinite(item.country) && Number.isFinite(item.global) ? (item.country - item.global >= 0 ? '+' : '') + (item.country - item.global).toFixed(2) : 'not available'}, n=${item.countryN}`)
+      .on('mouseenter focus', (event, item) => {
+        const gap = Number.isFinite(item.country) && Number.isFinite(item.global) ? item.country - item.global : null;
+        tip(host, event, `<strong>${item.label}</strong><br>${country.name}: ${Number.isFinite(item.country) ? item.country.toFixed(2) + ' / 5' : 'Not available'}<br>Global average: ${Number.isFinite(item.global) ? item.global.toFixed(2) + ' / 5' : 'Not available'}<br>Difference: ${gap === null ? 'Not available' : `${gap >= 0 ? '+' : ''}${gap.toFixed(2)} scale points`}<br>Country n=${item.countryN.toLocaleString()} · Global n=${item.globalN.toLocaleString()}`);
+      })
+      .on('mouseleave blur', () => hideTip(host));
+
+    const legend = chart.append('g').attr('class', 'spider-legend').attr('transform', `translate(${centerX - 128},${height - 23})`);
+    legend.append('line').attr('x1', 0).attr('x2', 24).attr('y1', 0).attr('y2', 0).attr('stroke', '#38a995').attr('stroke-width', 2.5);
+    legend.append('circle').attr('cx', 12).attr('cy', 0).attr('r', 3.5).attr('fill', '#38a995');
+    legend.append('text').attr('x', 31).attr('y', 4).attr('font-size', 12).attr('fill', 'currentColor').text(country.name);
+    legend.append('line').attr('x1', 166).attr('x2', 190).attr('y1', 0).attr('y2', 0).attr('stroke', '#e5a65d').attr('stroke-width', 2).attr('stroke-dasharray', '6 4');
+    legend.append('circle').attr('cx', 178).attr('cy', 0).attr('r', 3.5).attr('fill', '#e5a65d');
+    legend.append('text').attr('x', 197).attr('y', 4).attr('font-size', 12).attr('fill', 'currentColor').text('Global average');
+    chart.append('text').attr('class', 'spider-note').attr('x', centerX).attr('y', height - 2).attr('text-anchor', 'middle').attr('font-size', 10).attr('fill', 'currentColor').attr('opacity', 0.7).text('Five-point agreement scale · 3 = neutral');
     lockTextSizes(chart);
   });
 }
@@ -200,7 +253,7 @@ function profile(stage, mapData, state, actions, { showBack = false } = {}) {
   const body = page.append('div').attr('class', 'profile-body'), rail = body.append('aside').attr('class', 'profile-rail');
   const selected = feature(mapData.geometry, mapData.geometry.objects.countries).features.find((item) => String(item.id).padStart(3, '0') === country.id); const silhouette = rail.append('svg').attr('class', 'country-silhouette').attr('viewBox', '0 0 150 100').attr('aria-hidden', 'true'); if (selected) silhouette.append('path').attr('d', d3.geoPath(d3.geoNaturalEarth1().fitSize([136, 86], selected))(selected)).attr('class', 'silhouette-path');
   rail.append('h3').text(country.name); rail.append('p').attr('class', 'rail-meta').text(country.region); rail.append('p').attr('class', 'rail-meta').text(`n=${country.n.toLocaleString()}${country.lowSample ? ' · low sample' : ''}`); rail.append('p').attr('class', 'rail-rank').text(`${ordinal(rank)} of ${sorted.length} on ${active.label}`);
-  const panels = body.append('div').attr('class', 'profile-panels'); renderHeatmap(panels.append('section').attr('class', 'profile-panel profile-panel-heat').node(), source, country, active); renderBehavior(panels.append('section').attr('class', 'profile-panel').node(), source, country); renderScatter(panels.append('section').attr('class', 'profile-panel').node(), source, country);
+  const panels = body.append('div').attr('class', 'profile-panels'); renderHeatmap(panels.append('section').attr('class', 'profile-panel profile-panel-heat').node(), source, country, active); renderTripPurposeSpider(panels.append('section').attr('class', 'profile-panel profile-panel-spider').node(), source, country); renderBehavior(panels.append('section').attr('class', 'profile-panel').node(), source, country);
 }
 
 export function renderCountryDrilldown(container, mapData, state, actions) {

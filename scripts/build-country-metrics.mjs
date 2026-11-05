@@ -27,6 +27,14 @@ const MISCONCEPTIONS = [
   ['takeoverAnytime', 'f9', 1], ['otherActivitiesButNoSleeping', 'f10', 1],
 ];
 
+const TRIP_PURPOSE_ITEMS = [
+  ['commute', 'use_commute_score'],
+  ['businessTravel', 'use_business_travel_score'],
+  ['errands', 'use_errands_score'],
+  ['leisure', 'use_leisure_score'],
+  ['vacation', 'use_vacation_score'],
+];
+
 function numeric(value) {
   if (value === null || value === undefined || value === '.' || (typeof value === 'string' && value.trim() === '')) return null;
   const parsed = Number(value);
@@ -173,10 +181,29 @@ for (const [code, country] of Object.entries(COUNTRY_MAP)) {
 }
 globalSummary.metrics.useIntention = round(mean(cleanRows.map((row) => numeric(row.intention_use_future_score))));
 globalSummary.metrics.tripPurpose = round(mean(cleanRows.map((row) => numeric(row.trip_purpose_intention_score))));
+
+// Keep each of the five trip-purpose questions separate for the country-profile spider chart.
+// Each mean is respondent-weighted and excludes missing/non-scale values independently.
+const tripPurposeRowsByCode = new Map(Object.keys(COUNTRY_MAP).map((code) => [Number(code), []]));
+for (const row of cleanRows) {
+  const code = numeric(row.country_code);
+  if (!tripPurposeRowsByCode.has(code)) throw new Error(`Cleaned respondent country code ${code} has no entry in scripts/country-map.mjs.`);
+  tripPurposeRowsByCode.get(code).push(row);
+}
+const summarizeTripPurposeItems = (rows) => Object.fromEntries(TRIP_PURPOSE_ITEMS.map(([key, field]) => {
+  const scores = rows.map((row) => likert(row[field])).filter(Number.isFinite);
+  return [key, { mean: round(mean(scores)), n: scores.length }];
+}));
+const globalTripPurposeItems = summarizeTripPurposeItems(cleanRows);
+for (const [code, country] of Object.entries(COUNTRY_MAP)) {
+  const rows = tripPurposeRowsByCode.get(Number(code));
+  if (!rows.length) throw new Error(`No cleaned respondents found for ${country.name}.`);
+  countries[country.isoNumeric].tripPurposeItems = summarizeTripPurposeItems(rows);
+}
 const output = {
   metrics: METRICS,
   global: globalSummary.metrics,
-  globalDetails: { behaviors: globalSummary.behaviors, misconceptions: globalSummary.misconceptions, demographics: globalSummary.demographics },
+  globalDetails: { behaviors: globalSummary.behaviors, misconceptions: globalSummary.misconceptions, demographics: globalSummary.demographics, tripPurposeItems: globalTripPurposeItems },
   regions,
   countries,
   provenance: {

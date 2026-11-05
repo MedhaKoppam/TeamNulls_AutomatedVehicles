@@ -107,6 +107,28 @@
       "licensedShare": 96.1,
       "meanAnnualDistanceCode": 3.9,
       "meanEducationCode": 2.4
+    },
+    "tripPurposeItems": {
+      "commute": {
+        "mean": 3.659,
+        "n": 17546
+      },
+      "businessTravel": {
+        "mean": 3.675,
+        "n": 16248
+      },
+      "errands": {
+        "mean": 3.612,
+        "n": 18378
+      },
+      "leisure": {
+        "mean": 3.69,
+        "n": 18327
+      },
+      "vacation": {
+        "mean": 3.721,
+        "n": 18199
+      }
     }
   },
   "regions": {
@@ -344,6 +366,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 3.243,
+          "n": 1105
+        },
+        "businessTravel": {
+          "mean": 3.253,
+          "n": 973
+        },
+        "errands": {
+          "mean": 3.255,
+          "n": 1199
+        },
+        "leisure": {
+          "mean": 3.32,
+          "n": 1191
+        },
+        "vacation": {
+          "mean": 3.308,
+          "n": 1191
+        }
       }
     },
     "840": {
@@ -513,6 +557,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 3.363,
+          "n": 963
+        },
+        "businessTravel": {
+          "mean": 3.18,
+          "n": 817
+        },
+        "errands": {
+          "mean": 3.355,
+          "n": 1050
+        },
+        "leisure": {
+          "mean": 3.405,
+          "n": 1041
+        },
+        "vacation": {
+          "mean": 3.421,
+          "n": 1021
+        }
       }
     },
     "752": {
@@ -682,6 +748,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 3.226,
+          "n": 1045
+        },
+        "businessTravel": {
+          "mean": 3.222,
+          "n": 898
+        },
+        "errands": {
+          "mean": 3.318,
+          "n": 1137
+        },
+        "leisure": {
+          "mean": 3.346,
+          "n": 1136
+        },
+        "vacation": {
+          "mean": 3.281,
+          "n": 1122
+        }
       }
     },
     "276": {
@@ -851,6 +939,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 3.26,
+          "n": 1003
+        },
+        "businessTravel": {
+          "mean": 3.403,
+          "n": 928
+        },
+        "errands": {
+          "mean": 3.194,
+          "n": 1122
+        },
+        "leisure": {
+          "mean": 3.299,
+          "n": 1121
+        },
+        "vacation": {
+          "mean": 3.335,
+          "n": 1097
+        }
       }
     },
     "250": {
@@ -1020,6 +1130,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 3.397,
+          "n": 1089
+        },
+        "businessTravel": {
+          "mean": 3.229,
+          "n": 881
+        },
+        "errands": {
+          "mean": 3.365,
+          "n": 1145
+        },
+        "leisure": {
+          "mean": 3.441,
+          "n": 1142
+        },
+        "vacation": {
+          "mean": 3.452,
+          "n": 1129
+        }
       }
     },
     "156": {
@@ -1189,6 +1321,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 4.055,
+          "n": 980
+        },
+        "businessTravel": {
+          "mean": 3.91,
+          "n": 976
+        },
+        "errands": {
+          "mean": 3.993,
+          "n": 992
+        },
+        "leisure": {
+          "mean": 4.016,
+          "n": 996
+        },
+        "vacation": {
+          "mean": 4.07,
+          "n": 990
+        }
       }
     },
     "348": {
@@ -1358,6 +1512,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 3.676,
+          "n": 1087
+        },
+        "businessTravel": {
+          "mean": 3.729,
+          "n": 1024
+        },
+        "errands": {
+          "mean": 3.636,
+          "n": 1112
+        },
+        "leisure": {
+          "mean": 3.705,
+          "n": 1110
+        },
+        "vacation": {
+          "mean": 3.759,
+          "n": 1098
+        }
       }
     },
     "380": {
@@ -1527,6 +1703,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 3.581,
+          "n": 1108
+        },
+        "businessTravel": {
+          "mean": 3.661,
+          "n": 1064
+        },
+        "errands": {
+          "mean": 3.499,
+          "n": 1161
+        },
+        "leisure": {
+          "mean": 3.566,
+          "n": 1164
+        },
+        "vacation": {
+          "mean": 3.667,
+          "n": 1158
+        }
       }
     },
     "246": {
@@ -1696,6 +1894,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 2.947,
+          "n": 907
+        },
+        "businessTravel": {
+          "mean": 3.068,
+          "n": 825
+        },
+        "errands": {
+          "mean": 3.009,
+          "n": 1009
+        },
+        "leisure": {
+          "mean": 3.229,
+          "n": 1001
+        },
+        "vacation": {
+          "mean": 3.324,
+          "n": 1003
+        }
       }
     },
     "724": {
@@ -1865,6 +2085,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 3.656,
+          "n": 1040
+        },
+        "businessTravel": {
+          "mean": 3.722,
+          "n": 915
+        },
+        "errands": {
+          "mean": 3.541,
+          "n": 1064
+        },
+        "leisure": {
+          "mean": 3.684,
+          "n": 1063
+        },
+        "vacation": {
+          "mean": 3.761,
+          "n": 1068
+        }
       }
     },
     "076": {
@@ -2034,6 +2276,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 4.134,
+          "n": 1040
+        },
+        "businessTravel": {
+          "mean": 4.162,
+          "n": 1023
+        },
+        "errands": {
+          "mean": 4.119,
+          "n": 1055
+        },
+        "leisure": {
+          "mean": 4.177,
+          "n": 1046
+        },
+        "vacation": {
+          "mean": 4.197,
+          "n": 1048
+        }
       }
     },
     "360": {
@@ -2203,6 +2467,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 4.117,
+          "n": 1048
+        },
+        "businessTravel": {
+          "mean": 4.055,
+          "n": 1034
+        },
+        "errands": {
+          "mean": 3.985,
+          "n": 1050
+        },
+        "leisure": {
+          "mean": 4.068,
+          "n": 1052
+        },
+        "vacation": {
+          "mean": 4.051,
+          "n": 1052
+        }
       }
     },
     "356": {
@@ -2372,6 +2658,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 4.198,
+          "n": 1043
+        },
+        "businessTravel": {
+          "mean": 4.229,
+          "n": 1020
+        },
+        "errands": {
+          "mean": 4.094,
+          "n": 1037
+        },
+        "leisure": {
+          "mean": 4.233,
+          "n": 1040
+        },
+        "vacation": {
+          "mean": 4.274,
+          "n": 1042
+        }
       }
     },
     "392": {
@@ -2541,6 +2849,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 3.299,
+          "n": 935
+        },
+        "businessTravel": {
+          "mean": 3.256,
+          "n": 829
+        },
+        "errands": {
+          "mean": 3.364,
+          "n": 1056
+        },
+        "leisure": {
+          "mean": 3.406,
+          "n": 1041
+        },
+        "vacation": {
+          "mean": 3.531,
+          "n": 1026
+        }
       }
     },
     "643": {
@@ -2710,6 +3040,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 3.851,
+          "n": 1061
+        },
+        "businessTravel": {
+          "mean": 3.823,
+          "n": 1047
+        },
+        "errands": {
+          "mean": 3.854,
+          "n": 1075
+        },
+        "leisure": {
+          "mean": 3.857,
+          "n": 1071
+        },
+        "vacation": {
+          "mean": 3.712,
+          "n": 1053
+        }
       }
     },
     "710": {
@@ -2879,6 +3231,28 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 3.964,
+          "n": 1052
+        },
+        "businessTravel": {
+          "mean": 3.987,
+          "n": 991
+        },
+        "errands": {
+          "mean": 3.889,
+          "n": 1065
+        },
+        "leisure": {
+          "mean": 3.975,
+          "n": 1060
+        },
+        "vacation": {
+          "mean": 3.983,
+          "n": 1054
+        }
       }
     },
     "792": {
@@ -3048,12 +3422,35 @@
             }
           }
         ]
+      },
+      "tripPurposeItems": {
+        "commute": {
+          "mean": 4.134,
+          "n": 1040
+        },
+        "businessTravel": {
+          "mean": 4.161,
+          "n": 1003
+        },
+        "errands": {
+          "mean": 4.064,
+          "n": 1049
+        },
+        "leisure": {
+          "mean": 4.129,
+          "n": 1052
+        },
+        "vacation": {
+          "mean": 4.247,
+          "n": 1047
+        }
       }
     }
   },
   "provenance": {
     "countryLabels": "country_label from attached l3pilot_clean_countries.json; UK and USA normalized to map display names United Kingdom and United States.",
     "sevenCriteria": "Original seven map criteria retained. Five Likert-derived metrics are converted back from the prior 0-100 linear normalization to the original 1-5 scale. Prior awareness and L3 capability knowledge remain percentages because they are not Likert measures.",
-    "codeMappingValidation": "All 17 country-code respondent counts matched between the attached country-labeled respondent dataset and the original full metric aggregation."
+    "codeMappingValidation": "All 17 country-code respondent counts matched between the attached country-labeled respondent dataset and the original full metric aggregation.",
+    "tripPurposeSpider": "Per-country and pooled global means for commute, business travel, errands, leisure, and vacation. Each item excludes missing/non-scale responses independently and reports its valid n."
   }
 }
