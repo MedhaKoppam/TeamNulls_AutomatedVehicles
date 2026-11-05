@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { feature } from 'topojson-client';
 
-const fmt = d3.format('.1f');
+const fmt = d3.format('.2f');
 const prefersReducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 export function renderMetricControls(container, source, state, actions, { showRanking = true } = {}) {
@@ -33,13 +33,17 @@ export function renderChoropleth(container, mapData, state, actions) {
   const { metrics: source, geometry } = mapData;
   const metric = source.metrics.find((item) => item.key === state.selectedMetric) ?? source.metrics[0];
   const countries = Object.entries(source.countries).map(([id, country]) => ({ id, ...country }));
-  // Every map metric is an average on the original five-point agreement scale.
-  // Keep the domain fixed so country colors are comparable across selections.
-  const min = 1;
-  const max = 5;
+  // Center this metric on its respondent-weighted global mean.  The
+  // maximum absolute country deviation is calculated for the currently
+  // selected criterion, so the diverging scale is symmetric around zero.
+  const average = source.global[metric.key];
+  const maxDeviation = Math.max(
+    0.0001,
+    d3.max(countries, (country) => Math.abs(country.metrics[metric.key] - average)) || 0
+  );
   const color = d3.scaleLinear()
-    .domain([1, 3, 5])
-    .range(['#d95f59', '#f0d58a', '#38a69b'])
+    .domain([-maxDeviation, 0, maxDeviation])
+    .range(['#d95f59', '#f0d58a', '#278c78'])
     .clamp(true);
   const countryById = new Map(countries.map((d) => [d.id, d]));
   const features = feature(geometry, geometry.objects.countries).features;
@@ -61,7 +65,7 @@ export function renderChoropleth(container, mapData, state, actions) {
   const hatch = defs.append('pattern').attr('id', 'no-data-hatch').attr('width', 6).attr('height', 6).attr('patternUnits', 'userSpaceOnUse').attr('patternTransform', 'rotate(45)');
   hatch.append('rect').attr('width', 6).attr('height', 6).attr('fill', '#28323c'); hatch.append('line').attr('x1', 0).attr('x2', 0).attr('y2', 6).attr('stroke', '#3d4a57').attr('stroke-width', 2);
   const viewport = svg.append('g').attr('class', 'map-viewport');
-  const fillFor = (d) => { const c = countryById.get(String(d.id).padStart(3, '0')); return c && Number.isFinite(c.metrics[metric.key]) ? color(c.metrics[metric.key]) : 'url(#no-data-hatch)'; };
+  const fillFor = (d) => { const c = countryById.get(String(d.id).padStart(3, '0')); return c && Number.isFinite(c.metrics[metric.key]) ? color(c.metrics[metric.key] - average) : 'url(#no-data-hatch)'; };
   const paths = viewport.selectAll('path.country').data(features).join('path').attr('class', 'country').attr('d', path).attr('fill', '#28323c')
     .attr('stroke-dasharray', (d) => countryById.get(String(d.id).padStart(3, '0'))?.lowSample ? '4 3' : null)
     .classed('selected', (d) => countryById.get(String(d.id).padStart(3, '0'))?.iso3 === state.selectedCountry)
@@ -69,7 +73,7 @@ export function renderChoropleth(container, mapData, state, actions) {
   paths.transition().duration(prefersReducedMotion() ? 0 : 500).attr('fill', fillFor);
   const dataPaths = paths.filter((d) => countryById.has(String(d.id).padStart(3, '0'))).attr('tabindex', 0).attr('role', 'button')
     .attr('data-country', (d) => countryById.get(String(d.id).padStart(3, '0')).iso3)
-    .attr('aria-label', (d) => { const c = countryById.get(String(d.id).padStart(3, '0')); return `${c.name}, ${metric.label}: ${fmt(c.metrics[metric.key])} out of 5. ${c.n} respondents.`; })
+    .attr('aria-label', (d) => { const c = countryById.get(String(d.id).padStart(3, '0')); return `${c.name}, ${metric.label}: ${metric.unit === 'percent' ? `${fmt(c.metrics[metric.key])} percent` : `${fmt(c.metrics[metric.key])} out of 5`}. ${c.n} respondents.`; })
     .on('mouseenter focus', function enter() { d3.select(this).classed('hovered', true); })
     .on('mouseleave blur', function leave() { d3.select(this).classed('hovered', false); })
     .on('click keydown', (event, d) => { if (event.type === 'click' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); const c = countryById.get(String(d.id).padStart(3, '0')); actions.setCountry(state.selectedCountry === c.iso3 ? null : c.iso3); } });
@@ -80,10 +84,10 @@ export function renderChoropleth(container, mapData, state, actions) {
   const strip = d3.select(container).selectAll('.ranking-strip').data([null]).join('div').attr('class', 'ranking-strip'); strip.html(`<h3>${metric.label} ranking</h3>`);
   const sorted = countries.filter((d) => Number.isFinite(d.metrics[metric.key])).sort((a, b) => d3.descending(a.metrics[metric.key], b.metrics[metric.key]));
   const rWidth = Math.max(320, Math.floor(container.clientWidth || 720)), rHeight = Math.max(260, sorted.length * 25 + 38), margin = { top: 8, right: 40, bottom: 8, left: 164 };
-  const rsvg = strip.append('svg').attr('width', rWidth).attr('height', rHeight).attr('aria-label', `Ranking of countries by ${metric.label}`), x = d3.scaleLinear().domain([1, 5]).range([margin.left, rWidth - margin.right]), y = d3.scaleBand().domain(sorted.map((d) => d.iso3)).range([margin.top, rHeight - margin.bottom]).padding(.24);
+  const rsvg = strip.append('svg').attr('width', rWidth).attr('height', rHeight).attr('aria-label', `Ranking of countries by ${metric.label}`), x = d3.scaleLinear().domain(metric.unit === 'percent' ? [0, 100] : [1, 5]).range([margin.left, rWidth - margin.right]), y = d3.scaleBand().domain(sorted.map((d) => d.iso3)).range([margin.top, rHeight - margin.bottom]).padding(.24);
   rsvg.selectAll('text.name').data(sorted).join('text').attr('class', 'rank-name').attr('x', margin.left - 8).attr('y', (d) => y(d.iso3) + y.bandwidth() / 2 + 4).attr('text-anchor', 'end').text((d) => d.name);
-  rsvg.selectAll('rect').data(sorted).join('rect').attr('class', (d) => `rank-bar${d.iso3 === state.selectedCountry ? ' selected' : ''}`).attr('x', margin.left).attr('y', (d) => y(d.iso3)).attr('height', y.bandwidth()).attr('width', (d) => x(d.metrics[metric.key]) - margin.left).attr('fill', (d) => color(d.metrics[metric.key]))
-    .attr('tabindex', 0).attr('role', 'button').attr('aria-label', (d) => `${d.name}: ${fmt(d.metrics[metric.key])} / 5. Open country profile.`)
+  rsvg.selectAll('rect').data(sorted).join('rect').attr('class', (d) => `rank-bar${d.iso3 === state.selectedCountry ? ' selected' : ''}`).attr('x', margin.left).attr('y', (d) => y(d.iso3)).attr('height', y.bandwidth()).attr('width', (d) => x(d.metrics[metric.key]) - x(metric.unit === 'percent' ? 0 : 1)).attr('fill', (d) => color(d.metrics[metric.key] - average))
+    .attr('tabindex', 0).attr('role', 'button').attr('aria-label', (d) => `${d.name}: ${metric.unit === 'percent' ? `${fmt(d.metrics[metric.key])}%` : `${fmt(d.metrics[metric.key])} / 5`}. Open country profile.`)
     .on('click keydown', (event, d) => {
       if (event.type === 'click' || event.key === 'Enter' || event.key === ' ') {
         event.preventDefault(); actions.setCountry(state.selectedCountry === d.iso3 ? null : d.iso3);

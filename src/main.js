@@ -25,14 +25,14 @@ function buildPage(stats, total) {
   app.innerHTML = `${sceneMarkup}<main id="story">
     <section class="step step-hero" data-nav="Start" aria-labelledby="page-title"><div class="hero"><p class="hero-course">CS 6730 Data Visualization &nbsp;|&nbsp; Team Nulls</p><p class="hero-team">${team}</p><h1 id="page-title">Would you get in?</h1><p class="hero-sub">How trust and safety shape acceptance of autonomous vehicles across 17 countries.</p><button class="start-cue" type="button" data-goto="1">Scroll to start the drive <span aria-hidden="true">↓</span></button></div></section>
     <section class="step step-intro" data-nav="Intro" aria-label="Introduction"><div class="hud"><p>Designing a self-driving car means designing for how people feel about it: whether they trust it, whether they feel safe in it, and whether those feelings hold from one market to the next. We looked at <strong>${total.toLocaleString()} survey responses from 17 countries</strong> to see where they line up and where they don't.</p></div></section>
-    ${chartStep('country-trust', '01', 'By country', 'Compare country profiles', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of five measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles')}
+    ${chartStep('country-trust', '01', 'By country', 'Compare country profiles', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of seven measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles')}
     ${chartStep('commercial-gap', '02', 'Use vs buy', 'People may use it before they buy it', 'Use and purchase are not the same decision. Compare each country’s average intention to use and to buy. Filter by age and income to see how the commercial gap changes.', 'Use the age and income filters together. Hover or focus a dot for its sample size and use-to-buy gap. Reset to compare all respondents.', 'Intention to use vs. intention to buy')}
     ${chartStep('would-get-in', '03', 'Willingness', 'Would you get in?', `Of ${stats.n.toLocaleString()} valid responses, <strong>${pct(stats.agree)} agree</strong>, ${pct(stats.neutral)} are neutral, and ${pct(stats.disagree)} disagree. The neutral group may still be open to change.`, 'Hover or focus a segment to see the exact percentage for each response on the five-point agreement scale.', 'Willingness to use a self-driving car')}
     ${chartStep('trust-use', '04', 'Trust', 'Several factors shape willingness', `Countries with higher average trust also report higher average willingness to use. These measures move together closely (<strong>r = ${stats.correlation.toFixed(3)}</strong>). The line shows a pattern, not cause and effect.`, 'Hover or focus a country dot for its mean trust, willingness, and sample size.', 'Mean trust vs. willingness, per country')}
     ${chartStep('trust-safety', '05', 'Safety', 'Safety is one part of trust', `<strong>${stats.highestUse.name}</strong> has the highest mean willingness to use (${stats.highestUse.use.toFixed(2)} / 5). It is highlighted here. The direct perceived-safety item is also included in the trust composite, so read it as one facet of trust rather than a separate construct.`, 'Use the dotted average guides to compare country positions. Hover or focus a dot for details.', 'Mean trust vs. perceived safety')}
     ${chartStep('country-measures', '06', 'Compare', 'Willingness has several parts', 'Compare intended use, trust, and safety concern on the same five-point scale. Each symbol represents a different measure, so the comparison remains readable without relying on color alone.', 'Read across each country row. Hover or focus any symbol for its exact score and sample size.', 'Three measures, seventeen countries')}
     <section class="step" data-nav="Takeaways" aria-labelledby="takeaways-title"><article class="screen screen-left"><p class="kicker">Destination</p><h2 id="takeaways-title">What should AV teams remember?</h2><p>Trust, readiness, and ownership are related. They are not interchangeable.</p><p class="howto">Use the dashboard route to revisit any finding.</p></article><div class="screen screen-right"><ol class="takeaways"><li><div><strong>Start with trust.</strong> Countries with higher average trust also report higher willingness to use.</div></li><li><div><strong>Read safety as one facet of trust.</strong> The direct perceived-safety item is included in the trust composite, so do not interpret it as an independent construct.</div></li><li><div><strong>Look beyond a global average.</strong> Country profiles reveal differences by age, secondary activities, and awareness.</div></li><li><div><strong>Separate use from ownership.</strong> Explore how the use-to-buy gap changes with age and income.</div></li></ol></div></section>
-    <section class="step step-last" data-nav="Data" aria-labelledby="methods-title"><article class="screen screen-left"><p class="kicker">Parked</p><h2 id="methods-title">Data and methods</h2><p><strong>Source:</strong> L3Pilot Global User Acceptance Survey, Phase 1. ${total.toLocaleString()} responses from 17 countries.</p><p>Attitude questions use a five-point agreement scale. Blank values and non-scale code 6 are excluded from averages. Charts retain their original scoring and valid samples.</p><p>The source does not name motorway, urban, or traffic-jam conditions, so these charts do not assign driving-context labels.</p></article><div class="screen screen-right methods-screen"><div class="links"><a class="link-card" href="/data/l3pilot_clean.json" download>Cleaned survey data<span>JSON ↓</span></a><a class="link-card" href="/data/country_metrics.json" download>Country metrics<span>JSON ↓</span></a><a class="link-card" href="/data/respondents.json" download>Respondent extract<span>JSON ↓</span></a><a class="link-card" href="/docs/DATA_DICTIONARY.md">Data dictionary<span>Read ↗</span></a><a class="link-card" href="/docs/PROCESS_BOOK.md">Process book<span>Read ↗</span></a><a class="link-card" href="/data/l3pilot_labeled.xlsx" download>Raw workbook<span>XLSX ↓</span></a></div><p class="credits">Team Nulls · ${team}.<br>CS 6730 Data Visualization. Built with D3.js. Map: Natural Earth.</p><button class="start-cue small" type="button" data-goto="0">Back to the start ↑</button></div></section>
+    <section class="step step-last" data-nav="Data" aria-labelledby="methods-title"><article class="screen screen-left"><p class="kicker">Parked</p><h2 id="methods-title">Data and methods</h2><p><strong>Source:</strong> L3Pilot Global User Acceptance Survey, Phase 1. ${total.toLocaleString()} responses from 17 countries.</p><p>Likert-based measures use the original five-point agreement scale. Prior awareness and L3 capability knowledge are percentages. Blank values and non-scale code 6 are excluded from Likert averages.</p><p>The source does not name motorway, urban, or traffic-jam conditions, so these charts do not assign driving-context labels.</p></article><div class="screen screen-right methods-screen"><div class="links"><a class="link-card" href="/data/l3pilot_clean.json" download>Cleaned survey data<span>JSON ↓</span></a><a class="link-card" href="/data/country_metrics.json" download>Country metrics<span>JSON ↓</span></a><a class="link-card" href="/data/respondents.json" download>Respondent extract<span>JSON ↓</span></a><a class="link-card" href="/docs/DATA_DICTIONARY.md">Data dictionary<span>Read ↗</span></a><a class="link-card" href="/docs/PROCESS_BOOK.md">Process book<span>Read ↗</span></a><a class="link-card" href="/data/l3pilot_labeled.xlsx" download>Raw workbook<span>XLSX ↓</span></a></div><p class="credits">Team Nulls · ${team}.<br>CS 6730 Data Visualization. Built with D3.js. Map: Natural Earth.</p><button class="start-cue small" type="button" data-goto="0">Back to the start ↑</button></div></section>
   </main><nav class="mobile-route" aria-label="Story navigation"><button type="button" data-previous aria-label="Previous chapter">← Previous</button><span class="mobile-chapter">Start</span><button type="button" data-next aria-label="Next chapter">Next →</button></nav>`;
 }
 
@@ -43,23 +43,34 @@ function renderMapSummary(container, mapData, state) {
   const highest = d3.greatest(countries, (country) => country.metrics[metric.key]);
   const lowest = d3.least(countries, (country) => country.metrics[metric.key]);
   const sidePane = container.querySelector('.world-side-pane');
-  if (!sidePane) return;
+  if (!sidePane || !countries.length) return;
+
+  // source.global[metric.key] is calculated from valid respondent-level answers
+  // during data preparation. Re-read it for each selected criterion. The
+  // displayed color range is then derived from that criterion's country gaps.
+  const average = source.global[metric.key];
+  const maxDeviation = Math.max(
+    0.0001,
+    d3.max(countries, (country) => Math.abs(country.metrics[metric.key] - average)) || 0
+  );
+  const isPercent = metric.unit === 'percent';
+  const valueLabel = (value) => isPercent ? `${value.toFixed(1)}%` : `${value.toFixed(2)} / 5`;
+  const deviationUnit = isPercent ? 'percentage points' : 'scale points';
 
   let legend = sidePane.querySelector('.map-color-legend');
   if (!legend) {
     legend = document.createElement('section');
     legend.className = 'map-color-legend';
-    legend.setAttribute('aria-label', 'Map color scale, from one to five');
+    legend.setAttribute('aria-label', 'Difference from the selected metric global mean');
     sidePane.append(legend);
   }
-  const average = source.global[metric.key];
-  const averagePosition = Math.max(0, Math.min(100, ((average - 1) / 4) * 100));
-  legend.innerHTML = `<h4>Agreement scale · 1–5</h4>
-    <div class="map-color-bar" role="img" aria-label="1 is strongly disagree, 3 is neutral, and 5 is strongly agree. The white marker shows the global mean."><span class="map-color-average-marker"></span></div>
-    <div class="map-color-labels"><span>1</span><span>3</span><span>5</span></div>
-    <p>1 = Strongly disagree · 3 = Neutral · 5 = Strongly agree. Global mean: ${average.toFixed(2)} / 5</p>`;
-  legend.querySelector('.map-color-bar').style.background = 'linear-gradient(90deg, #d95f59 0%, #f0d58a 50%, #38a69b 100%)';
-  legend.querySelector('.map-color-average-marker').style.left = `${averagePosition}%`;
+  legend.innerHTML = `<h4>Difference from global mean</h4>
+    <div class="map-color-bar" role="img" aria-label="Red means below the global mean, cream means at the mean, and teal means above the global mean. The scale is symmetric around zero."><span class="map-color-average-marker"></span></div>
+    <div class="map-color-labels"><span>−${maxDeviation.toFixed(2)}</span><span>0</span><span>+${maxDeviation.toFixed(2)}</span></div>
+    <p>Red: below · Cream: at · Teal: above. Global mean: ${valueLabel(average)}. Range: ±${maxDeviation.toFixed(2)} ${deviationUnit}.</p>`;
+  legend.querySelector('.map-color-bar').style.background =
+    'linear-gradient(90deg, #d95f59 0%, #f0d58a 50%, #278c78 100%)';
+  legend.querySelector('.map-color-average-marker').style.left = '50%';
 
   let summary = sidePane.querySelector('.global-summary');
   if (!summary) {
@@ -68,7 +79,7 @@ function renderMapSummary(container, mapData, state) {
     summary.setAttribute('aria-label', 'Selected metric summary');
     sidePane.append(summary);
   }
-  summary.innerHTML = `<div><span class="micro-label">Global average</span><strong>${average.toFixed(2)} / 5</strong><span>${metric.label}</span></div><div><span class="micro-label">Highest</span><strong>${highest.name}</strong><span>${highest.metrics[metric.key].toFixed(2)} / 5</span></div><div><span class="micro-label">Lowest</span><strong>${lowest.name}</strong><span>${lowest.metrics[metric.key].toFixed(2)} / 5</span></div>`;
+  summary.innerHTML = `<div><span class="micro-label">Global average</span><strong>${valueLabel(average)}</strong><span>${metric.label}</span></div><div><span class="micro-label">Highest</span><strong>${highest.name}</strong><span>${valueLabel(highest.metrics[metric.key])}</span></div><div><span class="micro-label">Lowest</span><strong>${lowest.name}</strong><span>${valueLabel(lowest.metrics[metric.key])}</span></div>`;
 }
 
 async function initialize() {

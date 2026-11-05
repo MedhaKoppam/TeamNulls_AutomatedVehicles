@@ -1,4 +1,4 @@
-import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import XLSX from 'xlsx';
 import { feature } from 'topojson-client';
 import worldAtlas from 'world-atlas/countries-110m.json' with { type: 'json' };
@@ -6,18 +6,19 @@ import { COUNTRY_MAP } from './country-map.mjs';
 
 const RAW_FILE = 'data/raw/l3pilot_labeled.xlsx';
 const OUTPUT_FILE = 'public/data/country_metrics.json';
+const CLEAN_DATA_FILE = 'public/data/l3pilot_clean.json';
 const GEOMETRY_OUTPUT = 'public/data/countries-110m.json';
 const GEOMETRY_SOURCE = 'node_modules/world-atlas/countries-110m.json';
 const LOW_SAMPLE_THRESHOLD = 30;
 
 const METRICS = [
-  { key: 'trust', label: 'Trust', description: 'Comfort, relaxation, safety, reliability, and predictability across automated-driving contexts.', higherIsBetter: true },
-  { key: 'adoption', label: 'Adoption intention', description: 'Intention to use, use with access, use on everyday trips, and buy a conditionally automated car.', higherIsBetter: true },
-  { key: 'safetyConfidence', label: 'Safety confidence', description: 'Inverse of concerns about safety, malfunctions, and resuming control after other activities.', higherIsBetter: true },
-  { key: 'expectedBenefits', label: 'Expected benefits', description: 'Expected usefulness, safer arrival, and greater comfort.', higherIsBetter: true },
-  { key: 'awareness', label: 'Prior awareness', description: 'Share who had heard of automated cars before the questionnaire.', higherIsBetter: true },
-  { key: 'secondaryActivities', label: 'Secondary-activity willingness', description: 'Willingness to use automated-driving time for other activities.', higherIsBetter: true },
-  { key: 'capabilityKnowledge', label: 'L3 capability knowledge', description: 'Share of answered capability statements classified correctly after the survey introduction.', higherIsBetter: true },
+  { key: 'trust', label: 'Trust', description: 'Comfort, relaxation, safety, reliability, and predictability across automated-driving contexts.', higherIsBetter: true, unit: 'likert', unitLabel: '/ 5', deviationUnit: 'scale points' },
+  { key: 'adoption', label: 'Adoption intention', description: 'Intention to use, use with access, use on everyday trips, and buy a conditionally automated car.', higherIsBetter: true, unit: 'likert', unitLabel: '/ 5', deviationUnit: 'scale points' },
+  { key: 'safetyConfidence', label: 'Safety confidence', description: 'Inverse of concerns about safety, malfunctions, and resuming control after other activities.', higherIsBetter: true, unit: 'likert', unitLabel: '/ 5', deviationUnit: 'scale points' },
+  { key: 'expectedBenefits', label: 'Expected benefits', description: 'Expected usefulness, safer arrival, and greater comfort.', higherIsBetter: true, unit: 'likert', unitLabel: '/ 5', deviationUnit: 'scale points' },
+  { key: 'awareness', label: 'Prior awareness', description: 'Share who had heard of automated cars before the questionnaire.', higherIsBetter: true, unit: 'percent', unitLabel: '%', deviationUnit: 'percentage points' },
+  { key: 'secondaryActivities', label: 'Secondary-activity willingness', description: 'Willingness to use automated-driving time for other activities.', higherIsBetter: true, unit: 'likert', unitLabel: '/ 5', deviationUnit: 'scale points' },
+  { key: 'capabilityKnowledge', label: 'L3 capability knowledge', description: 'Share of answered capability statements classified correctly after the survey introduction.', higherIsBetter: true, unit: 'percent', unitLabel: '%', deviationUnit: 'percentage points' },
 ];
 
 const ACTIVITIES = ['takingCareOfChildren', 'talkingWithFellowTravelers', 'internetOrVideo', 'playingGames', 'socializing', 'eatingOrDrinking', 'observingLandscape', 'relaxingOrResting', 'readingBook', 'working', 'other'];
@@ -33,8 +34,8 @@ function numeric(value) {
 }
 function likert(value) { const score = numeric(value); return score >= 1 && score <= 5 ? score : null; }
 function mean(values) { const valid = values.filter(Number.isFinite); return valid.length ? valid.reduce((sum, value) => sum + value, 0) / valid.length : null; }
-function round(value) { return value === null || value === undefined ? null : Number(value.toFixed(1)); }
-function score100(values) { const average = mean(values); return average === null ? null : (average - 1) * 25; }
+function round(value) { return value === null || value === undefined ? null : Number(value.toFixed(3)); }
+function scoreLikert(values) { return mean(values); }
 function validSelection(value) { return value === 0 || value === 1 || value === '0' || value === '1'; }
 
 function contextItems(row, itemNumber) {
@@ -58,12 +59,12 @@ function respondent(row) {
   return {
     countryCode: numeric(row.country),
     metrics: {
-      trust: score100([1, 2, 5, 6, 8].flatMap((item) => contextItems(row, item))),
-      adoption: score100([likert(row.f16_9), likert(row.f16_11), likert(row.f16_15), likert(row.f16_22)]),
-      safetyConfidence: score100([7, 10, 11].flatMap((item) => contextItems(row, item)).map((value) => value === null ? null : 6 - value)),
-      expectedBenefits: score100([likert(row.f16_1), likert(row.f16_2), likert(row.f16_4)]),
+      trust: scoreLikert([1, 2, 5, 6, 8].flatMap((item) => contextItems(row, item))),
+      adoption: scoreLikert([likert(row.f16_9), likert(row.f16_11), likert(row.f16_15), likert(row.f16_22)]),
+      safetyConfidence: scoreLikert([7, 10, 11].flatMap((item) => contextItems(row, item)).map((value) => value === null ? null : 6 - value)),
+      expectedBenefits: scoreLikert([likert(row.f16_1), likert(row.f16_2), likert(row.f16_4)]),
       awareness: numeric(row.f11) === 1 ? 100 : numeric(row.f11) === 2 ? 0 : null,
-      secondaryActivities: score100([likert(row.f14)]),
+      secondaryActivities: scoreLikert([likert(row.f14)]),
       capabilityKnowledge: mean(capabilityAnswers),
     },
     behaviors: activitySelections,
@@ -150,7 +151,40 @@ for (const [code, country] of Object.entries(COUNTRY_MAP)) {
 const allRows = [...groups.values()].flat();
 const globalSummary = summarize(allRows);
 const regions = Object.fromEntries([...new Set(Object.values(COUNTRY_MAP).map((country) => country.region))].map((region) => [region, summarize(allRows.filter((row) => COUNTRY_MAP[row.countryCode].region === region)).metrics]));
-const output = { metrics: METRICS, global: globalSummary.metrics, globalDetails: { behaviors: globalSummary.behaviors, misconceptions: globalSummary.misconceptions, demographics: globalSummary.demographics }, regions, countries };
+// Keep these two detailed profile measures available to the country drilldown,
+// without adding them to the original seven-metric map selector.
+const cleanRows = JSON.parse(readFileSync(CLEAN_DATA_FILE, 'utf8'));
+const supplemental = new Map();
+for (const row of cleanRows) {
+  const code = numeric(row.country_code);
+  if (!COUNTRY_MAP[code]) throw new Error(`Cleaned respondent country code ${code} has no entry in src/data/countryMap.js.`);
+  const item = supplemental.get(code) ?? { use: [], tripPurpose: [] };
+  const use = numeric(row.intention_use_future_score);
+  const tripPurpose = numeric(row.trip_purpose_intention_score);
+  if (use !== null && use >= 1 && use <= 5) item.use.push(use);
+  if (tripPurpose !== null && tripPurpose >= 1 && tripPurpose <= 5) item.tripPurpose.push(tripPurpose);
+  supplemental.set(code, item);
+}
+for (const [code, country] of Object.entries(COUNTRY_MAP)) {
+  const item = supplemental.get(Number(code));
+  if (!item) throw new Error(`Cleaned dataset has no respondents for country code ${code} (${country.name}).`);
+  countries[country.isoNumeric].metrics.useIntention = round(mean(item.use));
+  countries[country.isoNumeric].metrics.tripPurpose = round(mean(item.tripPurpose));
+}
+globalSummary.metrics.useIntention = round(mean(cleanRows.map((row) => numeric(row.intention_use_future_score))));
+globalSummary.metrics.tripPurpose = round(mean(cleanRows.map((row) => numeric(row.trip_purpose_intention_score))));
+const output = {
+  metrics: METRICS,
+  global: globalSummary.metrics,
+  globalDetails: { behaviors: globalSummary.behaviors, misconceptions: globalSummary.misconceptions, demographics: globalSummary.demographics },
+  regions,
+  countries,
+  provenance: {
+    countryLabels: 'Country code mapping follows the country_label assignments in public/data/l3pilot_clean.json.',
+    scales: 'Likert-based criteria retain means on the original 1-5 scale. Prior awareness and L3 capability knowledge remain percentages.',
+    heatmap: 'Map colors show each selected criterion country mean minus its respondent-weighted global mean.'
+  }
+};
 
 mkdirSync('public/data', { recursive: true });
 copyFileSync(GEOMETRY_SOURCE, GEOMETRY_OUTPUT);

@@ -5,7 +5,10 @@ import { renderChoropleth, renderMetricControls } from './choropleth.js';
 const MIN_N = 15;
 const noMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 const activityLabels = { commute: 'Commute', businessTravel: 'Business travel', errands: 'Errands', leisure: 'Leisure', vacation: 'Vacation' };
-const metricLines = { trust: ['Trust'], useIntention: ['Intention', 'to use'], adoption: ['Overall', 'adoption'], tripPurpose: ['Trip-purpose', 'intention'], safetyConfidence: ['Perceived', 'safety'] };
+const metricLines = { trust: ['Trust'], adoption: ['Adoption', 'intention'], safetyConfidence: ['Safety', 'confidence'], expectedBenefits: ['Expected', 'benefits'], awareness: ['Prior', 'awareness'], secondaryActivities: ['Secondary', 'activities'], capabilityKnowledge: ['L3 capability', 'knowledge'] };
+const metricValueText = (metric, value) => metric.unit === 'percent' ? `${value.toFixed(1)}%` : `${value.toFixed(2)} / 5`;
+const metricDifferenceText = (metric, value) => `${value >= 0 ? '+' : ''}${value.toFixed(2)} ${metric.unit === 'percent' ? 'percentage points' : 'scale points'}`;
+
 
 const findCountry = (source, iso3) => Object.entries(source.countries).map(([id, country]) => ({ id, ...country })).find((country) => country.iso3 === iso3);
 const ordinal = (value) => `${value}${value === 1 ? 'st' : value === 2 ? 'nd' : value === 3 ? 'rd' : 'th'}`;
@@ -41,7 +44,7 @@ function renderHeatmap(host, source, country, active) {
     const groups = country.subgroups?.age ?? [];
     const margin = { top: 124, right: 24, bottom: 150, left: 106 };
     const height = margin.top + groups.length * 48 + margin.bottom;
-    const chart = svg(host, 'profile-heatmap', width, height, `Mean five-point scores by age group in ${country.name}`);
+    const chart = svg(host, 'profile-heatmap', width, height, `Country metrics by age group in ${country.name}`);
     const x = d3.scaleBand().domain(source.metrics.map((metric) => metric.key)).range([margin.left, width - margin.right]).padding(.055);
     const y = d3.scaleBand().domain(groups.map((group) => group.label)).range([margin.top, height - margin.bottom]).padding(.08);
     const cells = groups.flatMap((group) => source.metrics.map((metric) => {
@@ -49,10 +52,26 @@ function renderHeatmap(host, source, country, active) {
       const global = source.global[metric.key];
       return { group, metric, value, n: group.metricN[metric.key], diff: Number.isFinite(value) && Number.isFinite(global) ? value - global : null };
     }));
-    const maxGap = Math.max(.25, d3.max(cells.filter((cell) => cell.n >= MIN_N && Number.isFinite(cell.diff)), (cell) => Math.abs(cell.diff)) || .25);
-    const color = d3.scaleLinear().domain([-maxGap, 0, maxGap]).range(['#d95f59', '#68747c', '#38a69b']).interpolate(d3.interpolateRgb);
-    chart.append('text').attr('class', 'panel-title').attr('x', margin.left).attr('y', 25).attr('font-size', 18).text('Mean scores by age');
-    chart.append('text').attr('class', 'panel-subtitle').attr('x', margin.left).attr('y', 47).attr('font-size', 13).text('Cell values are on the original 1–5 scale; color shows the difference from the global mean.');
+    // Each metric column gets its own symmetric scale. Five columns are
+    // Likert means (1–5); awareness and capability knowledge are percentages,
+    // so mixing their raw differences on one shared scale would be misleading.
+    const maxGapByMetric = new Map(source.metrics.map((metric) => {
+      const maxGap = Math.max(
+        0.0001,
+        d3.max(cells.filter((cell) => cell.metric.key === metric.key && cell.n >= MIN_N && Number.isFinite(cell.diff)),
+          (cell) => Math.abs(cell.diff)) || 0
+      );
+      return [metric.key, maxGap];
+    }));
+    const colorByMetric = new Map(source.metrics.map((metric) => [
+      metric.key,
+      d3.scaleLinear()
+        .domain([-maxGapByMetric.get(metric.key), 0, maxGapByMetric.get(metric.key)])
+        .range(['#d95f59', '#f0d58a', '#278c78'])
+        .clamp(true),
+    ]));
+    chart.append('text').attr('class', 'panel-title').attr('x', margin.left).attr('y', 25).attr('font-size', 18).text('Country metrics by age');
+    chart.append('text').attr('class', 'panel-subtitle').attr('x', margin.left).attr('y', 47).attr('font-size', 13).text('Color shows the difference from the global mean; each metric column uses its own symmetric scale.');
     const activeX = x(active.key);
     chart.append('rect').attr('class', 'active-column-outline').attr('x', activeX - 3).attr('y', margin.top - 52).attr('width', x.bandwidth() + 6).attr('height', height - margin.top + 52 - margin.bottom).attr('rx', 6);
     chart.selectAll('.heatmap-column').data(source.metrics).join('text').attr('class', 'heatmap-column').attr('x', (metric) => x(metric.key) + x.bandwidth() / 2).attr('y', margin.top - 38).attr('text-anchor', 'middle').attr('font-size', 12).each(function (metric) { addLines(d3.select(this), metricLines[metric.key]); });
@@ -65,10 +84,10 @@ function renderHeatmap(host, source, country, active) {
       .attr('class', 'heatmap-cell')
       .attr('x', (cell) => x(cell.metric.key)).attr('y', (cell) => y(cell.group.label))
       .attr('width', x.bandwidth()).attr('height', y.bandwidth())
-      .attr('fill', (cell) => cell.n < MIN_N || !Number.isFinite(cell.diff) ? `url(#low-n-${country.iso3})` : color(cell.diff))
+      .attr('fill', (cell) => cell.n < MIN_N || !Number.isFinite(cell.diff) ? `url(#low-n-${country.iso3})` : colorByMetric.get(cell.metric.key)(cell.diff))
       .attr('tabindex', 0).attr('role', 'graphics-symbol')
-      .attr('aria-label', (cell) => `${cell.group.label}, ${cell.metric.label}: ${Number.isFinite(cell.value) ? `${cell.value.toFixed(2)} out of 5` : 'not available'}, difference from global ${Number.isFinite(cell.diff) ? `${cell.diff >= 0 ? '+' : ''}${cell.diff.toFixed(2)} scale points` : 'not available'}, n=${cell.n}`)
-      .on('mouseenter focus', (event, cell) => tip(host, event, `<strong>${cell.group.label} · ${cell.metric.label}</strong><br>${Number.isFinite(cell.value) ? `${cell.value.toFixed(2)} / 5` : 'Not available'}<br>${Number.isFinite(cell.diff) ? `${cell.diff >= 0 ? '+' : ''}${cell.diff.toFixed(2)} scale points vs global` : 'No global comparison'}<br>n=${cell.n}${cell.n < MIN_N ? ' (low sample)' : ''}`))
+      .attr('aria-label', (cell) => `${cell.group.label}, ${cell.metric.label}: ${Number.isFinite(cell.value) ? metricValueText(cell.metric, cell.value) : 'not available'}, difference from global ${Number.isFinite(cell.diff) ? metricDifferenceText(cell.metric, cell.diff) : 'not available'}, n=${cell.n}`)
+      .on('mouseenter focus', (event, cell) => tip(host, event, `<strong>${cell.group.label} · ${cell.metric.label}</strong><br>${Number.isFinite(cell.value) ? metricValueText(cell.metric, cell.value) : 'Not available'}<br>${Number.isFinite(cell.diff) ? `${metricDifferenceText(cell.metric, cell.diff)} vs global` : 'No global comparison'}<br>n=${cell.n}${cell.n < MIN_N ? ' (low sample)' : ''}`))
       .on('mouseleave blur', () => hideTip(host));
     chart.selectAll('.heatmap-value').data(cells).join('text')
       .attr('class', 'heatmap-value')
@@ -79,18 +98,16 @@ function renderHeatmap(host, source, country, active) {
       .text((cell) => cell.n < MIN_N || !Number.isFinite(cell.value) ? 'N/A' : cell.value.toFixed(1));
     const legend = chart.append('g').attr('class', 'heatmap-legend').attr('transform', `translate(${margin.left},${height - 126})`);
     const grad = defs.append('linearGradient').attr('id', `heat-gradient-${country.iso3}`);
-    grad.selectAll('stop').data(d3.range(0, 1.01, .1)).join('stop').attr('offset', (value) => `${value * 100}%`).attr('stop-color', (value) => color(-maxGap + value * maxGap * 2));
+    grad.selectAll('stop').data(d3.range(0, 1.01, .1)).join('stop')
+      .attr('offset', (value) => `${value * 100}%`)
+      .attr('stop-color', (value) => d3.interpolateRgbBasis(['#d95f59', '#f0d58a', '#278c78'])(value));
     const availableLegendWidth = Math.max(240, width - margin.left - 24);
     const legendWidth = Math.min(360, availableLegendWidth);
     legend.append('rect').attr('width', legendWidth).attr('height', 10).attr('rx', 5).attr('fill', `url(#heat-gradient-${country.iso3})`);
-    legend.selectAll('text.clean-tick').data([{ x: 0, label: `−${maxGap.toFixed(1)}` }, { x: legendWidth / 2, label: '0' }, { x: legendWidth, label: `+${maxGap.toFixed(1)}` }]).join('text')
-      .attr('class', 'clean-tick').attr('x', (d) => d.x).attr('y', 27)
-      .attr('text-anchor', (d) => d.x === 0 ? 'start' : d.x === legendWidth ? 'end' : 'middle')
-      .attr('font-size', 12).text((d) => d.label);
-    legend.append('text').attr('x', 0).attr('y', 46).attr('font-size', 12).text('Below global mean');
-    legend.append('text').attr('x', legendWidth).attr('y', 46).attr('font-size', 12).attr('text-anchor', 'end').text('Above global mean');
-    legend.append('rect').attr('x', 0).attr('y', 64).attr('width', 12).attr('height', 10).attr('fill', `url(#low-n-${country.iso3})`);
-    legend.append('text').attr('x', 19).attr('y', 74).attr('font-size', 12).text('n < 15');
+    legend.append('text').attr('x', 0).attr('y', 27).attr('font-size', 12).text('Below each metric mean');
+    legend.append('text').attr('x', legendWidth).attr('y', 27).attr('font-size', 12).attr('text-anchor', 'end').text('Above each metric mean');
+    legend.append('rect').attr('x', 0).attr('y', 46).attr('width', 12).attr('height', 10).attr('fill', `url(#low-n-${country.iso3})`);
+    legend.append('text').attr('x', 19).attr('y', 56).attr('font-size', 12).text('n < 15');
     lockTextSizes(chart);
   });
 }

@@ -1,5 +1,5 @@
 const listeners = new Set();
-let state = { filters: { country: null, ageGroup: null, trustLevel: null }, selectedMetric: 'useIntention', selectedCountry: null, hoveredCountry: null };
+let state = { filters: { country: null, ageGroup: null, trustLevel: null }, selectedMetric: 'trust', selectedCountry: null, hoveredCountry: null };
 export const getState = () => state;
 export function setFilter(name, value) { state = { ...state, filters: { ...state.filters, [name]: value } }; listeners.forEach((listener) => listener(state)); }
 function setMapState(values) {
