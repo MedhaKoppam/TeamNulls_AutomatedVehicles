@@ -18,10 +18,10 @@ The workbook contains coded country, gender, and education fields but no embedde
 | `trust_everyday_travel_*` | code, score, label | `f19[a-d]_5`: trust for everyday travel, coalesced across contexts. | Agreement encoding below |
 | `trust_safe_using_car_*` | code, score, label | `f19[a-d]_6`: feeling safe using car, coalesced across contexts. | Agreement encoding below |
 | `trust_item_count`, `trust_composite_score` | integer, number/null | Valid-item count and unweighted mean of four trust/safety scores. | 0–4; 1–5/null |
-| `intention_use_future_*` | code, score, label | `f16_10`: intent to use in future. | Agreement encoding below |
-| `intention_use_with_access_*` | code, score, label | `f16_12`: predicted use with access. | Agreement encoding below |
-| `intention_use_everyday_*` | code, score, label | `f16_16`: intent to use for everyday trips. | Agreement encoding below |
-| `intention_purchase_when_available_*` | code, score, label | `f16_23`: plan to buy when available. | Agreement encoding below |
+| `intention_use_future_*` | code, score, label | `f16_9`: intent to use in future (question 30). | Agreement encoding below |
+| `intention_use_with_access_*` | code, score, label | `f16_11`: predicted use with access (question 32). | Agreement encoding below |
+| `intention_use_everyday_*` | code, score, label | `f16_15`: intent to use for everyday trips (question 36). | Agreement encoding below |
+| `intention_purchase_when_available_*` | code, score, label | `f16_22`: plan to buy when available (question 43). | Agreement encoding below |
 | `intention_item_count`, `intention_composite_score` | integer, number/null | Valid-item count and unweighted mean of four behavioral-intention scores. | 0–4; 1–5/null |
 | `use_commute_*`, `use_business_travel_*`, `use_errands_*`, `use_leisure_*`, `use_vacation_*` | code, score, label | `f20_1`–`f20_5`: intention to use for each travel purpose. | Agreement encoding below |
 | `trip_purpose_item_count`, `trip_purpose_intention_score` | integer, number/null | Valid-item count and unweighted mean of five trip-purpose scores. | 0–5; 1–5/null |
@@ -38,10 +38,10 @@ The following expands every generated field name. In each three-field item set, 
 | `trust_relaxed_during_ride_source_code`, `trust_relaxed_during_ride_score`, `trust_relaxed_during_ride_label` | Feeling relaxed during an L3 ride. |
 | `trust_everyday_travel_source_code`, `trust_everyday_travel_score`, `trust_everyday_travel_label` | Trusting an L3 car for everyday travel. |
 | `trust_safe_using_car_source_code`, `trust_safe_using_car_score`, `trust_safe_using_car_label` | Feeling safe using an L3 car. |
-| `intention_use_future_source_code`, `intention_use_future_score`, `intention_use_future_label` | Intention to use an L3 car in the future. |
-| `intention_use_with_access_source_code`, `intention_use_with_access_score`, `intention_use_with_access_label` | Predicted use if an L3 car were accessible. |
-| `intention_use_everyday_source_code`, `intention_use_everyday_score`, `intention_use_everyday_label` | Intended use for everyday trips. |
-| `intention_purchase_when_available_source_code`, `intention_purchase_when_available_score`, `intention_purchase_when_available_label` | Plan to buy an L3 car once available. |
+| `intention_use_future_source_code`, `intention_use_future_score`, `intention_use_future_label` | Intention to use an L3 car in the future (f16_9 / question 30). |
+| `intention_use_with_access_source_code`, `intention_use_with_access_score`, `intention_use_with_access_label` | Predicted use if an L3 car were accessible (f16_11 / question 32). |
+| `intention_use_everyday_source_code`, `intention_use_everyday_score`, `intention_use_everyday_label` | Intended use for everyday trips (f16_15 / question 36). |
+| `intention_purchase_when_available_source_code`, `intention_purchase_when_available_score`, `intention_purchase_when_available_label` | Plan to buy an L3 car once available (f16_22 / question 43). |
 | `use_commute_source_code`, `use_commute_score`, `use_commute_label` | Intended use for commuting/study. |
 | `use_business_travel_source_code`, `use_business_travel_score`, `use_business_travel_label` | Intended use for business travel. |
 | `use_errands_source_code`, `use_errands_score`, `use_errands_label` | Intended use for errands. |

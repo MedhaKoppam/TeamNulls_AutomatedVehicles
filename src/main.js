@@ -1,13 +1,15 @@
 import './styles/main.css';
 import './styles/willingness.css';
+import './styles/countryBump.css';
 import * as d3 from 'd3';
 import { loadData, loadMapData, loadRespondents } from './data.js';
 import { requireElement } from './dom.js';
 import { getState, setSelectedCountry, setSelectedMetric, subscribe } from './state.js';
 import { renderCountryDrilldown } from './charts/countryDrilldown.js';
 import { renderCommercialGap } from './charts/commercialGap.js';
-import { getStoryboardStats, renderCountryMeasureDots, renderTrustSafetyScatter, renderTrustUseScatter } from './charts/storyboardCharts.js';
+import { getStoryboardStats } from './charts/storyboardCharts.js';
 import { renderWillingnessCars } from './charts/willingnessCars.js';
+import { renderCountryBump } from './charts/countryBump.js';
 import { sceneMarkup } from './scene/markup.js';
 import { Road } from './scene/road.js';
 import { Cockpit } from './scene/cockpit.js';
@@ -17,7 +19,7 @@ const team = 'Medha Koppam, Akhila Gadamsetty, Vishruth Shoba Balaji, Kruthi She
 
 function chartStep(id, number, nav, title, copy, howto, chartTitle) {
   return `<section class="step chart-step" id="${id}" data-nav="${nav}" aria-labelledby="${id}-title">
-    <article class="screen screen-left"><p class="kicker">Finding ${number} <span>/ 06</span></p><h2 id="${id}-title">${title}</h2><p>${copy}</p><p class="howto">${howto}</p></article>
+    <article class="screen screen-left"><p class="kicker">Finding ${number} <span>/ 04</span></p><h2 id="${id}-title">${title}</h2><p>${copy}</p><p class="howto">${howto}</p></article>
     <div class="screen screen-right chart-shell"><div class="screen-head"><h3>${chartTitle}</h3><span class="data-badge">L3Pilot survey</span></div><div class="chart-scroll" tabindex="0" role="region" aria-label="${chartTitle}. Scroll within this panel for the full chart."><div class="chart-meta"></div><div class="chart" id="${id}-chart"></div></div><div class="screen-foot"><span>Real survey data · 17 countries</span><span>Scroll panel to explore ↓</span></div></div>
   </section>`;
 }
@@ -30,7 +32,7 @@ function willingnessIntroStep(stats) {
   const agree = stats.distribution[3];
   const stronglyAgree = stats.distribution[4];
   return `<section class="step chart-step willingness-intro-step" id="willingness-intro" data-nav="Willingness" aria-labelledby="willingness-intro-title">
-    <article class="screen screen-left"><p class="kicker">Finding 01 <span>/ 06</span></p><h2 id="willingness-intro-title">${roundedAgree}% would use a self-driving car, and ${roundedNeutral}% are neutral</h2>
+    <article class="screen screen-left"><p class="kicker">Finding 01 <span>/ 04</span></p><h2 id="willingness-intro-title">${roundedAgree}% would use a self-driving car, and ${roundedNeutral}% are neutral</h2>
       <p>Among ${stats.n.toLocaleString()} valid responses, <strong>${exact(agree)}% agree</strong> and <strong>${exact(stronglyAgree)}% strongly agree</strong> that they would use a self-driving car in the future. Another ${exact(neutral)}% are neutral, while ${stats.disagree.toFixed(1)}% disagree.</p>
       <p class="howto">Hover over a seat or a legend item to highlight one response group. Each car represents four seats.</p>
     </article>
@@ -42,6 +44,62 @@ function willingnessIntroStep(stats) {
   </section>`;
 }
 
+function countryBumpStep() {
+  return `<section class="step chart-step bump-step" id="country-rank-insights" data-nav="Country ranks" aria-labelledby="country-bump-title">
+    <article class="screen screen-left">
+      <p class="kicker">Finding 04 <span>/ 04</span></p>
+      <h2 id="country-bump-title">Trust and safety confidence move in different directions</h2>
+      <p>Each line follows one country across three rankings. Rank 1 is the most positive score. Safety confidence is reverse-scored from concerns about safety, system failures and taking back control, so a higher score means fewer concerns.</p>
+      <p class="callout">Across the 17 country averages, trust and safety-confidence ranks have a strong inverse association. This is a descriptive country-level pattern, not evidence that one measure causes the other.</p>
+      <div class="bump-howto">
+        <strong>How to explore</strong>
+        <ol>
+          <li>Drag vertically on any axis to brush a range of ranks.</li>
+          <li>Brush another axis to narrow the selection. Only countries matching every selected range remain highlighted.</li>
+          <li>The map outlines matching countries. Two charts below compare their perceived enjoyment and social influence with the remaining countries.</li>
+          <li>Click a country line to open its country profile. Use Clear brushes to start again.</li>
+        </ol>
+      </div>
+    </article>
+    <div class="screen screen-right chart-shell bump-screen">
+      <div class="screen-head"><h3>How country rankings shift across the three measures</h3><span class="data-badge">17 countries · 1–5 scale</span></div>
+      <div class="chart-scroll bump-scroll" tabindex="0" role="region" aria-label="Interactive country bump chart. Brush any vertical rank axis to select countries. Add brushes on other axes to narrow the selection. Two linked insight charts update below.">
+        <div class="bump-explorer" id="country-bump-explorer">
+          <div class="bump-chart-note"><span>Drag on an axis to select a rank range</span><span>Rank 1 = highest / most positive</span></div>
+          <div class="chart bump-chart-host" id="bump-chart-svg"></div>
+          <div class="bump-correlation-strip" aria-label="Country-level rank correlations">
+            <span>Trust ↔ safety confidence <strong id="bump-trust-safety-rho">ρ = ...</strong></span>
+            <span>Trust ↔ willingness <strong id="bump-trust-use-rho">ρ = ...</strong></span>
+            <span class="bump-correlation-note">Spearman rank correlation · 17 country averages</span>
+          </div>
+          <section class="bump-insights" aria-labelledby="bump-insights-title">
+            <div class="bump-insights-header">
+              <div><p class="bump-section-kicker">BRUSH-DRIVEN INSIGHTS</p><h4 id="bump-insights-title">What distinguishes the selected countries?</h4><p id="bump-selection-copy" class="bump-selection-copy">Brush any rank axis to select countries and populate these two charts.</p></div>
+              <div class="bump-selection-actions"><span id="bump-selection-status" class="bump-selection-status">No rank range selected</span><button class="bump-clear" type="button">Clear brushes</button></div>
+            </div>
+            <div class="bump-insight-grid">
+              <article class="bump-insight-card">
+                <div class="bump-insight-card-heading"><h5>Perceived enjoyment</h5><p>Mean agreement with fun, entertaining and enjoyable statements.</p></div>
+                <div id="bump-enjoyment-chart" class="bump-mini-chart"></div>
+                <div class="bump-group-legend"><span><i class="selected-dot"></i>Selected countries</span><span><i class="others-dot"></i>Remaining countries</span></div>
+              </article>
+              <article class="bump-insight-card">
+                <div class="bump-insight-card-heading"><h5>Social influence</h5><p>How respondents view the opinions and expectations of people around them.</p></div>
+                <div id="bump-social-chart" class="bump-mini-chart"></div>
+                <div class="bump-likert-legend" aria-label="Strongly disagree, disagree, neutral, agree, strongly agree">
+                  ${['Strongly disagree','Disagree','Neutral','Agree','Strongly agree'].map((label, index) => `<span title="${label}"><i style="--response-color:${['#9d5662','#e66767','#c9c8c2','#3d8de7','#32ad9b'][index]}"></i>${label}</span>`).join('')}
+                </div>
+              </article>
+            </div>
+            <p class="bump-method-note">Insight charts compare country-level response distributions, with each selected country weighted equally. Blank and “I prefer not to respond” answers are excluded.</p>
+          </section>
+        </div>
+      </div>
+      <div class="screen-foot"><span>Source: L3Pilot Global User Acceptance Survey</span><span>Brush, compare, then click a country to explore ↓</span></div>
+    </div>
+  </section>`;
+}
+
 function buildPage(stats, total) {
   app.innerHTML = `${sceneMarkup}<main id="story">
     <section class="step step-hero" data-nav="Start" aria-labelledby="page-title"><div class="hero"><p class="hero-course">CS 6730 Data Visualization &nbsp;|&nbsp; Team Nulls</p><p class="hero-team">${team}</p><h1 id="page-title">Would you get in?</h1><p class="hero-sub">How trust and safety shape acceptance of autonomous vehicles across 17 countries.</p><button class="start-cue" type="button" data-goto="1">Scroll to start the drive <span aria-hidden="true">↓</span></button></div></section>
@@ -49,10 +107,8 @@ function buildPage(stats, total) {
     ${willingnessIntroStep(stats)}
     ${chartStep('country-trust', '02', 'By country', 'Compare country profiles', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of seven measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles')}
     ${chartStep('commercial-gap', '03', 'Use vs buy', 'People may use it before they buy it', 'Use and purchase are not the same decision. Compare each country’s average intention to use and to buy. Filter by age and income to see how the commercial gap changes.', 'Use the age and income filters together. Hover or focus a dot for its sample size and use-to-buy gap. Reset to compare all respondents.', 'Intention to use vs. intention to buy')}
-    ${chartStep('trust-use', '04', 'Trust', 'Several factors shape willingness', `Countries with higher average trust also report higher average willingness to use. These measures move together closely (<strong>r = ${stats.correlation.toFixed(3)}</strong>). The line shows a pattern, not cause and effect.`, 'Hover or focus a country dot for its mean trust, willingness, and sample size.', 'Mean trust vs. willingness, per country')}
-    ${chartStep('trust-safety', '05', 'Safety', 'Safety is one part of trust', `<strong>${stats.highestUse.name}</strong> has the highest mean willingness to use (${stats.highestUse.use.toFixed(2)} / 5). It is highlighted here. The direct perceived-safety item is also included in the trust composite, so read it as one facet of trust rather than a separate construct.`, 'Use the dotted average guides to compare country positions. Hover or focus a dot for details.', 'Mean trust vs. perceived safety')}
-    ${chartStep('country-measures', '06', 'Compare', 'Willingness has several parts', 'Compare intended use, trust, and safety concern on the same five-point scale. Each symbol represents a different measure, so the comparison remains readable without relying on color alone.', 'Read across each country row. Hover or focus any symbol for its exact score and sample size.', 'Three measures, seventeen countries')}
-    <section class="step" data-nav="Takeaways" aria-labelledby="takeaways-title"><article class="screen screen-left"><p class="kicker">Destination</p><h2 id="takeaways-title">What should AV teams remember?</h2><p>Trust, readiness, and ownership are related. They are not interchangeable.</p><p class="howto">Use the dashboard route to revisit any finding.</p></article><div class="screen screen-right"><ol class="takeaways"><li><div><strong>Start with trust.</strong> Countries with higher average trust also report higher willingness to use.</div></li><li><div><strong>Read safety as one facet of trust.</strong> The direct perceived-safety item is included in the trust composite, so do not interpret it as an independent construct.</div></li><li><div><strong>Look beyond a global average.</strong> Country profiles reveal differences by age, secondary activities, and awareness.</div></li><li><div><strong>Separate use from ownership.</strong> Explore how the use-to-buy gap changes with age and income.</div></li></ol></div></section>
+    ${countryBumpStep()}
+    <section class="step" data-nav="Takeaways" aria-labelledby="takeaways-title"><article class="screen screen-left"><p class="kicker">Destination</p><h2 id="takeaways-title">What should AV teams remember?</h2><p>Trust, safety confidence, readiness and ownership are related, but they are not interchangeable.</p><p class="howto">Use the dashboard route to revisit any finding.</p></article><div class="screen screen-right"><ol class="takeaways"><li><div><strong>Start with trust.</strong> Countries with higher average trust also report higher willingness to use.</div></li><li><div><strong>Separate trust from safety confidence.</strong> The country rankings diverge, so strong trust should not be treated as evidence of low safety concern.</div></li><li><div><strong>Look beyond a global average.</strong> Country profiles reveal differences by age, secondary activities, and awareness.</div></li><li><div><strong>Separate use from ownership.</strong> Explore how the use-to-buy gap changes with age and income.</div></li></ol></div></section>
     <section class="step step-last" data-nav="Data" aria-labelledby="methods-title"><article class="screen screen-left"><p class="kicker">Parked</p><h2 id="methods-title">Data and methods</h2><p><strong>Source:</strong> L3Pilot Global User Acceptance Survey, Phase 1. ${total.toLocaleString()} responses from 17 countries.</p><p>Likert-based measures use the original five-point agreement scale. Prior awareness and L3 capability knowledge are percentages. Blank values and non-scale code 6 are excluded from Likert averages.</p><p>The source does not name motorway, urban, or traffic-jam conditions, so these charts do not assign driving-context labels.</p></article><div class="screen screen-right methods-screen"><div class="links"><a class="link-card" href="/data/l3pilot_clean.json" download>Cleaned survey data<span>JSON ↓</span></a><a class="link-card" href="/data/country_metrics.json" download>Country metrics<span>JSON ↓</span></a><a class="link-card" href="/data/respondents.json" download>Respondent extract<span>JSON ↓</span></a><a class="link-card" href="/docs/DATA_DICTIONARY.md">Data dictionary<span>Read ↗</span></a><a class="link-card" href="/docs/PROCESS_BOOK.md">Process book<span>Read ↗</span></a><a class="link-card" href="/data/l3pilot_labeled.xlsx" download>Raw workbook<span>XLSX ↓</span></a></div><p class="credits">Team Nulls · ${team}.<br>CS 6730 Data Visualization. Built with D3.js. Map: Natural Earth.</p><button class="start-cue small" type="button" data-goto="0">Back to the start ↑</button></div></section>
   </main><nav class="mobile-route" aria-label="Story navigation"><button type="button" data-previous aria-label="Previous chapter">← Previous</button><span class="mobile-chapter">Start</span><button type="button" data-next aria-label="Next chapter">Next →</button></nav>`;
 }
@@ -104,16 +160,31 @@ function renderMapSummary(container, mapData, state) {
 }
 
 async function initialize() {
-  const [data, mapData, respondents] = await Promise.all([loadData(), loadMapData(), loadRespondents()]);
-  const stats = getStoryboardStats(data, mapData.metrics);
+  const [data, mapData, respondents, countryInsights] = await Promise.all([
+    loadData(), loadMapData(), loadRespondents(),
+    fetch('/data/country-insights.json').then((response) => {
+      if (!response.ok) throw new Error(`Could not load country insights (${response.status}).`);
+      return response.json();
+    }),
+  ]);
+  const stats = getStoryboardStats(data);
   buildPage(stats, data.length);
   renderWillingnessCars(requireElement('#willingness-intro-chart'), stats);
   const map = requireElement('#country-trust-chart');
   map.closest('.chart-scroll')?.classList.add('map-chart-scroll');
   const actions = { setMetric: setSelectedMetric, setCountry: setSelectedCountry };
+  let brushedCountries = new Set();
+  let hoveredBumpCountry = null;
+  const syncBumpHighlightsToMap = () => {
+    map.querySelectorAll('.country[data-country]').forEach((path) => {
+      path.classList.toggle('brush-match', brushedCountries.has(path.dataset.country));
+      path.classList.toggle('hovered', path.dataset.country === hoveredBumpCountry);
+    });
+  };
   const updateMap = (state) => {
     renderCountryDrilldown(map, mapData, state, actions);
     renderMapSummary(map, mapData, state);
+    syncBumpHighlightsToMap();
     const selected = Object.values(mapData.metrics.countries).find((country) => country.iso3 === state.selectedCountry);
     document.querySelector('.pin-value').textContent = selected?.name || 'None. Select a country';
     document.querySelector('.pin-screen').classList.toggle('has-pin', !!selected);
@@ -123,9 +194,11 @@ async function initialize() {
   updateMap(getState());
   document.querySelector('.pin-clear').addEventListener('click', () => setSelectedCountry(null));
   renderCommercialGap(requireElement('#commercial-gap-chart'), respondents);
-  renderTrustUseScatter(requireElement('#trust-use-chart'), data, mapData.metrics);
-  renderTrustSafetyScatter(requireElement('#trust-safety-chart'), data, mapData.metrics);
-  renderCountryMeasureDots(requireElement('#country-measures-chart'), data, mapData.metrics);
+  renderCountryBump(requireElement('#country-bump-explorer'), mapData.metrics, countryInsights, {
+    onCountryClick: (iso3) => setSelectedCountry(iso3),
+    onCountryHover: (iso3) => { hoveredBumpCountry = iso3; syncBumpHighlightsToMap(); },
+    onBrushSelection: (iso3s) => { brushedCountries = new Set(iso3s); syncBumpHighlightsToMap(); },
+  });
   const steps = [...document.querySelectorAll('.step')];
   const road = new Road(requireElement('#road'), requireElement('#mirror'));
   const cockpit = new Cockpit({ steps, road, onStepChange(index) {

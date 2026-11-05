@@ -11,8 +11,8 @@ const F13_COLUMNS = ['f13_1', 'f13_2', 'f13_3', 'f13_4'];
 
 function blank(value) { return value === null || value === undefined || value === '' || value === '.'; }
 function sourceCode(value) { if (blank(value)) return null; const numeric = Number(value); return Number.isFinite(numeric) ? numeric : null; }
-// f16 is documented as a five-point agreement scale; code 6 is retained in
-// the workbook but is not a scale response. Keep null rather than drop the row.
+// f16 is a five-point agreement scale; code 6 is not a scale response.
+// Q30 (f16_9) is future-use intention; Q43 (f16_22) is plan to buy once available.
 function agreementScore(value) { const code = sourceCode(value); return code >= 1 && code <= 5 ? code : null; }
 function categorical(value) { return blank(value) ? null : String(value).trim(); }
 
@@ -21,8 +21,8 @@ const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
 const respondents = rows.map((row) => {
   const output = {
     country: sourceCode(row.country),
-    intention_use: agreementScore(row.f16_10),
-    intention_buy: agreementScore(row.f16_23),
+    intention_use: agreementScore(row.f16_9),
+    intention_buy: agreementScore(row.f16_22),
     price_surcharge_tier: sourceCode(row.f18a),
     age: sourceCode(row.s1),
     income_tier: sourceCode(row.s3),

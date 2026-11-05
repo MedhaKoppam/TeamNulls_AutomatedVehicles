@@ -39,7 +39,7 @@ function addLikert(target, name, answer) {
 
 const clean = rows.map((row) => {
   const trustControl = coalescedLikert(row, 1), trustRelaxed = coalescedLikert(row, 2), trustEveryday = coalescedLikert(row, 5), trustSafe = coalescedLikert(row, 6);
-  const intentFuture = likert(row.f16_10), intentAccess = likert(row.f16_12), intentEveryday = likert(row.f16_16), intentPurchase = likert(row.f16_23);
+  const intentFuture = likert(row.f16_9), intentAccess = likert(row.f16_11), intentEveryday = likert(row.f16_15), intentPurchase = likert(row.f16_22);
   const commute = likert(row.f20_1), business = likert(row.f20_2), errands = likert(row.f20_3), leisure = likert(row.f20_4), vacation = likert(row.f20_5);
   const age = numeric(row.s1);
   const countryCode = numeric(row.country), genderCode = numeric(row.s2), educationCode = numeric(row.s3);

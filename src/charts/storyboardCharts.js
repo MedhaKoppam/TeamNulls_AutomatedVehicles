@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { COUNTRY_MAP } from '../data/countryMap.js';
 
 const MIN_WIDTH = 320;
 const noMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -19,18 +20,18 @@ function tooltip(host) {
   return d3.select(host).selectAll('.tooltip').data([null]).join('div').attr('class', 'tooltip').style('opacity', 0);
 }
 
-function countryRows(_data, metrics) {
-  return Object.values(metrics.countries).map((country) => ({
-    name: country.name,
-    iso3: country.iso3,
-    region: country.region,
-    n: country.n,
-    use: country.metrics.useIntention,
-    trust: country.metrics.trust,
-    safetyConcern: Number.isFinite(country.metrics.safetyConfidence)
-      ? 6 - country.metrics.safetyConfidence
-      : null,
-  })).filter((row) => Number.isFinite(row.use) && Number.isFinite(row.trust) && Number.isFinite(row.safetyConcern));
+function countryRows(data, metrics) {
+  const useByCode = d3.rollups(data.filter((row) => row.country_code && row.intention_use_future_score !== null), (rows) => ({
+    use: d3.mean(rows, (row) => row.intention_use_future_score),
+    trust: d3.mean(rows.filter((row) => row.trust_composite_score !== null), (row) => row.trust_composite_score),
+    n: rows.length,
+  }), (row) => row.country_code);
+  const metricByName = new Map(Object.values(metrics.countries).map((country) => [country.name, country]));
+  return useByCode.map(([code, values]) => {
+    const country = COUNTRY_MAP[code];
+    const mapCountry = metricByName.get(country.name);
+    return { ...country, ...values, safetyConcern: mapCountry ? 1 + (100 - mapCountry.metrics.safetyConfidence) / 25 : null };
+  }).filter((row) => Number.isFinite(row.trust) && Number.isFinite(row.safetyConcern));
 }
 
 function regression(rows) {
@@ -42,22 +43,18 @@ function regression(rows) {
   return { slope, intercept, r };
 }
 
-export function getStoryboardStats(data, metrics) {
+export function getStoryboardStats(data) {
+  // intention_use_future_score is question f16_9 (future-use intention).
+  // The conversion mapping keeps f16_10 separate as the enjoyment item.
   const valid = data.filter((row) => row.intention_use_future_score !== null);
   const distribution = d3.range(1, 6).map((score) => ({ score, n: valid.filter((row) => row.intention_use_future_score === score).length }));
   distribution.forEach((item) => { item.share = item.n / valid.length * 100; });
-  const countries = countryRows(data, metrics);
-  const model = regression(countries);
   return {
     n: valid.length,
     distribution,
     disagree: distribution[0].share + distribution[1].share,
     neutral: distribution[2].share,
     agree: distribution[3].share + distribution[4].share,
-    countries,
-    correlation: model.r,
-    highestUse: d3.greatest(countries, (row) => row.use),
-    highestSafetyConcern: d3.greatest(countries, (row) => row.safetyConcern),
   };
 }
 
