@@ -1,13 +1,15 @@
 import * as d3 from 'd3';
+import { COUNTRY_MAP } from '../data/countryMap.js';
 
 const AXES = [
   { key: 'trust', label: 'Trust' },
   { key: 'safetyConfidence', label: 'Safety confidence' },
-  { key: 'useIntention', label: 'Willingness to use' },
+  { key: 'adoption', label: 'Overall adoption intention' },
 ];
 const LIKERT_COLORS = ['#9d5662', '#e66767', '#c9c8c2', '#3d8de7', '#32ad9b'];
 const LIKERT_LABELS = ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree'];
 const GROUP_COLORS = { selected: '#32ad9b', others: '#e5a65d' };
+const COUNTRY_NAME_BY_ISO = new Map(Object.values(COUNTRY_MAP).map((country) => [country.iso3, country.name]));
 
 function pearson(a, b) {
   const ma = d3.mean(a), mb = d3.mean(b);
@@ -16,15 +18,15 @@ function pearson(a, b) {
   return denominator ? numerator / denominator : 0;
 }
 
-function makeRows(source, insightByIso) {
+function makeRows(source) {
   const rows = Object.values(source.countries).map((country) => ({
-    name: country.name,
+    name: COUNTRY_NAME_BY_ISO.get(country.iso3) ?? country.name,
     iso3: country.iso3,
     n: country.n,
     scores: {
       trust: country.metrics.trust,
       safetyConfidence: country.metrics.safetyConfidence,
-      useIntention: insightByIso.get(country.iso3)?.useIntention?.mean,
+      adoption: country.metrics.adoption,
     },
     ranks: {},
   })).filter((row) => AXES.every((axis) => Number.isFinite(row.scores[axis.key])));
@@ -136,7 +138,7 @@ export function renderCountryBump(container, metricSource, insightData, {
   onCountryHover = () => {}, onBrushSelection = () => {},
 } = {}) {
   const insightByIso = new Map(insightData.countries.map((country) => [country.iso3, country]));
-  const rows = makeRows(metricSource, insightByIso);
+  const rows = makeRows(metricSource);
   if (rows.length !== 17 || rows.some((row) => !insightByIso.has(row.iso3))) {
     throw new Error('Country bump chart requires matching metrics and insight data for all 17 countries.');
   }
@@ -168,18 +170,18 @@ export function renderCountryBump(container, metricSource, insightData, {
   }));
   const rho = (first, second) => pearson(rows.map((row) => row.ranks[first]), rows.map((row) => row.ranks[second]));
   container.querySelector('#bump-trust-safety-rho').textContent = `ρ = ${rho('trust', 'safetyConfidence').toFixed(2)}`;
-  container.querySelector('#bump-trust-use-rho').textContent = `ρ = ${rho('trust', 'useIntention').toFixed(2)}`;
+  container.querySelector('#bump-trust-use-rho').textContent = `ρ = ${rho('trust', 'adoption').toFixed(2)}`;
 
   const width = Math.max(480, Math.floor(chartHost.clientWidth || container.clientWidth || 720));
   const height = 370;
-  const margin = { top: 72, right: 62, bottom: 34, left: 58 };
+  const margin = { top: 72, right: 112, bottom: 34, left: 58 };
   const top = margin.top, bottom = height - margin.bottom;
   const x = d3.scalePoint().domain(AXES.map((axis) => axis.key)).range([margin.left, width - margin.right]);
   const y = d3.scaleLinear().domain([1, rows.length]).range([top, bottom]);
   const svg = d3.select(chartHost).selectAll('svg').data([null]).join('svg')
     .attr('class', 'country-bump-svg').attr('width', width).attr('height', height)
     .attr('viewBox', `0 0 ${width} ${height}`).attr('role', 'img')
-    .attr('aria-label', 'Bump chart ranking 17 countries by trust, safety confidence and willingness to use. Rank 1 is the most positive score. Vertical brushing selects a range of country ranks.');
+    .attr('aria-label', 'Bump chart ranking 17 countries by trust, safety confidence and overall adoption intention. Rank 1 is the most positive score. Vertical brushing selects a range of country ranks.');
   svg.selectAll('*').remove();
 
   const grid = svg.append('g').attr('class', 'bump-rank-grid');
@@ -202,19 +204,22 @@ export function renderCountryBump(container, metricSource, insightData, {
     .attr('class', 'bump-country-line').attr('data-country', (row) => row.iso3)
     .attr('d', (row) => line(AXES.map((axis) => ({ key: axis.key, rank: row.ranks[axis.key] }))))
     .attr('tabindex', 0)
-    .attr('aria-label', (row) => `${row.name}: trust rank ${row.ranks.trust}; safety confidence rank ${row.ranks.safetyConfidence}; willingness to use rank ${row.ranks.useIntention}.`)
+    .attr('aria-label', (row) => `${row.name}: trust rank ${row.ranks.trust}; safety confidence rank ${row.ranks.safetyConfidence}; overall adoption intention rank ${row.ranks.adoption}.`)
     .on('mouseenter focus', (event, row) => {
       hoveredIso = row.iso3;
       const hasBrush = [...ranges.values()].some(Boolean);
       pathLines.classed('is-hovered', (d) => d.iso3 === hoveredIso)
         .classed('is-muted', (d) => d.iso3 !== hoveredIso && (!hasBrush || !selectedIso.has(d.iso3)));
+      countryLabels.classed('is-hovered', (d) => d.iso3 === hoveredIso)
+        .classed('is-muted', (d) => d.iso3 !== hoveredIso && (!hasBrush || !selectedIso.has(d.iso3)));
       onCountryHover(row.iso3);
-      tooltip.html(`<strong>${row.name}</strong><br>Trust: ${row.scores.trust.toFixed(2)} / 5 · rank ${row.ranks.trust}<br>Safety confidence: ${row.scores.safetyConfidence.toFixed(2)} / 5 · rank ${row.ranks.safetyConfidence}<br>Willingness to use: ${row.scores.useIntention.toFixed(2)} / 5 · rank ${row.ranks.useIntention}<br>Respondents: ${row.n.toLocaleString()}`).style('opacity', 1).style('left', '8px').style('top', '8px');
+      tooltip.html(`<strong>${row.name}</strong><br>Trust: ${row.scores.trust.toFixed(2)} / 5 · rank ${row.ranks.trust}<br>Safety confidence: ${row.scores.safetyConfidence.toFixed(2)} / 5 · rank ${row.ranks.safetyConfidence}<br>Overall adoption intention: ${row.scores.adoption.toFixed(2)} / 5 · rank ${row.ranks.adoption}<br>Respondents: ${row.n.toLocaleString()}`).style('opacity', 1).style('left', '8px').style('top', '8px');
     })
     .on('mouseleave blur', () => {
       hoveredIso = null;
       const hasBrush = [...ranges.values()].some(Boolean);
       pathLines.classed('is-hovered', false).classed('is-muted', (row) => hasBrush && !selectedIso.has(row.iso3));
+      countryLabels.classed('is-hovered', false).classed('is-muted', (row) => hasBrush && !selectedIso.has(row.iso3));
       onCountryHover(null);
       tooltip.style('opacity', 0);
     })
@@ -226,6 +231,9 @@ export function renderCountryBump(container, metricSource, insightData, {
       .attr('class', `bump-country-point point-${axis.key}`).attr('cx', x(axis.key))
       .attr('cy', (row) => y(row.ranks[axis.key])).attr('r', 3.8).attr('aria-hidden', 'true');
   });
+  const countryLabels = svg.append('g').attr('class', 'bump-country-labels').selectAll('text').data(rows).join('text')
+    .attr('class', 'bump-country-label').attr('x', x('adoption') + 8)
+    .attr('y', (row) => y(row.ranks.adoption) + 4).attr('aria-hidden', 'true').text((row) => row.name);
 
   function openInsights(focusRows, title, copy) {
     const focusIso = new Set(focusRows.map((row) => row.iso3));
@@ -258,6 +266,8 @@ export function renderCountryBump(container, metricSource, insightData, {
       : [];
     selectedIso.clear(); matches.forEach((row) => selectedIso.add(row.iso3));
     pathLines.classed('is-selected', (row) => hasBrush && selectedIso.has(row.iso3))
+      .classed('is-muted', (row) => hoveredIso ? row.iso3 !== hoveredIso && (!hasBrush || !selectedIso.has(row.iso3)) : hasBrush && !selectedIso.has(row.iso3));
+    countryLabels.classed('is-selected', (row) => hasBrush && selectedIso.has(row.iso3))
       .classed('is-muted', (row) => hoveredIso ? row.iso3 !== hoveredIso && (!hasBrush || !selectedIso.has(row.iso3)) : hasBrush && !selectedIso.has(row.iso3));
     pointLayer.selectAll('.bump-country-point').classed('is-selected', (row) => hasBrush && selectedIso.has(row.iso3))
       .classed('is-muted', (row) => hasBrush && !selectedIso.has(row.iso3));

@@ -47,7 +47,7 @@ function countryBumpStep() {
       <p class="kicker">Finding 04 <span>/ 04</span></p>
       <h2 id="country-bump-title">Trust and safety shape AV acceptance differently across countries</h2>
 <p>Each line follows one country across three rankings. Rank 1 is the most positive score. Safety confidence is reverse-scored from concerns about safety, system failures and taking back control, so a higher score means fewer concerns.</p>
-<p class="callout">Across the 17 country averages, trust aligns more closely with willingness to use, while safety concerns show a weaker association with stated intention to use. This suggests that trust and safety shape AV acceptance differently across countries. This is a descriptive country-level pattern, not evidence that either measure causes acceptance.</p>
+<p class="callout">Across the 17 country averages, trust aligns more closely with overall adoption intention, while safety concerns show a weaker association with it. This suggests that trust and safety shape AV acceptance differently across countries. This is a descriptive country-level pattern, not evidence that either measure causes acceptance.</p>
 <div class="bump-howto">
         <strong>How to explore</strong>
         <ol>
@@ -67,7 +67,7 @@ function countryBumpStep() {
             <div class="chart bump-chart-host" id="bump-chart-svg"></div>
             <div class="bump-correlation-strip" aria-label="Country-level rank correlations">
               <span>Trust ↔ safety confidence <strong id="bump-trust-safety-rho">ρ = ...</strong></span>
-              <span>Trust ↔ willingness <strong id="bump-trust-use-rho">ρ = ...</strong></span>
+              <span>Trust ↔ overall adoption intention <strong id="bump-trust-use-rho">ρ = ...</strong></span>
               <span class="bump-correlation-note">Spearman rank correlation · 17 country averages</span>
             </div>
             <div class="bump-selection-toolbar">
@@ -112,7 +112,7 @@ function buildPage(stats, total) {
     <section class="step step-intro" data-nav="Intro" aria-label="Introduction"><div class="hud"><p>Designing a self-driving car means designing for how people feel about it: whether they trust it, whether they feel safe in it, and whether those feelings hold from one market to the next. We looked at <strong>${total.toLocaleString()} survey responses from 17 countries</strong> to see where they line up and where they don't.</p></div></section>
     ${willingnessIntroStep(stats)}
     ${chartStep('country-trust', '02', 'By country', 'How does acceptance vary across countries?', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of seven measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles', false)}
-    ${chartStep('commercial-gap', '03', 'Use vs buy', 'People might like using automated cars, but not buying', 'Use and purchase are not the same decision. Compare each country’s average intention to use and to buy. Filter by age and income to see how the commercial gap changes.', 'Use the age and income filters together. Hover or focus a dot for its sample size and use-to-buy gap. Reset to compare all respondents.', 'Intention to use vs. intention to buy')}
+    ${chartStep('commercial-gap', '03', 'Use vs buy', 'People might like using automated cars, but not buying', 'Use and purchase are not the same decision. Compare each country’s average intention to use and to buy. Filter by age and income to see how the commercial gap changes.', 'Use the age and income filters together. Hover or focus a dot for its sample size and use-to-buy gap. Reset to compare all respondents.', 'Intention to use vs. intention to buy', false)}
     ${countryBumpStep()}
     <section class="step" data-nav="Takeaways" aria-labelledby="takeaways-title"><article class="screen screen-left"><p class="kicker">Destination</p><h2 id="takeaways-title">What should AV teams remember?</h2><p>Trust, safety confidence, readiness and ownership are related, but they are not interchangeable.</p><p class="howto">Use the dashboard route to revisit any finding.</p></article><div class="screen screen-right"><ol class="takeaways"><li><div><strong>Start with trust.</strong> Countries with higher average trust also report higher willingness to use.</div></li><li><div><strong>Separate trust from safety confidence.</strong> The country rankings diverge, so strong trust should not be treated as evidence of low safety concern.</div></li><li><div><strong>Look beyond a global average.</strong> Country profiles reveal differences by age, secondary activities, and awareness.</div></li><li><div><strong>Separate use from ownership.</strong> Explore how the use-to-buy gap changes with age and income.</div></li></ol></div></section>
     <section class="step step-last" data-nav="Data" aria-labelledby="methods-title"><article class="screen screen-left"><p class="kicker">Parked</p><h2 id="methods-title">Data and methods</h2><p><strong>Source:</strong> L3Pilot Global User Acceptance Survey, Phase 1. ${total.toLocaleString()} responses from 17 countries.</p><p>Likert-based measures use the original five-point agreement scale. Prior awareness and L3 capability knowledge are percentages. Blank values and non-scale code 6 are excluded from Likert averages.</p><p>The source does not name motorway, urban, or traffic-jam conditions, so these charts do not assign driving-context labels.</p></article><div class="screen screen-right methods-screen"><div class="links"><a class="link-card" href="/data/l3pilot_clean.json" download>Cleaned survey data<span>JSON ↓</span></a><a class="link-card" href="/data/country_metrics.json" download>Country metrics<span>JSON ↓</span></a><a class="link-card" href="/data/respondents.json" download>Respondent extract<span>JSON ↓</span></a><a class="link-card" href="/docs/DATA_DICTIONARY.md">Data dictionary<span>Read ↗</span></a><a class="link-card" href="/docs/PROCESS_BOOK.md">Process book<span>Read ↗</span></a><a class="link-card" href="/data/l3pilot_labeled.xlsx" download>Raw workbook<span>XLSX ↓</span></a></div><p class="credits">Team Nulls · ${team}.<br>CS 6730 Data Visualization. Built with D3.js. Map: Natural Earth.</p><button class="start-cue small" type="button" data-goto="0">Back to the start ↑</button></div></section>
@@ -182,10 +182,6 @@ async function initialize() {
   const stats = getStoryboardStats(data);
   buildPage(stats, data.length);
   let layoutHarness = null;
-  if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('layoutHarness') === '1') {
-    const { initLayoutHarness } = await import('./dev/layoutHarness.js');
-    layoutHarness = initLayoutHarness();
-  }
   renderWillingnessCars(requireElement('#willingness-intro-chart'), stats);
   const map = requireElement('#country-trust-chart');
   map.closest('.chart-scroll')?.classList.add('map-chart-scroll');
@@ -236,8 +232,22 @@ async function initialize() {
       document.querySelector('[data-previous]').disabled = index === 0;
       document.querySelector('[data-next]').disabled = index === steps.length - 1;
       layoutHarness?.setActiveSection(steps[index]);
-    }
+      layoutHarness?.setScrollStatus();
+    },
+    onScrollStateChange() { layoutHarness?.setScrollStatus(); },
   });
+  if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('layoutHarness') === '1') {
+    const { initLayoutHarness } = await import('./dev/layoutHarness.js');
+    layoutHarness = initLayoutHarness({
+      scrollDefaults: cockpit.getScrollTuning(),
+      onScrollTuningChange: (tuning) => cockpit.setScrollTuning(tuning),
+      onPreviousChapter: () => cockpit.goTo(cockpit.active - 1),
+      onNextChapter: () => cockpit.goTo(cockpit.active + 1),
+      getScrollStatus: () => ({ active: cockpit.active, locked: cockpit.isScrollLocked() }),
+    });
+    layoutHarness.setActiveSection(steps[cockpit.active]);
+    layoutHarness.setScrollStatus();
+  }
   document.querySelector('[data-previous]').addEventListener('click', () => cockpit.goTo(cockpit.active - 1));
   document.querySelector('[data-next]').addEventListener('click', () => cockpit.goTo(cockpit.active + 1));
   document.querySelectorAll('[data-goto]').forEach((button) => button.addEventListener('click', () => cockpit.goTo(Number(button.dataset.goto))));

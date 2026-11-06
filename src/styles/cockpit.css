@@ -234,7 +234,7 @@ a { color: var(--accent); }
 .is-active .screen { opacity: 1; pointer-events: auto; transform: perspective(1400px) translateX(0) rotateY(0); }
 .is-active .screen-right { transition-delay: .1s; }
 
-.kicker { margin: 0 0 8px; font: 600 12px var(--ui); letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+.kicker { margin: 0 0 8px; font: 600 14px var(--font-mono); letter-spacing: .01em; text-transform: none; color: var(--accent); }
 .screen-left .kicker { margin-bottom: var(--copy-eyebrow-to-title); }
 .kicker span { color: var(--ink-3); }
 .screen-left h2 { margin: 0 0 var(--copy-title-to-body); font: 600 var(--copy-title-size)/1.12 var(--display); letter-spacing: -.003em; color: #fff; }

@@ -42,7 +42,7 @@ function asPixels(value, fallback) {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
-export function initLayoutHarness() {
+export function initLayoutHarness({ scrollDefaults = {}, onScrollTuningChange = () => {}, onPreviousChapter = () => {}, onNextChapter = () => {}, getScrollStatus = () => ({ active: 0, locked: false }) } = {}) {
   if (document.querySelector('.layout-harness')) return null;
   const root = document.documentElement;
   const wheel = document.querySelector('.wheel-wrap');
@@ -57,6 +57,8 @@ export function initLayoutHarness() {
     wheelOffset: asPixels(computed.getPropertyValue('--wheel-y-offset'), 45),
   };
   const layout = { ...layoutDefaults, ...(stored.layout || stored) };
+  const scrollProductionDefaults = { threshold: 80, lockDuration: 500, smoothDuration: 550, ...scrollDefaults };
+  const scroll = { ...scrollProductionDefaults, ...(stored.scroll || {}) };
   let sections = stored.sections && typeof stored.sections === 'object' ? stored.sections : {};
   let activeId = null;
   const records = new Map();
@@ -76,6 +78,11 @@ export function initLayoutHarness() {
     <label><span class="layout-harness-label">Wheel diameter <output data-value="wheel"></output></span><input data-control="wheel" type="range" min="120" max="460" step="5"></label>
     <label><span class="layout-harness-label">Wheel Y offset <output data-value="wheelOffset"></output></span><input data-control="wheelOffset" type="range" min="-160" max="260" step="5"></label>
     <div class="layout-harness-actions"><button type="button" data-action="reset-layout">Reset layout</button><button type="button" data-action="copy-layout">Copy layout</button></div>
+    <h3>Scroll tuning</h3><p class="layout-harness-scroll-status" aria-live="polite"></p>
+    <label><span class="layout-harness-label">Chapter-step threshold <output data-value="threshold"></output></span><input data-scroll-control="threshold" type="range" min="40" max="400" step="5"></label>
+    <label><span class="layout-harness-label">Navigation lock duration <output data-value="lockDuration"></output></span><input data-scroll-control="lockDuration" type="range" min="150" max="1200" step="25"></label>
+    <label><span class="layout-harness-label">Smooth-scroll duration <output data-value="smoothDuration"></output></span><input data-scroll-control="smoothDuration" type="range" min="0" max="1200" step="25"></label>
+    <div class="layout-harness-actions"><button type="button" data-action="previous-chapter">Previous chapter</button><button type="button" data-action="next-chapter">Next chapter</button><button type="button" data-action="reset-scroll">Reset scroll</button></div>
     <h3>Section copy</h3><p class="layout-harness-status">Active section: none</p>
     <div data-section-controls>
       <label><span class="layout-harness-label">Title size <output data-value="titleSize"></output></span><input data-type="typography" data-control="titleSize" type="range" min="16" max="44" step="1"></label>
@@ -97,6 +104,7 @@ export function initLayoutHarness() {
   document.body.append(toggle, panel);
 
   const layoutInputs = Object.fromEntries([...panel.querySelectorAll('input[data-control]:not([data-type="typography"])')].map((input) => [input.dataset.control, input]));
+  const scrollInputs = Object.fromEntries([...panel.querySelectorAll('input[data-scroll-control]')].map((input) => [input.dataset.scrollControl, input]));
   const sectionInputs = Object.fromEntries([...panel.querySelectorAll('input[data-type="typography"]')].map((input) => [input.dataset.control, input]));
   panel.querySelectorAll('input[data-spacing]').forEach((input) => {
     input.min = '0';
@@ -108,13 +116,14 @@ export function initLayoutHarness() {
   const sectionControls = panel.querySelector('[data-section-controls]');
   const summary = panel.querySelector('.layout-harness-values');
   const activeLabel = panel.querySelector('.layout-harness-status');
+  const scrollStatus = panel.querySelector('.layout-harness-scroll-status');
   const jsonInput = panel.querySelector('[data-json]');
   const jsonStatus = panel.querySelector('.layout-harness-json-status');
   const desktopLayout = window.matchMedia('(min-width: 761px) and (min-height: 561px)');
   let showing = true;
 
   function persist() {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ layout, sections }));
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ layout, scroll, sections }));
   }
   function availablePanelWidth() {
     const left = document.querySelector('.screen-left').getBoundingClientRect();
@@ -126,6 +135,19 @@ export function initLayoutHarness() {
     outputs.copy.textContent = `${layout.copy}%`; outputs.dashboard.textContent = `${layout.dashboard}vh`;
     outputs.wheel.textContent = `${layout.wheel}px`; outputs.wheelOffset.textContent = `${layout.wheelOffset}px`;
     summary.textContent = `Copy: ${layout.copy}% | Visualization: ${100 - layout.copy}%`;
+  }
+  function updateScrollControls() {
+    Object.entries(scrollInputs).forEach(([key, input]) => { input.value = scroll[key]; });
+    outputs.threshold.textContent = `${scroll.threshold}px`;
+    outputs.lockDuration.textContent = `${scroll.lockDuration}ms`;
+    outputs.smoothDuration.textContent = `${scroll.smoothDuration}ms`;
+    const status = getScrollStatus();
+    scrollStatus.textContent = `Active chapter: ${(status.active ?? 0) + 1} | ${status.locked ? 'Navigation locked' : 'Ready'}`;
+  }
+  function applyScroll(next = {}, save = true) {
+    Object.assign(scroll, next);
+    onScrollTuningChange({ ...scroll });
+    updateScrollControls(); if (save) persist();
   }
   function applyLayout(next = {}, save = true) {
     Object.assign(layout, next);
@@ -205,6 +227,7 @@ export function initLayoutHarness() {
   function activeRecord() { return records.get(activeId) || null; }
 
   Object.entries(layoutInputs).forEach(([key, input]) => input.addEventListener('input', () => applyLayout({ [key]: Number(input.value) })));
+  Object.entries(scrollInputs).forEach(([key, input]) => input.addEventListener('input', () => applyScroll({ [key]: Number(input.value) })));
   Object.entries(sectionInputs).forEach(([key, input]) => input.addEventListener('input', () => {
     const record = activeRecord(); if (!record) return;
     sections[record.id] = { ...sectionConfig(record.id), typography: { ...(sectionConfig(record.id).typography || {}), [key]: `${input.value}px` } };
@@ -230,35 +253,44 @@ export function initLayoutHarness() {
     await copyText(`:root {\n  --copy-panel-percent: ${layout.copy};\n  --dashboard-height: ${layout.dashboard}vh;\n  --wheel-size: ${layout.wheel}px;\n  --wheel-y-offset: ${layout.wheelOffset}px;\n}`);
     event.currentTarget.textContent = 'Copied'; window.setTimeout(() => { event.currentTarget.textContent = 'Copy layout'; }, 1200);
   });
+  panel.querySelector('[data-action="previous-chapter"]').addEventListener('click', () => { onPreviousChapter(); updateScrollControls(); });
+  panel.querySelector('[data-action="next-chapter"]').addEventListener('click', () => { onNextChapter(); updateScrollControls(); });
+  panel.querySelector('[data-action="reset-scroll"]').addEventListener('click', () => applyScroll(scrollProductionDefaults));
   panel.querySelector('[data-action="reset-section"]').addEventListener('click', () => {
     const record = activeRecord(); if (!record) return;
     delete sections[record.id]; applyRecord(record); updateSectionControls(record); persist();
   });
   panel.querySelector('[data-action="reset-all"]').addEventListener('click', () => {
-    sections = {}; Object.assign(layout, layoutDefaults);
+    sections = {}; Object.assign(layout, layoutDefaults); Object.assign(scroll, scrollProductionDefaults);
     ['--copy-panel-percent', '--copy-panel-width', '--dashboard-height', '--wheel-size', '--wheel-y-offset'].forEach((key) => root.style.removeProperty(key));
-    records.forEach((record) => applyRecord(record)); updateLayoutControls(); updateSectionControls(activeRecord()); persist();
+    records.forEach((record) => applyRecord(record)); onScrollTuningChange({ ...scroll }); updateLayoutControls(); updateScrollControls(); updateSectionControls(activeRecord()); persist();
   });
   panel.querySelector('[data-action="apply-json"]').addEventListener('click', () => {
     try {
       const parsed = JSON.parse(jsonInput.value);
       if (!parsed || Array.isArray(parsed) || typeof parsed !== 'object') throw new Error('JSON must be an object keyed by actual chapter IDs.');
-      sections = parsed; records.forEach((record) => applyRecord(record)); updateSectionControls(activeRecord()); persist();
+      const configuration = 'sections' in parsed || 'layout' in parsed || 'scroll' in parsed;
+      sections = configuration ? (parsed.sections || {}) : parsed;
+      if (configuration && parsed.layout && typeof parsed.layout === 'object') Object.assign(layout, parsed.layout);
+      if (configuration && parsed.scroll && typeof parsed.scroll === 'object') Object.assign(scroll, parsed.scroll);
+      records.forEach((record) => applyRecord(record)); applyLayout({}, false); applyScroll({}, false); updateSectionControls(activeRecord()); persist();
       jsonStatus.textContent = 'Section JSON applied.';
     } catch (error) { jsonStatus.textContent = `JSON error: ${error.message}`; }
   });
   panel.querySelector('[data-action="export-json"]').addEventListener('click', async (event) => {
-    await copyText(JSON.stringify(sections, null, 2));
+    await copyText(JSON.stringify({ layout, scroll, sections }, null, 2));
     event.currentTarget.textContent = 'Copied'; window.setTimeout(() => { event.currentTarget.textContent = 'Copy configuration'; }, 1200);
   });
   panel.querySelector('[data-action="clear-storage"]').addEventListener('click', () => {
-    sections = {}; Object.assign(layout, layoutDefaults); window.localStorage.removeItem(STORAGE_KEY);
+    sections = {}; Object.assign(layout, layoutDefaults); Object.assign(scroll, scrollProductionDefaults); window.localStorage.removeItem(STORAGE_KEY);
     ['--copy-panel-percent', '--copy-panel-width', '--dashboard-height', '--wheel-size', '--wheel-y-offset'].forEach((key) => root.style.removeProperty(key));
-    records.forEach((record) => applyRecord(record)); updateLayoutControls(); updateSectionControls(activeRecord());
+    records.forEach((record) => applyRecord(record)); onScrollTuningChange({ ...scroll }); updateLayoutControls(); updateScrollControls(); updateSectionControls(activeRecord());
     jsonStatus.textContent = 'Stored development overrides cleared.';
   });
 
   applyLayout(layout, false);
+  applyScroll(scroll, false);
   updateSectionControls(null);
-  return { setActiveSection };
+  updateScrollControls();
+  return { setActiveSection, setScrollStatus: updateScrollControls };
 }

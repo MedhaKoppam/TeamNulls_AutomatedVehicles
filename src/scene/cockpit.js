@@ -9,11 +9,14 @@
      • route screen: click a stop to jump there
    ===================================================================== */
 
+const DEFAULT_SCROLL_TUNING = Object.freeze({ threshold: 80, lockDuration: 500, smoothDuration: 550 });
+
 export class Cockpit {
-  constructor({ steps, road, onStepChange }) {
+  constructor({ steps, road, onStepChange, onScrollStateChange }) {
     this.steps = steps;
     this.road = road;
     this.onStepChange = onStepChange || (() => {});
+    this.onScrollStateChange = onScrollStateChange || (() => {});
     this.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     this.wheelEl = document.getElementById("wheel");
@@ -26,6 +29,17 @@ export class Cockpit {
     this.lastScrollAt = 0;
     this.active = -1;
     this.running = false;
+    this.scrollTuning = { ...DEFAULT_SCROLL_TUNING };
+    this.wheelAccumulator = 0;
+    this.wheelGestureActive = false;
+    this.scrollLocked = false;
+    this.scrollSettled = true;
+    this.lockDirection = 0;
+    this.lockUntil = 0;
+    this.wheelGestureTimer = null;
+    this.unlockTimer = null;
+    this.scrollAnimation = null;
+    this.desktopWheelQuery = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 761px)');
 
     this.buildWheel();
     this.buildNav();
@@ -35,6 +49,100 @@ export class Cockpit {
 
     window.addEventListener("scroll", () => { this.lastScrollAt = performance.now(); this.kick(); }, { passive: true });
     window.addEventListener("resize", () => { this.measure(); this.update(true); this.road.draw(); });
+    window.addEventListener('wheel', (event) => this.handleWheel(event), { passive: false });
+  }
+
+  getScrollTuning() { return { ...this.scrollTuning }; }
+
+  setScrollTuning(next = {}) {
+    const clamp = (value, minimum, maximum, fallback) => Math.max(minimum, Math.min(maximum, Number.isFinite(Number(value)) ? Number(value) : fallback));
+    this.scrollTuning.threshold = clamp(next.threshold ?? this.scrollTuning.threshold, 40, 400, DEFAULT_SCROLL_TUNING.threshold);
+    this.scrollTuning.lockDuration = clamp(next.lockDuration ?? this.scrollTuning.lockDuration, 150, 1200, DEFAULT_SCROLL_TUNING.lockDuration);
+    this.scrollTuning.smoothDuration = clamp(next.smoothDuration ?? this.scrollTuning.smoothDuration, 0, 1200, DEFAULT_SCROLL_TUNING.smoothDuration);
+    return this.getScrollTuning();
+  }
+
+  isScrollLocked() { return this.scrollLocked; }
+
+  notifyScrollState() { this.onScrollStateChange({ active: this.active, locked: this.scrollLocked }); }
+
+  normalizedWheelDelta(event) {
+    const factor = event.deltaMode === WheelEvent.DOM_DELTA_LINE ? 16 : event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? innerHeight : 1;
+    return event.deltaY * factor;
+  }
+
+  isInsideVerticallyScrollablePanel(target) {
+    let node = target instanceof Element ? target : document.activeElement;
+    while (node && node !== document.body) {
+      const style = getComputedStyle(node);
+      const scrollable = /(auto|scroll|overlay)/.test(style.overflowY) && node.scrollHeight > node.clientHeight + 1;
+      if (scrollable) return true;
+      node = node.parentElement;
+    }
+    return false;
+  }
+
+  isProtectedControl(target) {
+    const controlSelector = 'button, a, input, select, textarea, [contenteditable="true"], [role="button"], [role="textbox"], [role="combobox"], [role="listbox"]';
+    return Boolean(target instanceof Element && target.closest(controlSelector));
+  }
+
+  endWheelGesture() {
+    this.wheelGestureActive = false;
+    this.wheelAccumulator = 0;
+    this.unlockWhenReady();
+  }
+
+  unlockWhenReady() {
+    if (!this.scrollLocked || !this.scrollSettled || this.wheelGestureActive) return;
+    window.clearTimeout(this.unlockTimer);
+    const remaining = Math.max(0, this.lockUntil - performance.now());
+    this.unlockTimer = window.setTimeout(() => {
+      if (!this.scrollLocked || !this.scrollSettled || this.wheelGestureActive) return;
+      this.scrollLocked = false;
+      this.lockDirection = 0;
+      this.notifyScrollState();
+    }, remaining);
+  }
+
+  handleWheel(event) {
+    if (!this.desktopWheelQuery.matches) return;
+    if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    const delta = this.normalizedWheelDelta(event);
+    if (!delta) return;
+    const direction = Math.sign(delta);
+    // A real internal scroll region owns its wheel gesture at both edges.
+    // Leaving its bounds is the explicit handoff back to story navigation.
+    if (this.isProtectedControl(event.target) || this.isInsideVerticallyScrollablePanel(event.target)) return;
+
+    event.preventDefault();
+    this.wheelGestureActive = true;
+    window.clearTimeout(this.wheelGestureTimer);
+    this.wheelGestureTimer = window.setTimeout(() => this.endWheelGesture(), 140);
+
+    if (this.scrollLocked) {
+      if (direction !== this.lockDirection && this.scrollSettled && performance.now() >= this.lockUntil) {
+        this.scrollLocked = false;
+        this.wheelAccumulator = 0;
+        this.notifyScrollState();
+      } else return;
+    }
+
+    this.wheelAccumulator += delta;
+    if (Math.abs(this.wheelAccumulator) < this.scrollTuning.threshold) return;
+    const next = Math.max(0, Math.min(this.steps.length - 1, this.active + direction));
+    this.wheelAccumulator = 0;
+    if (next === this.active) return;
+
+    this.scrollLocked = true;
+    this.scrollSettled = false;
+    this.lockDirection = direction;
+    this.lockUntil = performance.now() + this.scrollTuning.lockDuration;
+    this.notifyScrollState();
+    this.goTo(next).finally(() => {
+      this.scrollSettled = true;
+      this.unlockWhenReady();
+    });
   }
 
   // ---------- steering wheel (SVG) ----------
@@ -195,10 +303,38 @@ export class Cockpit {
   }
 
   goTo(i) {
+    this.measure();
     const s = this.steps[Math.max(0, Math.min(this.steps.length - 1, i))];
     // land a little into the section so its screens are fully open
-    const y = i === 0 ? 0 : s.offsetTop + innerHeight * 0.05;
-    window.scrollTo({ top: y, behavior: this.reduced ? "auto" : "smooth" });
+    const y = Math.max(0, Math.min(this.maxScroll, i === 0 ? 0 : s.offsetTop + innerHeight * 0.05));
+    return this.scrollTo(y);
+  }
+
+  scrollTo(targetY) {
+    if (this.scrollAnimation) {
+      cancelAnimationFrame(this.scrollAnimation.frame);
+      this.scrollAnimation.resolve();
+      this.scrollAnimation = null;
+    }
+    const duration = this.reduced ? 0 : this.scrollTuning.smoothDuration;
+    if (!duration || Math.abs(window.scrollY - targetY) < 1) {
+      window.scrollTo(0, targetY);
+      this.update(true);
+      return Promise.resolve();
+    }
+    const startY = window.scrollY;
+    const startTime = performance.now();
+    return new Promise((resolve) => {
+      const finish = () => { this.scrollAnimation = null; this.update(true); resolve(); };
+      const tick = (now) => {
+        const progress = Math.min(1, (now - startTime) / duration);
+        const eased = 1 - (1 - progress) ** 3;
+        window.scrollTo(0, startY + (targetY - startY) * eased);
+        if (progress < 1) this.scrollAnimation.frame = requestAnimationFrame(tick);
+        else finish();
+      };
+      this.scrollAnimation = { frame: requestAnimationFrame(tick), resolve };
+    });
   }
 }
 

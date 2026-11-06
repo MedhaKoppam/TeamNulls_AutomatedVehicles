@@ -4,13 +4,13 @@
 .chart-meta { display: none; }
 .micro-label { color: var(--text-muted); font: 500 11px var(--ui); letter-spacing: .09em; text-transform: uppercase; }
 .metric-selector { display: flex; flex-wrap: wrap; gap: 6px; }
-.metric-button, .country-back, .commercial-reset, .commercial-segmented button {
+.metric-button, .country-back, .commercial-segmented button {
   border: 1px solid var(--border-subtle); border-radius: var(--radius-pill);
   padding: 7px 11px; background: var(--bg-raised); color: var(--text-secondary);
   font: 500 12px var(--ui); cursor: pointer;
   transition: border-color var(--duration) var(--ease), background var(--duration) var(--ease);
 }
-.metric-button:hover, .commercial-segmented button:hover, .commercial-reset:hover, .country-back:hover { border-color: var(--accent); color: var(--text-primary); }
+.metric-button:hover, .commercial-segmented button:hover, .country-back:hover { border-color: var(--accent); color: var(--text-primary); }
 .map-profile-title-back {
   display: inline-flex;
   align-items: center;
@@ -101,6 +101,9 @@
 .commercial-filter-card { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; padding: 12px; border: 1px solid var(--rule); border-radius: var(--radius-card); background: var(--glow-card); }
 .commercial-filter-heading { display: none; }
 .commercial-filter-groups { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+.commercial-reset { align-self: center; border: 0; padding: 0; background: transparent; color: var(--text-muted); font: 500 12px var(--ui); cursor: pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; }
+.commercial-reset:hover { color: var(--text-primary); text-decoration-color: currentColor; }
+.commercial-reset:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; color: var(--text-primary); text-decoration-color: currentColor; }
 .commercial-filter-group { display: grid; gap: 6px; }
 .commercial-segmented { display: flex; flex-wrap: wrap; gap: 4px; }
 .commercial-segmented button { padding: 5px 9px; }

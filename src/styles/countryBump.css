@@ -19,6 +19,10 @@
 .bump-country-point.is-selected { fill: #32ad9b; }
 .bump-country-point.is-hovered { fill: #e5a65d; }
 .bump-country-point.is-muted { opacity: .1; }
+.bump-country-label { fill: var(--text-secondary); font: 10px var(--ui); pointer-events: none; }
+.bump-country-label.is-hovered { fill: #e5a65d; font-weight: 700; }
+.bump-country-label.is-selected { fill: #32ad9b; }
+.bump-country-label.is-muted { opacity: .16; }
 .bump-brush .overlay { fill: rgba(109,167,236,.025); cursor: crosshair; }
 .bump-brush .selection { fill: rgba(109,167,236,.22); stroke: #8fc3fa; stroke-width: 1.2; }
 .bump-brush .handle { fill: #8fc3fa; stroke: #101820; stroke-width: 1; }
