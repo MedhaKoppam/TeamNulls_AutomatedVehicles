@@ -289,7 +289,7 @@ a { color: var(--accent); }
 .legend-item.dim { opacity: .35; }
 
 /* Takeaways & links */
-.takeaways { list-style: none; counter-reset: t; margin: 0; padding: 0; height: 100%; min-height: 0; display: grid; grid-template-rows: repeat(4, minmax(0, 1fr)); overflow-y: auto; }
+.takeaways { list-style: none; counter-reset: t; margin: 0; padding: 0; height: 100%; min-height: 0; display: grid; grid-template-rows: repeat(5, minmax(0, 1fr)); overflow-y: auto; }
 .takeaways li { counter-increment: t; display: grid; grid-template-columns: 58px minmax(0, 1fr); align-items: center; column-gap: 18px; min-height: 0; color: var(--ink-2); }
 .takeaways li + li { border-top: 1px solid var(--rule); }
 .takeaways li::before { content: counter(t, decimal-leading-zero); align-self: center; font: 700 34px/1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums; }
