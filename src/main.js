@@ -17,10 +17,10 @@ import { Cockpit } from './scene/cockpit.js';
 const app = requireElement('#app');
 const team = 'Medha Koppam, Akhila Gadamsetty, Vishruth Shoba Balaji, Kruthi Shetty, Dipthi Dinesh';
 
-function chartStep(id, number, nav, title, copy, howto, chartTitle) {
+function chartStep(id, number, nav, title, copy, howto, chartTitle, showFooter = true) {
   return `<section class="step chart-step" id="${id}" data-nav="${nav}" aria-labelledby="${id}-title">
     <article class="screen screen-left"><p class="kicker">Finding ${number} <span>/ 04</span></p><h2 id="${id}-title">${title}</h2><p>${copy}</p><p class="howto">${howto}</p></article>
-    <div class="screen screen-right chart-shell"><div class="screen-head"><h3>${chartTitle}</h3><span class="data-badge">L3Pilot survey</span></div><div class="chart-scroll" tabindex="0" role="region" aria-label="${chartTitle}. Scroll within this panel for the full chart."><div class="chart-meta"></div><div class="chart" id="${id}-chart"></div></div><div class="screen-foot"><span>Real survey data · 17 countries</span><span>Scroll panel to explore ↓</span></div></div>
+    <div class="screen screen-right chart-shell"><div class="screen-head"><h3>${chartTitle}</h3></div><div class="chart-scroll" tabindex="0" role="region" aria-label="${chartTitle}. Scroll within this panel for the full chart."><div class="chart-meta"></div><div class="chart" id="${id}-chart"></div></div>${showFooter ? '<div class="screen-foot"><span>Real survey data · 17 countries</span><span>Scroll panel to explore ↓</span></div>' : ''}</div>
   </section>`;
 }
 
@@ -35,7 +35,7 @@ function willingnessIntroStep(stats) {
       <p class="howto">Hover over a seat or a legend item to highlight one response group. Each car represents four seats.</p>
     </article>
     <div class="screen screen-right chart-shell willingness-shell">
-      <div class="screen-head"><h3>Every 100 respondents, seated in 25 cars</h3><span class="data-badge">L3Pilot survey</span></div>
+      <div class="screen-head"><h3>Every 100 respondents, seated in 25 cars</h3></div>
       <div class="chart-scroll willingness-scroll" tabindex="0" role="region" aria-label="A 100-seat illustration of the five-point willingness-to-use response distribution. Hover or focus a legend item to highlight its category."><div class="chart-meta"></div><div class="chart willingness-car-chart" id="willingness-intro-chart"></div></div>
     </div>
   </section>`;
@@ -111,7 +111,7 @@ function buildPage(stats, total) {
     <section class="step step-hero" data-nav="Start" aria-labelledby="page-title"><div class="hero"><p class="hero-course">CS 6730 Data Visualization &nbsp;|&nbsp; Team Nulls</p><p class="hero-team">${team}</p><h1 id="page-title">Would you get in?</h1><p class="hero-sub">How trust and safety shape acceptance of autonomous vehicles across 17 countries.</p><button class="start-cue" type="button" data-goto="1">Scroll to start the drive <span aria-hidden="true">↓</span></button></div></section>
     <section class="step step-intro" data-nav="Intro" aria-label="Introduction"><div class="hud"><p>Designing a self-driving car means designing for how people feel about it: whether they trust it, whether they feel safe in it, and whether those feelings hold from one market to the next. We looked at <strong>${total.toLocaleString()} survey responses from 17 countries</strong> to see where they line up and where they don't.</p></div></section>
     ${willingnessIntroStep(stats)}
-    ${chartStep('country-trust', '02', 'By country', 'How does acceptance vary across countries?', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of seven measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles')}
+    ${chartStep('country-trust', '02', 'By country', 'How does acceptance vary across countries?', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of seven measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles', false)}
     ${chartStep('commercial-gap', '03', 'Use vs buy', 'People might like using automated cars, but not buying', 'Use and purchase are not the same decision. Compare each country’s average intention to use and to buy. Filter by age and income to see how the commercial gap changes.', 'Use the age and income filters together. Hover or focus a dot for its sample size and use-to-buy gap. Reset to compare all respondents.', 'Intention to use vs. intention to buy')}
     ${countryBumpStep()}
     <section class="step" data-nav="Takeaways" aria-labelledby="takeaways-title"><article class="screen screen-left"><p class="kicker">Destination</p><h2 id="takeaways-title">What should AV teams remember?</h2><p>Trust, safety confidence, readiness and ownership are related, but they are not interchangeable.</p><p class="howto">Use the dashboard route to revisit any finding.</p></article><div class="screen screen-right"><ol class="takeaways"><li><div><strong>Start with trust.</strong> Countries with higher average trust also report higher willingness to use.</div></li><li><div><strong>Separate trust from safety confidence.</strong> The country rankings diverge, so strong trust should not be treated as evidence of low safety concern.</div></li><li><div><strong>Look beyond a global average.</strong> Country profiles reveal differences by age, secondary activities, and awareness.</div></li><li><div><strong>Separate use from ownership.</strong> Explore how the use-to-buy gap changes with age and income.</div></li></ol></div></section>
@@ -138,7 +138,14 @@ function renderMapSummary(container, mapData, state) {
   );
   const isPercent = metric.unit === 'percent';
   const valueLabel = (value) => isPercent ? `${value.toFixed(1)}%` : `${value.toFixed(2)} / 5`;
-  const deviationUnit = isPercent ? 'percentage points' : 'scale points';
+
+  let metricTitle = sidePane.querySelector('.map-metric-title');
+  if (!metricTitle) {
+    metricTitle = document.createElement('h3');
+    metricTitle.className = 'map-metric-title';
+    sidePane.append(metricTitle);
+  }
+  metricTitle.textContent = metric.label;
 
   let legend = sidePane.querySelector('.map-color-legend');
   if (!legend) {
@@ -149,8 +156,7 @@ function renderMapSummary(container, mapData, state) {
   }
   legend.innerHTML = `<h4>Difference from global mean</h4>
     <div class="map-color-bar" role="img" aria-label="Red means below the global mean, cream means at the mean, and teal means above the global mean. The scale is symmetric around zero."><span class="map-color-average-marker"></span></div>
-    <div class="map-color-labels"><span>−${maxDeviation.toFixed(2)}</span><span>0</span><span>+${maxDeviation.toFixed(2)}</span></div>
-    <p>Red: below · Cream: at · Teal: above. Global mean: ${valueLabel(average)}. Range: ±${maxDeviation.toFixed(2)} ${deviationUnit}.</p>`;
+    <div class="map-color-labels"><span>−${maxDeviation.toFixed(2)}</span><span>0</span><span>+${maxDeviation.toFixed(2)}</span></div>`;
   legend.querySelector('.map-color-bar').style.background =
     'linear-gradient(90deg, #d95f59 0%, #f0d58a 50%, #278c78 100%)';
   legend.querySelector('.map-color-average-marker').style.left = '50%';
@@ -195,6 +201,24 @@ async function initialize() {
   const updateMap = (state) => {
     renderCountryDrilldown(map, mapData, state, actions);
     renderMapSummary(map, mapData, state);
+    const mapHead = map.closest('.chart-shell')?.querySelector('.screen-head');
+    const selected = Object.values(mapData.metrics.countries).find((country) => country.iso3 === state.selectedCountry);
+    if (mapHead) {
+      if (selected) {
+        const back = document.createElement('button');
+        back.type = 'button';
+        back.className = 'map-profile-title-back';
+        back.innerHTML = '<span class="map-profile-title-chevron" aria-hidden="true">‹</span><span class="map-profile-title-name"></span>';
+        back.querySelector('.map-profile-title-name').textContent = selected.name;
+        back.setAttribute('aria-label', `Return to world map from ${selected.name} profile`);
+        back.addEventListener('click', () => setSelectedCountry(null));
+        mapHead.replaceChildren(back);
+      } else {
+        const title = document.createElement('h3');
+        title.textContent = 'Global patterns and country profiles';
+        mapHead.replaceChildren(title);
+      }
+    }
     syncBumpHighlightsToMap();
   };
   subscribe(updateMap);

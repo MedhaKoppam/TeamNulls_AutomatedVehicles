@@ -11,6 +11,22 @@
   transition: border-color var(--duration) var(--ease), background var(--duration) var(--ease);
 }
 .metric-button:hover, .commercial-segmented button:hover, .commercial-reset:hover, .country-back:hover { border-color: var(--accent); color: var(--text-primary); }
+.map-profile-title-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 auto 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: 600 16px var(--ui);
+  text-align: left;
+}
+.map-profile-title-chevron { font: 600 24px/1 var(--display); }
+.map-profile-title-name { font: inherit; }
+.map-profile-title-back:hover { color: var(--accent); }
+.map-profile-title-back:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .metric-button.active, .commercial-segmented button.is-active { background: #253246; border-color: var(--accent); color: #fff; }
 .metric-description { color: var(--text-muted); font-size: 12px; margin: 10px 0 14px; }
 .global-summary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-bottom: 14px; }
@@ -19,7 +35,26 @@
 .global-summary span:last-child { color: var(--ink-3); font: 12px var(--ui); }
 .country { cursor: default; stroke: #4a555e; stroke-width: .6; }
 .country[role='button'] { cursor: pointer; }
-.country.hovered { stroke: var(--accent); stroke-width: 1.8; }
+.country.is-muted { opacity: .16; }
+.country.hovered, .country.is-hovered, .country[role='button']:focus-visible {
+  stroke: #fff;
+  stroke-width: 2.2;
+  vector-effect: non-scaling-stroke;
+  outline: none;
+}
+.map-hover-label {
+  position: absolute;
+  z-index: 8;
+  pointer-events: none;
+  max-width: calc(100% - 12px);
+  padding: 4px 7px;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 4px;
+  background: rgba(13,17,23,.94);
+  color: var(--text-primary);
+  font: 500 12px/1.3 var(--ui);
+  white-space: nowrap;
+}
 .map-legend text, .rank-name { fill: var(--text-secondary); font: 12px var(--ui); }
 .ranking-strip { border-top: 1px solid var(--rule); padding: 14px 0; }
 .ranking-strip h3 { margin: 0 0 10px; color: var(--ink-2); font: 500 13px var(--ui); text-transform: uppercase; letter-spacing: .1em; }
@@ -27,18 +62,10 @@
 .rank-bar:hover, .rank-bar.selected { opacity: 1; stroke: var(--accent); }
 .drilldown-stage { transition: opacity var(--duration-view) var(--ease); }
 .drilldown-stage.is-changing { opacity: 0; }
-.profile-back-row { padding: 0 0 12px; }
-.country-back { display: inline-flex; gap: 8px; align-items: center; }
 .profile-body { display: grid; grid-template-columns: 1fr; gap: 14px; }
-.profile-rail { display: grid; grid-template-columns: 90px 1fr; column-gap: 16px; padding: 12px; border: 1px solid var(--rule); border-radius: var(--radius-card); background: var(--bg-raised); }
-.country-silhouette { width: 90px; height: 80px !important; grid-row: 1 / 5; }
-.silhouette-path { fill: var(--accent); stroke: #cde2fb; stroke-width: .75; }
-.profile-rail h3 { font: 600 24px var(--display); margin: 0; }
-.rail-meta, .rail-rank { font: 12px var(--ui); color: var(--text-secondary); margin: 2px 0; }
-.rail-rank { color: var(--accent); }
 .profile-panels { display: grid; grid-template-columns: 1fr; gap: 14px; }
-.profile-panel { position: relative; min-width: 0; padding: 24px; overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius-card); background: var(--glow-card), var(--bg-card); }
-.profile-panel svg { width: auto; max-width: none; }
+.profile-panel { position: relative; min-width: 0; padding: 16px; overflow: visible; border: 1px solid var(--rule); border-radius: var(--radius-card); background: var(--glow-card), var(--bg-card); }
+.profile-panel svg { width: 100%; max-width: 100%; height: auto; }
 .panel-title { fill: var(--text-primary); font-family: var(--display); font-weight: 600; }
 .panel-subtitle, .heatmap-column, .heatmap-row, .behavior-label, .profile-axis text, .quadrant-label, .axis-title, .heatmap-legend text, .behavior-value, .anchor-label { fill: var(--text-secondary); font-family: var(--ui); }
 .heatmap-value { font-family: var(--ui); font-weight: 600; }
@@ -195,14 +222,19 @@
 #country-trust-chart .world-side-pane {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   min-width: 0;
   min-height: 0;
   overflow-y: auto;
   padding-left: 12px;
   border-left: 1px solid var(--rule);
 }
-#country-trust-chart .map-color-legend { padding: 2px 0 12px; border-bottom: 1px solid var(--rule); }
+#country-trust-chart .map-metric-title {
+  margin: 0 0 28px;
+  color: var(--ink);
+  font: 600 28px/1.12 var(--display);
+}
+#country-trust-chart .map-color-legend { padding: 0 0 12px; border-bottom: 1px solid var(--rule); }
 #country-trust-chart .map-color-legend h4 {
   margin: 0 0 9px;
   color: var(--text-primary);
@@ -227,7 +259,6 @@
   font: 10px var(--ui);
   font-variant-numeric: tabular-nums;
 }
-#country-trust-chart .map-color-legend p { margin: 6px 0 0; color: var(--text-muted); font: 10px/1.35 var(--ui); }
 #country-trust-chart .global-summary { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 0; }
 #country-trust-chart .global-summary div {
   display: grid;
@@ -251,12 +282,12 @@
   #country-trust-chart > .map-controls { grid-template-columns: minmax(160px, 1fr); gap: 5px; }
   #country-trust-chart .metric-selector { grid-template-columns: auto minmax(0, 1fr); }
   #country-trust-chart .world-layout { grid-template-columns: minmax(0, 1fr) 116px; gap: 7px; }
-  #country-trust-chart .world-side-pane { gap: 7px; padding-left: 7px; }
+  #country-trust-chart .world-side-pane { gap: 6px; padding-left: 7px; }
+  #country-trust-chart .map-metric-title { margin-bottom: 30px; font-size: 28px; }
   #country-trust-chart .map-color-legend { padding-bottom: 7px; }
   #country-trust-chart .map-color-legend h4 { font-size: 10px; margin-bottom: 5px; }
   #country-trust-chart .map-color-bar { height: 9px; }
   #country-trust-chart .map-color-labels { font-size: 8px; gap: 2px; }
-  #country-trust-chart .map-color-legend p { font-size: 8px; }
   #country-trust-chart .global-summary { gap: 5px; }
   #country-trust-chart .global-summary div { padding: 6px; gap: 2px; }
   #country-trust-chart .global-summary .micro-label { font-size: 8px; }
@@ -310,6 +341,6 @@
   overflow: visible;
 }
 #country-trust-chart.showing-country-profile .profile-panel {
-  overflow-x: auto;
+  overflow-x: visible;
   overflow-y: visible;
 }

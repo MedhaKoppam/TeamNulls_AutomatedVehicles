@@ -14,7 +14,6 @@ export function renderMetricControls(container, source, state, actions, { showRa
     .selectAll('option').data(source.metrics).join('option')
     .attr('value', (d) => d.key).property('selected', (d) => d.key === metric.key).text((d) => d.label);
   selector.select('select').on('change', function change() { actions.setMetric(this.value); });
-  controls.append('p').attr('class', 'metric-description').text(metric.description);
   if (!showRanking) {
     d3.select(container).selectAll('.ranking-strip').remove();
     return;
@@ -71,11 +70,51 @@ export function renderChoropleth(container, mapData, state, actions) {
     .classed('selected', (d) => countryById.get(String(d.id).padStart(3, '0'))?.iso3 === state.selectedCountry)
     .classed('hovered', (d) => countryById.get(String(d.id).padStart(3, '0'))?.iso3 === state.hoveredCountry);
   paths.transition().duration(prefersReducedMotion() ? 0 : 500).attr('fill', fillFor);
+  const hoverLabel = d3.select(container).selectAll('.map-hover-label').data([null]).join('div')
+    .attr('class', 'map-hover-label').attr('aria-hidden', 'true').style('opacity', 0);
+
+  function setHover(iso3) {
+    dataPaths.classed('is-hovered', (d) => countryById.get(String(d.id).padStart(3, '0'))?.iso3 === iso3)
+      .classed('is-muted', (d) => countryById.get(String(d.id).padStart(3, '0'))?.iso3 !== iso3);
+  }
+
+  function placeHoverLabel(event) {
+    const [x, y] = d3.pointer(event, container);
+    const bounds = container.getBoundingClientRect();
+    const node = hoverLabel.node();
+    const labelWidth = node.offsetWidth;
+    const labelHeight = node.offsetHeight;
+    const offset = 12;
+    const left = x + labelWidth + offset > bounds.width ? Math.max(6, x - labelWidth - offset) : x + offset;
+    const top = y + labelHeight + offset > bounds.height ? Math.max(6, y - labelHeight - offset) : y + offset;
+    hoverLabel.style('left', `${left}px`).style('top', `${top}px`);
+  }
+
+  function showHoverLabel(event, country) {
+    hoverLabel.text(`Explore ${country.name}`).style('opacity', 1);
+    placeHoverLabel(event);
+  }
+
+  function clearHover() {
+    dataPaths.classed('is-hovered', false).classed('is-muted', false);
+    hoverLabel.style('opacity', 0);
+  }
+
   const dataPaths = paths.filter((d) => countryById.has(String(d.id).padStart(3, '0'))).attr('tabindex', 0).attr('role', 'button')
     .attr('data-country', (d) => countryById.get(String(d.id).padStart(3, '0')).iso3)
     .attr('aria-label', (d) => { const c = countryById.get(String(d.id).padStart(3, '0')); return `${c.name}, ${metric.label}: ${metric.unit === 'percent' ? `${fmt(c.metrics[metric.key])} percent` : `${fmt(c.metrics[metric.key])} out of 5`}. ${c.n} respondents.`; })
-    .on('mouseenter focus', function enter() { d3.select(this).classed('hovered', true); })
-    .on('mouseleave blur', function leave() { d3.select(this).classed('hovered', false); })
+    .on('mouseenter', function enter(event, d) {
+      const country = countryById.get(String(d.id).padStart(3, '0'));
+      setHover(country.iso3);
+      showHoverLabel(event, country);
+    })
+    .on('mousemove', function move(event) { placeHoverLabel(event); })
+    .on('mouseleave', clearHover)
+    .on('focus', function focus(event, d) {
+      const country = countryById.get(String(d.id).padStart(3, '0'));
+      setHover(country.iso3);
+    })
+    .on('blur', clearHover)
     .on('click keydown', (event, d) => { if (event.type === 'click' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); const c = countryById.get(String(d.id).padStart(3, '0')); actions.setCountry(state.selectedCountry === c.iso3 ? null : c.iso3); } });
   svg.on('keydown', (event) => { if (event.key === 'Escape') actions.setCountry(null); });
 

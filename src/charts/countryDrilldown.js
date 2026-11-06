@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import { feature } from 'topojson-client';
 import { renderChoropleth, renderMetricControls } from './choropleth.js';
 
 const MIN_N = 15;
@@ -11,18 +10,14 @@ const metricDifferenceText = (metric, value) => `${value >= 0 ? '+' : ''}${value
 
 
 const findCountry = (source, iso3) => Object.entries(source.countries).map(([id, country]) => ({ id, ...country })).find((country) => country.iso3 === iso3);
-const ordinal = (value) => `${value}${value === 1 ? 'st' : value === 2 ? 'nd' : value === 3 ? 'rd' : 'th'}`;
 function tip(host, event, html) { d3.select(host).selectAll('.profile-tooltip').data([null]).join('div').attr('class', 'profile-tooltip').html(html).style('left', `${event.offsetX + 12}px`).style('top', `${event.offsetY + 12}px`).style('opacity', 1); }
 function hideTip(host) { d3.select(host).select('.profile-tooltip').style('opacity', 0); }
 function addLines(selection, lines, lineHeight = 14) { selection.text(null); lines.forEach((line, index) => selection.append('tspan').attr('x', selection.attr('x')).attr('dy', index ? lineHeight : 0).text(line)); }
 function svg(host, name, width, height, label) { return d3.select(host).append('svg').attr('class', name).attr('width', width).attr('height', height).attr('role', 'img').attr('aria-label', label); }
 
-// All profile charts use physical SVG pixels.  The minimum logical width allows
-// horizontal scrolling on narrow phones rather than shrinking text below 12px.
 function responsive(host, minHeight, draw) {
   const render = () => {
-    const minWidth = host.classList.contains('profile-panel-heat') ? 740 : host.classList.contains('profile-panel-spider') ? 620 : 480;
-    const width = Math.max(minWidth, Math.floor(host.clientWidth - 48));
+    const width = Math.max(260, Math.floor(host.clientWidth - 32));
     d3.select(host).selectAll('svg').remove();
     draw(width, Math.max(minHeight, 1));
   };
@@ -42,8 +37,18 @@ function lockTextSizes(chart) { chart.selectAll('text[font-size]').style('font-s
 function renderHeatmap(host, source, country, active) {
   responsive(host, 430, (width) => {
     const groups = country.subgroups?.age ?? [];
-    const margin = { top: 124, right: 24, bottom: 150, left: 106 };
-    const height = margin.top + groups.length * 48 + margin.bottom;
+    const compact = width < 470;
+    const stackedHeader = width < 650;
+    const legendY = stackedHeader ? (compact ? 59 : 61) : 12;
+    const legendBottom = legendY + 39;
+    const columnFontTop = compact ? 8 : 11;
+    const columnLineHeight = compact ? 10 : 14;
+    const headerY = Math.max(42, legendBottom) + 44 + columnFontTop;
+    const gridTop = headerY + columnLineHeight + 14;
+    // Preserve cell dimensions while reserving space for the header row,
+    // column labels, and their breathing room above the grid.
+    const margin = { top: gridTop, right: 12, bottom: compact ? 16 : 17, left: compact ? 68 : 106 };
+    const height = margin.top + groups.length * (compact ? 38 : 48) + margin.bottom;
     const chart = svg(host, 'profile-heatmap', width, height, `Country metrics by age group in ${country.name}`);
     const x = d3.scaleBand().domain(source.metrics.map((metric) => metric.key)).range([margin.left, width - margin.right]).padding(.055);
     const y = d3.scaleBand().domain(groups.map((group) => group.label)).range([margin.top, height - margin.bottom]).padding(.08);
@@ -70,12 +75,14 @@ function renderHeatmap(host, source, country, active) {
         .range(['#d95f59', '#f0d58a', '#278c78'])
         .clamp(true),
     ]));
-    chart.append('text').attr('class', 'panel-title').attr('x', margin.left).attr('y', 25).attr('font-size', 18).text('Country metrics by age');
-    chart.append('text').attr('class', 'panel-subtitle').attr('x', margin.left).attr('y', 47).attr('font-size', 13).text('Color shows the difference from the global mean; each metric column uses its own symmetric scale.');
+    chart.append('text').attr('class', 'panel-title').attr('x', 0).attr('y', 23).attr('font-size', compact ? 16 : 18).text('Country metrics by age');
+    chart.append('text').attr('class', 'panel-subtitle').attr('x', 0).attr('y', 42).attr('font-size', compact ? 11 : 13).text('Color shows difference from each metric’s global average.');
     const activeX = x(active.key);
-    chart.append('rect').attr('class', 'active-column-outline').attr('x', activeX - 3).attr('y', margin.top - 52).attr('width', x.bandwidth() + 6).attr('height', height - margin.top + 52 - margin.bottom).attr('rx', 6);
-    chart.selectAll('.heatmap-column').data(source.metrics).join('text').attr('class', 'heatmap-column').attr('x', (metric) => x(metric.key) + x.bandwidth() / 2).attr('y', margin.top - 38).attr('text-anchor', 'middle').attr('font-size', 12).each(function (metric) { addLines(d3.select(this), metricLines[metric.key]); });
-    chart.selectAll('.heatmap-row').data(groups).join('text').attr('class', 'heatmap-row').attr('x', margin.left - 12).attr('y', (group) => y(group.label) + y.bandwidth() / 2 + 5).attr('text-anchor', 'end').attr('font-size', 12).text((group) => group.label);
+    const firstCellY = y(groups[0]?.label);
+    const lastCellY = y(groups.at(-1)?.label);
+    chart.append('rect').attr('class', 'active-column-outline').attr('x', activeX - 3).attr('y', firstCellY - 3).attr('width', x.bandwidth() + 6).attr('height', lastCellY + y.bandwidth() - firstCellY + 6).attr('rx', 6);
+    chart.selectAll('.heatmap-column').data(source.metrics).join('text').attr('class', 'heatmap-column').attr('x', (metric) => x(metric.key) + x.bandwidth() / 2).attr('y', headerY).attr('text-anchor', 'middle').attr('font-size', compact ? 8 : 12).each(function (metric) { addLines(d3.select(this), metricLines[metric.key], columnLineHeight); });
+    chart.selectAll('.heatmap-row').data(groups).join('text').attr('class', 'heatmap-row').attr('x', margin.left - 8).attr('y', (group) => y(group.label) + y.bandwidth() / 2 + 4).attr('text-anchor', 'end').attr('font-size', compact ? 9 : 12).text((group) => group.label);
     const defs = chart.append('defs');
     const hatch = defs.append('pattern').attr('id', `low-n-${country.iso3}`).attr('width', 6).attr('height', 6).attr('patternUnits', 'userSpaceOnUse').attr('patternTransform', 'rotate(45)');
     hatch.append('rect').attr('width', 6).attr('height', 6).attr('fill', '#536069');
@@ -93,21 +100,21 @@ function renderHeatmap(host, source, country, active) {
       .attr('class', 'heatmap-value')
       .attr('x', (cell) => x(cell.metric.key) + x.bandwidth() / 2)
       .attr('y', (cell) => y(cell.group.label) + y.bandwidth() / 2 + 5)
-      .attr('text-anchor', 'middle').attr('font-size', 12)
-      .attr('fill', (cell) => cell.n < MIN_N || !Number.isFinite(cell.diff) ? '#eff4f5' : contrast(color(cell.diff)))
+      .attr('text-anchor', 'middle').attr('font-size', compact ? 8 : 12)
+      .attr('fill', (cell) => cell.n < MIN_N || !Number.isFinite(cell.diff) ? '#eff4f5' : contrast(colorByMetric.get(cell.metric.key)(cell.diff)))
       .text((cell) => cell.n < MIN_N || !Number.isFinite(cell.value) ? 'N/A' : cell.value.toFixed(1));
-    const legend = chart.append('g').attr('class', 'heatmap-legend').attr('transform', `translate(${margin.left},${height - 126})`);
+    const legendWidth = Math.max(120, Math.min(compact ? 180 : 300, width - 12));
+    const legendX = stackedHeader ? 0 : width - legendWidth;
+    const legend = chart.append('g').attr('class', 'heatmap-legend').attr('transform', `translate(${legendX},${legendY})`);
     const grad = defs.append('linearGradient').attr('id', `heat-gradient-${country.iso3}`);
     grad.selectAll('stop').data(d3.range(0, 1.01, .1)).join('stop')
       .attr('offset', (value) => `${value * 100}%`)
       .attr('stop-color', (value) => d3.interpolateRgbBasis(['#d95f59', '#f0d58a', '#278c78'])(value));
-    const availableLegendWidth = Math.max(240, width - margin.left - 24);
-    const legendWidth = Math.min(360, availableLegendWidth);
-    legend.append('rect').attr('width', legendWidth).attr('height', 10).attr('rx', 5).attr('fill', `url(#heat-gradient-${country.iso3})`);
-    legend.append('text').attr('x', 0).attr('y', 27).attr('font-size', 12).text('Below each metric mean');
-    legend.append('text').attr('x', legendWidth).attr('y', 27).attr('font-size', 12).attr('text-anchor', 'end').text('Above each metric mean');
-    legend.append('rect').attr('x', 0).attr('y', 46).attr('width', 12).attr('height', 10).attr('fill', `url(#low-n-${country.iso3})`);
-    legend.append('text').attr('x', 19).attr('y', 56).attr('font-size', 12).text('n < 15');
+    legend.append('text').attr('x', 0).attr('y', 8).attr('font-size', compact ? 9 : 11).text('Below global average');
+    legend.append('text').attr('x', legendWidth).attr('y', 8).attr('font-size', compact ? 9 : 11).attr('text-anchor', 'end').text('Above global average');
+    legend.append('rect').attr('y', 14).attr('width', legendWidth).attr('height', 10).attr('rx', 5).attr('fill', `url(#heat-gradient-${country.iso3})`);
+    legend.append('line').attr('x1', legendWidth / 2).attr('x2', legendWidth / 2).attr('y1', 11).attr('y2', 27).attr('stroke', '#fff').attr('stroke-width', 1.5);
+    legend.append('text').attr('x', legendWidth / 2).attr('y', 39).attr('text-anchor', 'middle').attr('font-size', compact ? 9 : 11).text('Global average');
     lockTextSizes(chart);
   });
 }
@@ -124,8 +131,8 @@ function renderBehavior(host, source, country) {
     const chart = svg(host, 'behavior-chart', width, height, `Secondary activities in ${country.name}, compared with global shares`);
     const x = d3.scaleLinear().domain([-extent, extent]).nice().range([margin.left, width - margin.right]);
     const y = d3.scaleBand().domain(rows.map((row) => row.key)).range([margin.top, height - margin.bottom]).padding(.24);
-    chart.append('text').attr('class', 'panel-title').attr('x', margin.left).attr('y', 25).attr('font-size', 18).text('Secondary activities while riding');
-    chart.append('text').attr('class', 'panel-subtitle').attr('x', margin.left).attr('y', 47).attr('font-size', 13).text('How each activity compares with the global share of respondents selecting it.');
+    chart.append('text').attr('class', 'panel-title').attr('x', 0).attr('y', 25).attr('font-size', 18).text('Secondary activities while riding');
+    chart.append('text').attr('class', 'panel-subtitle').attr('x', 0).attr('y', 47).attr('font-size', 13).text('How each activity compares with the global share of respondents selecting it.');
     chart.append('g').attr('class', 'profile-axis').attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x).ticks(5).tickFormat((value) => `${value > 0 ? '+' : ''}${value.toFixed(1)}`)).selectAll('text').attr('font-size', 12);
     chart.append('line').attr('class', 'zero-line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', margin.top - 6).attr('y2', height - margin.bottom);
     chart.selectAll('.behavior-label').data(rows).join('text').attr('class', 'behavior-label').attr('x', margin.left - 12).attr('y', (row) => y(row.key) + y.bandwidth() / 2 + 5).attr('text-anchor', 'end').attr('font-size', 13).text((row) => row.label);
@@ -171,14 +178,14 @@ function renderTripPurposeSpider(host, source, country) {
     const height = 500;
     const centerX = width / 2;
     const centerY = 255;
-    const maxRadius = Math.min(142, (width - 220) / 2);
+    const maxRadius = Math.max(64, Math.min(142, (width - 100) / 2));
     const radius = d3.scaleLinear().domain([0, 5]).range([0, maxRadius]);
     const angle = (index) => -Math.PI / 2 + (index * 2 * Math.PI) / dimensions.length;
     const point = (value, index) => [centerX + radius(value) * Math.cos(angle(index)), centerY + radius(value) * Math.sin(angle(index))];
     const polygonPath = (field) => d3.line().curve(d3.curveLinearClosed)(values.map((item, index) => point(Number.isFinite(item[field]) ? item[field] : 0, index)));
     const chart = svg(host, 'trip-purpose-spider', width, height, `Trip-purpose willingness in ${country.name} compared with the global average on five dimensions, scored from one to five`);
-    chart.append('text').attr('class', 'panel-title').attr('x', 28).attr('y', 27).attr('font-size', 18).text('Willingness by trip purpose');
-    chart.append('text').attr('class', 'panel-subtitle').attr('x', 28).attr('y', 49).attr('font-size', 13).text('Mean agreement for five travel situations. Higher scores indicate greater willingness.');
+    chart.append('text').attr('class', 'panel-title').attr('x', 0).attr('y', 27).attr('font-size', 18).text('Willingness by trip purpose');
+    chart.append('text').attr('class', 'panel-subtitle').attr('x', 0).attr('y', 49).attr('font-size', 13).text('Mean agreement for five travel situations. Higher scores indicate greater willingness.');
 
     const grid = chart.append('g').attr('class', 'spider-grid');
     grid.selectAll('path.spider-ring').data(d3.range(1, 6)).join('path')
@@ -244,16 +251,11 @@ function renderTripPurposeSpider(host, source, country) {
   });
 }
 
-function profile(stage, mapData, state, actions, { showBack = false } = {}) {
+function profile(stage, mapData, state, actions) {
   const source = mapData.metrics, country = findCountry(source, state.selectedCountry), active = source.metrics.find((item) => item.key === state.selectedMetric) ?? source.metrics[0]; if (!country) return;
   clearProfile(stage);
-  const sorted = Object.values(source.countries).filter((item) => Number.isFinite(item.metrics[active.key])).sort((a, b) => d3.descending(a.metrics[active.key], b.metrics[active.key])); const rank = sorted.findIndex((item) => item.iso3 === country.iso3) + 1;
   const page = d3.select(stage).append('section').attr('class', 'country-profile').attr('aria-label', `${country.name} country profile`);
-  if (showBack) page.append('div').attr('class', 'profile-back-row').append('button').attr('type', 'button').attr('class', 'country-back').attr('aria-label', 'Back to world map').html('&larr;<span> World map</span>').on('click', () => actions.setCountry(null));
-  const body = page.append('div').attr('class', 'profile-body'), rail = body.append('aside').attr('class', 'profile-rail');
-  const selected = feature(mapData.geometry, mapData.geometry.objects.countries).features.find((item) => String(item.id).padStart(3, '0') === country.id); const silhouette = rail.append('svg').attr('class', 'country-silhouette').attr('viewBox', '0 0 150 100').attr('aria-hidden', 'true'); if (selected) silhouette.append('path').attr('d', d3.geoPath(d3.geoNaturalEarth1().fitSize([136, 86], selected))(selected)).attr('class', 'silhouette-path');
-  rail.append('h3').text(country.name); rail.append('p').attr('class', 'rail-meta').text(country.region); rail.append('p').attr('class', 'rail-meta').text(`n=${country.n.toLocaleString()}${country.lowSample ? ' · low sample' : ''}`); rail.append('p').attr('class', 'rail-rank').text(`${ordinal(rank)} of ${sorted.length} on ${active.label}`);
-  const panels = body.append('div').attr('class', 'profile-panels'); renderHeatmap(panels.append('section').attr('class', 'profile-panel profile-panel-heat').node(), source, country, active); renderTripPurposeSpider(panels.append('section').attr('class', 'profile-panel profile-panel-spider').node(), source, country); renderBehavior(panels.append('section').attr('class', 'profile-panel').node(), source, country);
+  const panels = page.append('div').attr('class', 'profile-panels'); renderHeatmap(panels.append('section').attr('class', 'profile-panel profile-panel-heat').node(), source, country, active); renderTripPurposeSpider(panels.append('section').attr('class', 'profile-panel profile-panel-spider').node(), source, country); renderBehavior(panels.append('section').attr('class', 'profile-panel').node(), source, country);
 }
 
 export function renderCountryDrilldown(container, mapData, state, actions) {
@@ -316,7 +318,7 @@ export function renderCountryDrilldown(container, mapData, state, actions) {
     world.hidden = true;
     profileStage.hidden = false;
     profileStage.classList.add('is-changing');
-    profile(profileStage, mapData, state, actions, { showBack: true });
+    profile(profileStage, mapData, state, actions);
     requestAnimationFrame(() => {
       profileStage.classList.remove('is-changing');
       scrollFrame();
