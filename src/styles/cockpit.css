@@ -29,7 +29,7 @@
   --dash-h: 31vh;
   --gutter: max(3vw, 20px);
   --left-w: clamp(280px, 29vw, 440px);
-  --panel-top: 12.5vh;
+  --panel-top: 4.5vh;
   --panel-bottom: 34vh;
 }
 
@@ -81,16 +81,6 @@ a { color: var(--accent); }
   background: linear-gradient(180deg, #0c0d10, #1d1f24);
   clip-path: polygon(0 0, 100% 0, 100% 8vh, 75% 4.6vh, 50% 3.6vh, 25% 4.6vh, 0 8vh);
 }
-
-.mirror { position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: clamp(150px, 16vw, 250px); z-index: 1; }
-.mirror-stem { width: 22px; height: 3.4vh; margin: 0 auto; background: linear-gradient(90deg, #0c0d10, #2a2d33, #0c0d10); border-radius: 0 0 6px 6px; }
-.mirror-body {
-  margin-top: -4px; height: clamp(42px, 6.4vh, 64px);
-  background: linear-gradient(180deg, #23262c, #0b0c0e); padding: 5px;
-  border-radius: 16px / 50%;
-  box-shadow: 0 10px 24px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12);
-}
-#mirror { width: 100%; height: 100%; display: block; border-radius: 12px / 50%; filter: blur(.4px) saturate(.85) brightness(.85); }
 
 /* ---------- Dashboard ---------- */
 .dash {
@@ -196,7 +186,7 @@ a { color: var(--accent); }
 }
 .hero-course { margin: 0; font: 600 13px var(--ui); letter-spacing: .24em; text-transform: uppercase; color: #fff; opacity: .9; }
 .hero-team { margin: 8px 0 0; font: 500 15px var(--ui); color: rgba(255,255,255,.82); }
-.hero h1 { margin: 2.2vh 0 1.4vh; font: 700 clamp(54px, 9.4vw, 140px)/.92 var(--display); letter-spacing: -.01em; color: #fff; }
+.hero h1 { margin: 2.2vh 0 calc(1.4vh + 60px); font: 700 clamp(54px, 9.4vw, 140px)/.92 var(--display); letter-spacing: -.01em; color: #fff; }
 .hero-sub { margin: 0 auto; max-width: 36ch; font: 400 clamp(17px, 1.6vw, 22px)/1.4 var(--body); color: rgba(255,255,255,.92); }
 .start-cue {
   margin-top: 4vh; pointer-events: auto; cursor: pointer;
@@ -333,8 +323,9 @@ a { color: var(--accent); }
 }
 @media (max-width: 760px), (max-height: 560px) {
   :root { --wheel-d: min(34vh, 70vw); --dash-h: 18vh; --gutter: 12px; }
-  .vent, .mini-screen, .cluster, .mirror { display: none; }
-  .screen-left { left: 12px; right: 12px; width: auto; top: 8vh; bottom: auto; max-height: 33vh; padding: 14px 16px; }
+  .vent, .mini-screen, .cluster { display: none; }
+  .hero h1 { margin-bottom: calc(1.4vh + 28px); }
+  .screen-left { left: 12px; right: 12px; width: auto; top: 4.5vh; bottom: auto; max-height: 36vh; padding: 14px 16px; }
   .screen-left p:not(.howto):not(.kicker) { font-size: 14px; }
   .screen h2 { font-size: 19px; }
   .screen-right { left: 12px; right: 12px; top: 43vh; bottom: 17vh; padding: 12px; }

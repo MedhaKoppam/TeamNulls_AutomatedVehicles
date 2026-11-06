@@ -208,7 +208,7 @@ async function initialize() {
     onBrushSelection: (iso3s) => { brushedCountries = new Set(iso3s); syncBumpHighlightsToMap(); },
   });
   const steps = [...document.querySelectorAll('.step')];
-  const road = new Road(requireElement('#road'), requireElement('#mirror'));
+  const road = new Road(requireElement('#road'));
   const cockpit = new Cockpit({
     steps, road, onStepChange(index) {
       document.querySelector('.mobile-chapter').textContent = steps[index].dataset.nav;
