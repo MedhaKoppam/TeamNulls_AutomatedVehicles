@@ -52,56 +52,45 @@ function countryBumpStep() {
         <strong>How to explore</strong>
         <ol>
           <li>Drag <strong>up or down</strong> on a vertical rank axis to select a range. No left-to-right selection is needed.</li>
-          <li>When you release, the next screen opens with insights for <strong>all countries</strong> in that rank range.</li>
+          <li>Use the selected-group action beneath the chart to open insights for <strong>all countries</strong> in that rank range.</li>
           <li>A brush on a different axis replaces the previous selection; it does not narrow or intersect with it.</li>
-          <li>Use “Back to rankings” to choose another axis, or “Clear vertical brushes” to reset.</li>
+          <li>Use “Back to rankings” to choose another axis, or “Clear selection” to reset.</li>
         </ol>
       </div>
     </article>
     <div class="screen screen-right chart-shell bump-screen">
-      <div class="screen-head"><h3>How country rankings shift across the three measures</h3><span class="data-badge">17 countries · 1–5 scale</span></div>
-      <div class="chart-scroll bump-scroll" tabindex="0" role="region" aria-label="Interactive country bump chart. Drag vertically on one rank axis. Releasing automatically opens insights for every country in that rank range. A new axis selection replaces the previous selection.">
+      <div class="screen-head"><h3>How country rankings shift across the three measures</h3></div>
+      <div class="chart-scroll bump-scroll" tabindex="0" role="region" aria-label="Interactive country bump chart. Use the vertical rank range selectors to select countries, then open detailed insights for the selected group.">
         <div class="bump-explorer" id="country-bump-explorer">
           <div class="bump-rank-view" id="bump-rank-view">
-            <div class="bump-chart-note"><span>Brush one axis vertically; release to open the selected-country insights</span><span>Rank 1 = highest / most positive</span></div>
             <div class="chart bump-chart-host" id="bump-chart-svg"></div>
-            <div class="bump-correlation-strip" aria-label="Country-level rank correlations">
-              <span>Trust ↔ safety confidence <strong id="bump-trust-safety-rho">ρ = ...</strong></span>
-              <span>Trust ↔ overall adoption intention <strong id="bump-trust-use-rho">ρ = ...</strong></span>
-              <span class="bump-correlation-note">Spearman rank correlation · 17 country averages</span>
-            </div>
-            <div class="bump-selection-toolbar">
-              <p id="bump-selection-copy" class="bump-selection-copy">Drag vertically on one rank axis. Releasing opens insights for every country in that rank range.</p>
-              <div class="bump-selection-actions">
-                <span id="bump-selection-status" class="bump-selection-status">No rank range selected</span>
-                <button class="bump-clear" type="button">Clear vertical brushes</button>
+            <div class="bump-bottom-controls">
+              <label class="bump-filter-toggle" for="bump-filter-mode"><span>Filter by rank</span><input id="bump-filter-mode" type="checkbox" role="switch" aria-label="Filter by rank"><i aria-hidden="true"></i></label>
+              <div class="bump-selection-toolbar" hidden>
+                <div class="bump-selection-actions">
+                  <span id="bump-selection-status" class="bump-selection-status"></span>
+                  <button class="bump-view-insights" id="bump-view-insights" type="button">View detailed insights</button>
+                  <button class="bump-clear" type="button">Clear selection</button>
+                </div>
               </div>
             </div>
           </div>
-          <section class="bump-insights" id="bump-insights" aria-labelledby="bump-insights-title" hidden>
-            <div class="bump-insights-header">
-              <div><p class="bump-section-kicker">FURTHER COUNTRY INSIGHTS</p><h4 id="bump-insights-title">Further insights</h4><p id="bump-insights-copy" class="bump-selection-copy"></p></div>
-              <button class="bump-back" id="bump-back-to-ranks" type="button">← Back to rankings</button>
-            </div>
+          <section class="bump-insights" id="bump-insights" aria-label="Detailed country insights" hidden>
             <div class="bump-insight-grid">
               <article class="bump-insight-card">
-                <div class="bump-insight-card-heading"><h5>Perceived enjoyment</h5><p>Mean agreement with fun, entertaining and enjoyable statements.</p></div>
+                <div class="bump-insight-card-heading"><h5>Perceived enjoyment</h5><div class="bump-group-legend"><span><i class="selected-dot"></i><span id="bump-focused-legend">Focus countries</span></span><span><i class="others-dot"></i><span id="bump-comparison-legend">Other countries</span></span></div></div>
                 <div id="bump-enjoyment-chart" class="bump-mini-chart"></div>
-                <div class="bump-group-legend"><span><i class="selected-dot"></i><span id="bump-focused-legend">Focus countries</span></span><span><i class="others-dot"></i><span id="bump-comparison-legend">Other countries</span></span></div>
               </article>
               <article class="bump-insight-card">
-                <div class="bump-insight-card-heading"><h5>Social influence</h5><p>How respondents view the opinions and expectations of people around them.</p></div>
-                <div id="bump-social-chart" class="bump-mini-chart"></div>
-                <div class="bump-likert-legend" aria-label="Strongly disagree, disagree, neutral, agree, strongly agree">
+                <div class="bump-insight-card-heading"><h5>Social influence</h5><div class="bump-likert-legend" aria-label="Strongly disagree, disagree, neutral, agree, strongly agree">
                   ${['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree'].map((label, index) => `<span title="${label}"><i style="--response-color:${['#9d5662', '#e66767', '#c9c8c2', '#3d8de7', '#32ad9b'][index]}"></i>${label}</span>`).join('')}
-                </div>
+                </div></div>
+                <div id="bump-social-chart" class="bump-mini-chart"></div>
               </article>
             </div>
-            <p class="bump-method-note">Insight charts compare country-level response distributions, with each country weighted equally. Blank and “I prefer not to respond” answers are excluded.</p>
           </section>
         </div>
       </div>
-      <div class="screen-foot"><span>Source: L3Pilot Global User Acceptance Survey</span><span>Brush vertically to open group insights ↓</span></div>
     </div>
   </section>`;
 }
@@ -114,7 +103,7 @@ function buildPage(stats, total) {
     ${chartStep('country-trust', '02', 'By country', 'How does acceptance vary across countries?', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of seven measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles', false)}
     ${chartStep('commercial-gap', '03', 'Use vs buy', 'People might like using automated cars, but not buying', 'Use and purchase are not the same decision. Compare each country’s average intention to use and to buy. Filter by age and income to see how the commercial gap changes.', 'Use the age and income filters together. Hover or focus a dot for its sample size and use-to-buy gap. Reset to compare all respondents.', 'Intention to use vs. intention to buy', false)}
     ${countryBumpStep()}
-    <section class="step" data-nav="Takeaways" aria-labelledby="takeaways-title"><article class="screen screen-left"><p class="kicker">Destination</p><h2 id="takeaways-title">What should AV teams remember?</h2><p>Trust, safety confidence, readiness and ownership are related, but they are not interchangeable.</p><p class="howto">Use the dashboard route to revisit any finding.</p></article><div class="screen screen-right"><ol class="takeaways"><li><div><strong>Start with trust.</strong> Countries with higher average trust also report higher willingness to use.</div></li><li><div><strong>Separate trust from safety confidence.</strong> The country rankings diverge, so strong trust should not be treated as evidence of low safety concern.</div></li><li><div><strong>Look beyond a global average.</strong> Country profiles reveal differences by age, secondary activities, and awareness.</div></li><li><div><strong>Separate use from ownership.</strong> Explore how the use-to-buy gap changes with age and income.</div></li></ol></div></section>
+    <section class="step" data-nav="Takeaways" aria-labelledby="takeaways-title"><article class="screen screen-left"><p class="kicker">Destination</p><h2 id="takeaways-title">What should AV teams remember?</h2><p>Trust, safety confidence, readiness and ownership are related, but they are not interchangeable.</p><p class="howto">Use the dashboard route to revisit any finding.</p></article><div class="screen screen-right"><ol class="takeaways"><li><div><strong>Start with trust.</strong><span>Countries with higher average trust also report higher willingness to use.</span></div></li><li><div><strong>Separate trust from safety confidence.</strong><span>The country rankings diverge, so strong trust should not be treated as evidence of low safety concern.</span></div></li><li><div><strong>Look beyond a global average.</strong><span>Country profiles reveal differences by age, secondary activities, and awareness.</span></div></li><li><div><strong>Separate use from ownership.</strong><span>Explore how the use-to-buy gap changes with age and income.</span></div></li></ol></div></section>
     <section class="step step-last" data-nav="Data" aria-labelledby="methods-title"><article class="screen screen-left"><p class="kicker">Parked</p><h2 id="methods-title">Data and methods</h2><p><strong>Source:</strong> L3Pilot Global User Acceptance Survey, Phase 1. ${total.toLocaleString()} responses from 17 countries.</p><p>Likert-based measures use the original five-point agreement scale. Prior awareness and L3 capability knowledge are percentages. Blank values and non-scale code 6 are excluded from Likert averages.</p><p>The source does not name motorway, urban, or traffic-jam conditions, so these charts do not assign driving-context labels.</p></article><div class="screen screen-right methods-screen"><div class="links"><a class="link-card" href="/data/l3pilot_clean.json" download>Cleaned survey data<span>JSON ↓</span></a><a class="link-card" href="/data/country_metrics.json" download>Country metrics<span>JSON ↓</span></a><a class="link-card" href="/data/respondents.json" download>Respondent extract<span>JSON ↓</span></a><a class="link-card" href="/docs/DATA_DICTIONARY.md">Data dictionary<span>Read ↗</span></a><a class="link-card" href="/docs/PROCESS_BOOK.md">Process book<span>Read ↗</span></a><a class="link-card" href="/data/l3pilot_labeled.xlsx" download>Raw workbook<span>XLSX ↓</span></a></div><p class="credits">Team Nulls · ${team}.<br>CS 6730 Data Visualization. Built with D3.js. Map: Natural Earth.</p><button class="start-cue small" type="button" data-goto="0">Back to the start ↑</button></div></section>
   </main><nav class="mobile-route" aria-label="Story navigation"><button type="button" data-previous aria-label="Previous chapter">← Previous</button><span class="mobile-chapter">Start</span><button type="button" data-next aria-label="Next chapter">Next →</button></nav>`;
 }

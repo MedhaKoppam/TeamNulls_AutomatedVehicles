@@ -11,13 +11,6 @@ const LIKERT_LABELS = ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Str
 const GROUP_COLORS = { selected: '#32ad9b', others: '#e5a65d' };
 const COUNTRY_NAME_BY_ISO = new Map(Object.values(COUNTRY_MAP).map((country) => [country.iso3, country.name]));
 
-function pearson(a, b) {
-  const ma = d3.mean(a), mb = d3.mean(b);
-  const numerator = d3.sum(a, (v, i) => (v - ma) * (b[i] - mb));
-  const denominator = Math.sqrt(d3.sum(a, (v) => (v - ma) ** 2) * d3.sum(b, (v) => (v - mb) ** 2));
-  return denominator ? numerator / denominator : 0;
-}
-
 function makeRows(source) {
   const rows = Object.values(source.countries).map((country) => ({
     name: COUNTRY_NAME_BY_ISO.get(country.iso3) ?? country.name,
@@ -62,7 +55,7 @@ function emptyChart(host, message) {
 
 function drawEnjoyment(host, selected, others, definitions) {
   const width = Math.max(280, Math.floor(host.clientWidth || 360));
-  const height = 184;
+  const height = Math.max(184, Math.floor(host.clientHeight || 0));
   const margin = { top: 22, right: 14, bottom: 35, left: 105 };
   const x = d3.scaleLinear().domain([1, 5]).range([margin.left, width - margin.right]);
   const y = d3.scaleBand().domain(definitions.map((item) => item.key)).range([margin.top, height - margin.bottom]).padding(.42);
@@ -85,14 +78,20 @@ function drawEnjoyment(host, selected, others, definitions) {
       svg.append('line').attr('class', 'bump-dumbbell-connector')
         .attr('x1', x(Math.min(selectedMean, otherMean))).attr('x2', x(Math.max(selectedMean, otherMean)))
         .attr('y1', yMid).attr('y2', yMid);
+      const delta = selectedMean - otherMean;
+      svg.append('text').attr('class', 'bump-enjoyment-delta').attr('x', width - margin.right).attr('y', yMid - 28)
+        .attr('text-anchor', 'end').text('Δ ' + (delta >= 0 ? '+' : '−') + Math.abs(delta).toFixed(2));
     }
     [
-      { name: selected.name, value: selectedMean, color: GROUP_COLORS.selected, y: yMid - 4, group: selected },
-      { name: others.name, value: otherMean, color: GROUP_COLORS.others, y: yMid + 4, group: others },
+      { name: 'Selected (' + selected.count + ')', value: selectedMean, color: GROUP_COLORS.selected, y: yMid - 6, labelY: yMid - 18, group: selected },
+      { name: 'Other (' + others.count + ')', value: otherMean, color: GROUP_COLORS.others, y: yMid + 6, labelY: yMid + 22, group: others },
     ].forEach((point) => {
       if (!Number.isFinite(point.value)) return;
+      svg.append('text').attr('class', 'bump-dumbbell-value').attr('x', x(point.value))
+        .attr('y', point.labelY).attr('text-anchor', 'middle').attr('fill', point.color)
+        .text(point.name + ' ' + point.value.toFixed(2));
       svg.append('circle').attr('class', 'bump-dumbbell-point').attr('cx', x(point.value)).attr('cy', point.y)
-        .attr('r', 4.5).attr('fill', point.color).attr('tabindex', 0)
+        .attr('r', 6).attr('fill', point.color).attr('tabindex', 0)
         .attr('aria-label', `${item.label}: ${point.name}, ${point.value.toFixed(2)} out of 5`)
         .append('title').text(`${item.label}\n${point.name}: ${point.value.toFixed(2)} / 5\n${point.group.count} countries · ${point.group.n('enjoyment', item.key).toLocaleString()} valid responses`);
     });
@@ -102,7 +101,7 @@ function drawEnjoyment(host, selected, others, definitions) {
 function drawSocial(host, selected, others, definitions) {
   const width = Math.max(280, Math.floor(host.clientWidth || 360));
   const margin = { top: 10, right: 8, bottom: 8, left: 112 };
-  const rowHeight = 47;
+  const rowHeight = Math.max(76, Math.floor(((host.clientHeight || 0) - margin.top - margin.bottom) / definitions.length));
   const height = margin.top + definitions.length * rowHeight + margin.bottom;
   const x = d3.scaleLinear().domain([0, 1]).range([margin.left, width - margin.right]);
   const svg = d3.select(host).selectAll('svg').data([null]).join('svg')
@@ -112,25 +111,30 @@ function drawSocial(host, selected, others, definitions) {
 
   definitions.forEach((item, index) => {
     const y = margin.top + index * rowHeight;
-    svg.append('text').attr('class', 'bump-social-label').attr('x', margin.left - 8).attr('y', y + 13)
+    svg.append('text').attr('class', 'bump-social-label').attr('x', margin.left - 8).attr('y', y + 15)
       .attr('text-anchor', 'end').text(item.shortLabel || item.label);
     [
-      { name: selected.name, values: selected.distribution('socialInfluence', item.key), group: selected, y: y + 20 },
-      { name: others.name, values: others.distribution('socialInfluence', item.key), group: others, y: y + 34 },
+      { name: 'Selected (' + selected.count + ')', values: selected.distribution('socialInfluence', item.key), group: selected, y: y + 24 },
+      { name: 'Other (' + others.count + ')', values: others.distribution('socialInfluence', item.key), group: others, y: y + 43 },
     ].forEach((series) => {
       let offset = 0;
       series.values.forEach((share, responseIndex) => {
         const x0 = x(offset), x1 = x(offset + share);
         const segment = svg.append('rect').attr('class', 'bump-social-segment')
-          .attr('x', x0).attr('y', series.y).attr('width', Math.max(0, x1 - x0)).attr('height', 8)
+          .attr('x', x0).attr('y', series.y).attr('width', Math.max(0, x1 - x0)).attr('height', 12)
           .attr('fill', LIKERT_COLORS[responseIndex]).attr('rx', 1).attr('tabindex', 0)
           .attr('aria-label', `${item.label}, ${series.group.name}: ${LIKERT_LABELS[responseIndex]}, ${(share * 100).toFixed(1)} percent`);
         segment.append('title').text(`${item.label}\n${series.group.name}\n${LIKERT_LABELS[responseIndex]}: ${(share * 100).toFixed(1)}%\n${series.group.count} countries · ${series.group.n('socialInfluence', item.key).toLocaleString()} valid responses`);
         offset += share;
       });
-      svg.append('text').attr('class', 'bump-social-series-label').attr('x', margin.left - 8).attr('y', series.y + 7)
+      svg.append('text').attr('class', 'bump-social-series-label').attr('x', margin.left - 8).attr('y', series.y + 10)
         .attr('text-anchor', 'end').text(series.name);
     });
+    const selectedPositive = (selected.distribution('socialInfluence', item.key)[3] + selected.distribution('socialInfluence', item.key)[4]) * 100;
+    const otherPositive = (others.distribution('socialInfluence', item.key)[3] + others.distribution('socialInfluence', item.key)[4]) * 100;
+    const difference = selectedPositive - otherPositive;
+    svg.append('text').attr('class', 'bump-social-summary').attr('x', margin.left).attr('y', y + 72)
+      .text('Positive: ' + selectedPositive.toFixed(0) + '% vs ' + otherPositive.toFixed(0) + '%  ·  ' + (difference >= 0 ? '+' : '−') + Math.abs(difference).toFixed(0) + ' pp');
   });
 }
 
@@ -148,48 +152,46 @@ export function renderCountryBump(container, metricSource, insightData, {
   const socialHost = container.querySelector('#bump-social-chart');
   const rankView = container.querySelector('#bump-rank-view');
   const insightsView = container.querySelector('#bump-insights');
-  const selectionCopy = container.querySelector('#bump-selection-copy');
+  const screenHead = container.closest('.chart-shell')?.querySelector('.screen-head');
+  const filterMode = container.querySelector('#bump-filter-mode');
+  const selectionToolbar = container.querySelector('.bump-selection-toolbar');
   const selectionStatus = container.querySelector('#bump-selection-status');
+  const viewInsightsButton = container.querySelector('#bump-view-insights');
   const clearButton = container.querySelector('.bump-clear');
-  const backButton = container.querySelector('#bump-back-to-ranks');
-  const insightsTitle = container.querySelector('#bump-insights-title');
-  const insightsCopy = container.querySelector('#bump-insights-copy');
   const focusedLegend = container.querySelector('#bump-focused-legend');
   const comparisonLegend = container.querySelector('#bump-comparison-legend');
-  const tooltip = d3.select(container).selectAll('.bump-tooltip').data([null]).join('div')
-    .attr('class', 'tooltip bump-tooltip').style('opacity', 0);
-  const ranges = new Map();
+  const ranges = new Map(AXES.map((axis) => [axis.key, [1, 17]]));
   const brushes = new Map();
+  const keyboardHandles = new Map();
   const selectedIso = new Set();
   let hoveredIso = null;
+  let rankFilterEnabled = false;
 
   const enjoymentItems = insightData.items.enjoyment;
   const socialItems = insightData.items.socialInfluence.map((item) => ({
     ...item,
     shortLabel: ({ valuedOpinions: 'Opinions I value', behaviorInfluencers: 'People who influence me', importantPeople: 'Important people', recommend: 'Recommend to others' })[item.key] || item.label,
   }));
-  const rho = (first, second) => pearson(rows.map((row) => row.ranks[first]), rows.map((row) => row.ranks[second]));
-  container.querySelector('#bump-trust-safety-rho').textContent = `ρ = ${rho('trust', 'safetyConfidence').toFixed(2)}`;
-  container.querySelector('#bump-trust-use-rho').textContent = `ρ = ${rho('trust', 'adoption').toFixed(2)}`;
-
   const width = Math.max(480, Math.floor(chartHost.clientWidth || container.clientWidth || 720));
-  const height = 370;
-  const margin = { top: 72, right: 112, bottom: 34, left: 58 };
+  const scrollRegion = container.closest('.bump-scroll');
+  const controlsHeight = 42;
+  const height = Math.max(360, Math.floor((scrollRegion?.clientHeight || 0) - controlsHeight) || 500);
+  const margin = { top: 72, right: 112, bottom: 38, left: 58 };
   const top = margin.top, bottom = height - margin.bottom;
   const x = d3.scalePoint().domain(AXES.map((axis) => axis.key)).range([margin.left, width - margin.right]);
   const y = d3.scaleLinear().domain([1, rows.length]).range([top, bottom]);
   const svg = d3.select(chartHost).selectAll('svg').data([null]).join('svg')
     .attr('class', 'country-bump-svg').attr('width', width).attr('height', height)
     .attr('viewBox', `0 0 ${width} ${height}`).attr('role', 'img')
-    .attr('aria-label', 'Bump chart ranking 17 countries by trust, safety confidence and overall adoption intention. Rank 1 is the most positive score. Vertical brushing selects a range of country ranks.');
+    .attr('aria-label', 'Bump chart ranking 17 countries by trust, safety confidence and overall adoption intention. Rank 1 is the most positive score. Each axis has a two-handle rank range selector.');
   svg.selectAll('*').remove();
+  svg.classed('is-filter-mode', false);
 
   const grid = svg.append('g').attr('class', 'bump-rank-grid');
   [1, 5, 9, 13, 17].forEach((rank) => {
     grid.append('line').attr('x1', margin.left - 10).attr('x2', width - margin.right + 10).attr('y1', y(rank)).attr('y2', y(rank));
     grid.append('text').attr('x', 12).attr('y', y(rank) + 4).attr('class', 'bump-grid-label').text(rank);
   });
-  svg.append('text').attr('class', 'bump-rank-caption').attr('x', 12).attr('y', 52).text('RANK');
 
   AXES.forEach((axis) => {
     const axisX = x(axis.key);
@@ -207,23 +209,42 @@ export function renderCountryBump(container, metricSource, insightData, {
     .attr('aria-label', (row) => `${row.name}: trust rank ${row.ranks.trust}; safety confidence rank ${row.ranks.safetyConfidence}; overall adoption intention rank ${row.ranks.adoption}.`)
     .on('mouseenter focus', (event, row) => {
       hoveredIso = row.iso3;
-      const hasBrush = [...ranges.values()].some(Boolean);
+      const hasBrush = hasNarrowRange();
       pathLines.classed('is-hovered', (d) => d.iso3 === hoveredIso)
         .classed('is-muted', (d) => d.iso3 !== hoveredIso && (!hasBrush || !selectedIso.has(d.iso3)));
       countryLabels.classed('is-hovered', (d) => d.iso3 === hoveredIso)
         .classed('is-muted', (d) => d.iso3 !== hoveredIso && (!hasBrush || !selectedIso.has(d.iso3)));
       onCountryHover(row.iso3);
-      tooltip.html(`<strong>${row.name}</strong><br>Trust: ${row.scores.trust.toFixed(2)} / 5 · rank ${row.ranks.trust}<br>Safety confidence: ${row.scores.safetyConfidence.toFixed(2)} / 5 · rank ${row.ranks.safetyConfidence}<br>Overall adoption intention: ${row.scores.adoption.toFixed(2)} / 5 · rank ${row.ranks.adoption}<br>Respondents: ${row.n.toLocaleString()}`).style('opacity', 1).style('left', '8px').style('top', '8px');
     })
     .on('mouseleave blur', () => {
       hoveredIso = null;
-      const hasBrush = [...ranges.values()].some(Boolean);
+      const hasBrush = hasNarrowRange();
       pathLines.classed('is-hovered', false).classed('is-muted', (row) => hasBrush && !selectedIso.has(row.iso3));
       countryLabels.classed('is-hovered', false).classed('is-muted', (row) => hasBrush && !selectedIso.has(row.iso3));
       onCountryHover(null);
-      tooltip.style('opacity', 0);
     })
     ;
+
+  svg.append('g').attr('class', 'bump-country-hit-areas').selectAll('path').data(rows).join('path')
+    .attr('class', 'bump-country-hit-area').attr('fill', 'none').attr('stroke', 'transparent').attr('stroke-width', 16)
+    .attr('pointer-events', 'stroke')
+    .attr('d', (row) => line(AXES.map((axis) => ({ key: axis.key, rank: row.ranks[axis.key] }))))
+    .on('mouseenter', (event, row) => {
+      hoveredIso = row.iso3;
+      const hasBrush = hasNarrowRange();
+      pathLines.classed('is-hovered', (d) => d.iso3 === hoveredIso)
+        .classed('is-muted', (d) => d.iso3 !== hoveredIso && (!hasBrush || !selectedIso.has(d.iso3)));
+      countryLabels.classed('is-hovered', (d) => d.iso3 === hoveredIso)
+        .classed('is-muted', (d) => d.iso3 !== hoveredIso && (!hasBrush || !selectedIso.has(d.iso3)));
+      onCountryHover(row.iso3);
+    })
+    .on('mouseleave', () => {
+      hoveredIso = null;
+      const hasBrush = hasNarrowRange();
+      pathLines.classed('is-hovered', false).classed('is-muted', (row) => hasBrush && !selectedIso.has(row.iso3));
+      countryLabels.classed('is-hovered', false).classed('is-muted', (row) => hasBrush && !selectedIso.has(row.iso3));
+      onCountryHover(null);
+    });
 
   const pointLayer = svg.append('g').attr('class', 'bump-country-points');
   AXES.forEach((axis) => {
@@ -235,13 +256,23 @@ export function renderCountryBump(container, metricSource, insightData, {
     .attr('class', 'bump-country-label').attr('x', x('adoption') + 8)
     .attr('y', (row) => y(row.ranks.adoption) + 4).attr('aria-hidden', 'true').text((row) => row.name);
 
-  function openInsights(focusRows, title, copy) {
+  function openInsights(focusRows) {
     const focusIso = new Set(focusRows.map((row) => row.iso3));
     const comparisonRows = rows.filter((row) => !focusIso.has(row.iso3));
-    insightsTitle.textContent = title;
-    insightsCopy.textContent = copy;
     focusedLegend.textContent = focusRows.length === 1 ? '1 selected country' : `${focusRows.length} selected countries`;
     comparisonLegend.textContent = comparisonRows.length === 1 ? comparisonRows[0].name : `${comparisonRows.length} other countries`;
+    if (screenHead) {
+      const back = document.createElement('button');
+      back.type = 'button';
+      back.className = 'map-profile-title-back';
+      back.innerHTML = '<span class="map-profile-title-chevron" aria-hidden="true">‹</span><span class="map-profile-title-name">Back to rankings</span>';
+      back.setAttribute('aria-label', 'Return to rank comparison');
+      back.addEventListener('click', closeInsights);
+      const context = document.createElement('p');
+      context.className = 'bump-detail-context';
+      context.textContent = `${focusRows.length} selected ${focusRows.length === 1 ? 'country' : 'countries'} compared with ${comparisonRows.length} ${comparisonRows.length === 1 ? 'other' : 'others'}`;
+      screenHead.replaceChildren(back, context);
+    }
     rankView.hidden = true;
     insightsView.hidden = false;
     const focusGroup = groupRows(focusRows, insightByIso, focusedLegend.textContent);
@@ -255,81 +286,128 @@ export function renderCountryBump(container, metricSource, insightData, {
   function closeInsights() {
     insightsView.hidden = true;
     rankView.hidden = false;
+    if (screenHead) {
+      const title = document.createElement('h3');
+      title.textContent = 'How country rankings shift across the three measures';
+      screenHead.replaceChildren(title);
+    }
   }
-  backButton.addEventListener('click', closeInsights);
+
+  function narrowedAxis() {
+    if (!rankFilterEnabled) return null;
+    return AXES.find((axis) => {
+      const [lower, upper] = ranges.get(axis.key);
+      return lower !== 1 || upper !== rows.length;
+    });
+  }
+
+  function hasNarrowRange() { return Boolean(narrowedAxis()); }
+
+  function updateKeyboardHandles(axisKey) {
+    const handles = keyboardHandles.get(axisKey);
+    if (!handles) return;
+    const [lower, upper] = ranges.get(axisKey);
+    handles
+      .attr('aria-valuenow', function () { return this.classList.contains('handle--n') ? lower : upper; })
+      .attr('aria-valuetext', function () { return `Rank ${this.classList.contains('handle--n') ? lower : upper}`; });
+  }
 
   function updateSelection() {
-    const activeRange = [...ranges.entries()].find(([, range]) => range);
-    const hasBrush = !!activeRange;
+    const activeAxes = AXES.filter((axis) => {
+      const [lower, upper] = ranges.get(axis.key);
+      return rankFilterEnabled && (lower !== 1 || upper !== rows.length);
+    });
+    const hasBrush = activeAxes.length > 0;
     const matches = hasBrush
-      ? rows.filter((row) => row.ranks[activeRange[0]] >= activeRange[1][0] && row.ranks[activeRange[0]] <= activeRange[1][1])
+      ? rows.filter((row) => activeAxes.every((axis) => {
+        const [lower, upper] = ranges.get(axis.key);
+        return row.ranks[axis.key] >= lower && row.ranks[axis.key] <= upper;
+      }))
       : [];
     selectedIso.clear(); matches.forEach((row) => selectedIso.add(row.iso3));
+    selectionToolbar.hidden = !rankFilterEnabled || !hasBrush;
     pathLines.classed('is-selected', (row) => hasBrush && selectedIso.has(row.iso3))
       .classed('is-muted', (row) => hoveredIso ? row.iso3 !== hoveredIso && (!hasBrush || !selectedIso.has(row.iso3)) : hasBrush && !selectedIso.has(row.iso3));
     countryLabels.classed('is-selected', (row) => hasBrush && selectedIso.has(row.iso3))
       .classed('is-muted', (row) => hoveredIso ? row.iso3 !== hoveredIso && (!hasBrush || !selectedIso.has(row.iso3)) : hasBrush && !selectedIso.has(row.iso3));
     pointLayer.selectAll('.bump-country-point').classed('is-selected', (row) => hasBrush && selectedIso.has(row.iso3))
       .classed('is-muted', (row) => hasBrush && !selectedIso.has(row.iso3));
-    selectionStatus.textContent = hasBrush ? `${matches.length} countries match` : 'No rank range selected';
-    if (!hasBrush) {
-      selectionCopy.textContent = 'Drag vertically on one rank axis. Releasing the brush opens insights for every country in that rank range.';
-    } else if (!matches.length) {
-      selectionCopy.textContent = 'No countries fall in this rank range. Make a taller selection or try another axis.';
-    } else {
-      selectionCopy.textContent = `${matches.length} of 17 countries selected on ${AXES.find((axis) => axis.key === activeRange[0]).label}. Releasing the brush opens their insights.`;
-    }
+    selectionStatus.textContent = hasBrush ? `${matches.length} selected countries` : '';
+    viewInsightsButton.textContent = 'View detailed insights';
     onBrushSelection(matches.map((row) => row.iso3));
-    return matches;
+    return { activeAxes, matches };
   }
 
+  function setRange(axisKey, nextRange, syncBrush = true) {
+    const lower = Math.max(1, Math.min(rows.length, Math.round(nextRange[0])));
+    const upper = Math.max(lower, Math.min(rows.length, Math.round(nextRange[1])));
+    ranges.set(axisKey, [lower, upper]);
+    if (syncBrush) {
+      const { brush, group } = brushes.get(axisKey) || {};
+      if (brush && group) group.call(brush.move, [y(lower), y(upper)]);
+    }
+    updateKeyboardHandles(axisKey);
+    updateSelection();
+  }
+
+  const railLayer = svg.append('g').attr('class', 'bump-range-rails');
   const brushLayer = svg.append('g').attr('class', 'bump-brushes');
   AXES.forEach((axis) => {
     const axisX = x(axis.key);
-    // One vertical rank range is active at a time. Starting on another axis
-    // replaces the previous range rather than intersecting with it.
-    const brush = d3.brushY().extent([[axisX - 23, top], [axisX + 23, bottom]])
+    const railX = axisX;
+    railLayer.append('line').attr('class', 'bump-range-track').attr('x1', railX).attr('x2', railX).attr('y1', top).attr('y2', bottom);
+    const brush = d3.brushY().extent([[railX - 9, top], [railX + 9, bottom]])
       .on('start', (event) => {
         if (!event.sourceEvent) return;
-        brushes.forEach(({ brush: otherBrush, group }, otherKey) => {
-          if (otherKey !== axis.key) {
-            ranges.delete(otherKey);
-            group.call(otherBrush.move, null);
-          }
-        });
-        updateSelection();
       })
       .on('brush', (event) => {
-        if (!event.sourceEvent) return;
-        if (!event.selection) ranges.delete(axis.key);
-        else {
-          const [y0, y1] = event.selection;
-          const lower = Math.max(1, Math.ceil(y.invert(y0) - 0.5));
-          const upper = Math.min(rows.length, Math.floor(y.invert(y1) + 0.5));
-          const center = Math.max(1, Math.min(rows.length, Math.round(y.invert((y0 + y1) / 2))));
-          ranges.set(axis.key, lower <= upper ? [lower, upper] : [center, center]);
-        }
-        updateSelection();
+        if (!event.sourceEvent || !event.selection) return;
+        const [y0, y1] = event.selection;
+        const lower = Math.max(1, Math.min(rows.length, Math.round(y.invert(y0))));
+        const upper = Math.max(lower, Math.min(rows.length, Math.round(y.invert(y1))));
+        setRange(axis.key, [lower, upper], false);
       })
       .on('end', (event) => {
-        if (!event.sourceEvent || !event.selection) return;
-        const focusRows = updateSelection();
-        if (!focusRows.length) return;
-        const axisLabel = axis.label.toLowerCase();
-        const groupTitle = focusRows.length === 1 ? '1 selected country' : `${focusRows.length} selected countries`;
-        openInsights(
-          focusRows,
-          groupTitle,
-          `${groupTitle} in the ${axisLabel} rank range, compared with the remaining ${rows.length - focusRows.length} countries.`,
-        );
+        if (!event.sourceEvent) return;
+        setRange(axis.key, ranges.get(axis.key));
       });
     const group = brushLayer.append('g').attr('class', `bump-brush bump-brush-${axis.key}`).call(brush);
-    group.selectAll('.overlay').attr('aria-label', `Drag vertically to select a range of ${axis.label} ranks. Releasing opens group insights.`).attr('tabindex', 0);
     brushes.set(axis.key, { brush, group });
+    group.call(brush.move, [y(1), y(rows.length)]);
+
+    const handles = group.selectAll('.handle')
+      .attr('tabindex', 0).attr('role', 'slider')
+      .attr('aria-label', function () { return `${axis.label} rank range ${this.classList.contains('handle--n') ? 'start' : 'end'}`; })
+      .attr('aria-valuemin', 1).attr('aria-valuemax', rows.length)
+      .on('keydown', function (event) {
+        const bound = this.classList.contains('handle--n') ? 'lower' : 'upper';
+        const range = [...ranges.get(axis.key)];
+        const step = event.key === 'ArrowUp' ? -1 : event.key === 'ArrowDown' ? 1 : event.key === 'PageUp' ? -3 : event.key === 'PageDown' ? 3 : 0;
+        if (event.key === 'Home') range[bound === 'lower' ? 0 : 1] = 1;
+        else if (event.key === 'End') range[bound === 'lower' ? 0 : 1] = rows.length;
+        else if (!step) return;
+        else range[bound === 'lower' ? 0 : 1] += step;
+        if (range[0] > range[1]) range[bound === 'lower' ? 0 : 1] = range[bound === 'lower' ? 1 : 0];
+        event.preventDefault();
+        setRange(axis.key, range);
+      });
+    keyboardHandles.set(axis.key, handles);
+    updateKeyboardHandles(axis.key);
+  });
+
+  viewInsightsButton.addEventListener('click', () => {
+    const { activeAxes, matches } = updateSelection();
+    if (!activeAxes.length || !matches.length) return;
+    openInsights(matches);
   });
 
   clearButton.addEventListener('click', () => {
-    brushes.forEach(({ brush, group }, key) => { group.call(brush.move, null); ranges.set(key, null); });
+    AXES.forEach((axis) => setRange(axis.key, [1, rows.length]));
+  });
+  filterMode.addEventListener('change', () => {
+    rankFilterEnabled = filterMode.checked;
+    if (!rankFilterEnabled) AXES.forEach((axis) => setRange(axis.key, [1, rows.length]));
+    svg.classed('is-filter-mode', rankFilterEnabled);
     updateSelection();
   });
   updateSelection();

@@ -26,10 +26,12 @@ function countryRows(data, metrics) {
     trust: d3.mean(rows.filter((row) => row.trust_composite_score !== null), (row) => row.trust_composite_score),
     n: rows.length,
   }), (row) => row.country_code);
-  const metricByName = new Map(Object.values(metrics.countries).map((country) => [country.name, country]));
+  // ISO3 is the canonical client-side country key. Display names are never
+  // used to match survey aggregates to map metrics.
+  const metricByIso3 = new Map(Object.values(metrics.countries).map((country) => [country.iso3, country]));
   return useByCode.map(([code, values]) => {
     const country = COUNTRY_MAP[code];
-    const mapCountry = metricByName.get(country.name);
+    const mapCountry = country && metricByIso3.get(country.iso3);
     return { ...country, ...values, safetyConcern: mapCountry ? 1 + (100 - mapCountry.metrics.safetyConfidence) / 25 : null };
   }).filter((row) => Number.isFinite(row.trust) && Number.isFinite(row.safetyConcern));
 }
