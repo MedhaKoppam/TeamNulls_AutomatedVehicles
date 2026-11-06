@@ -9,7 +9,7 @@
 button { cursor: pointer; }
 button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 #cockpit { pointer-events: none; }
-#cockpit .nav-stop, #cockpit .pin-clear { pointer-events: auto; }
+#cockpit .nav-stop { pointer-events: auto; }
 .screen { visibility: hidden; }
 .step.is-active .screen { visibility: visible; }
 .screen-right { overflow: hidden; }
@@ -21,7 +21,6 @@ button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px s
 .screen-left { overscroll-behavior: contain; }
 .methods-screen { overflow-y: auto; overscroll-behavior: contain; }
 .takeaways { height: 100%; overscroll-behavior: contain; }
-.pin-value { padding-right: 44px; }
 .error { padding: 32px; color: var(--ink-2); }
 @media (max-width: 760px), (max-height: 560px) {
   .chart-scroll { min-height: 0; }

@@ -6,15 +6,12 @@ import * as d3 from 'd3';
      road.position  : distance travelled (advances with scroll)
      road.curve     : how hard the road bends (set from the steering wheel)
      road.skyShift  : horizontal drift of hills/sun while turning
-   Also paints a mirrored copy into the rear-view mirror.
    ===================================================================== */
 
 export class Road {
-  constructor(canvas, mirrorCanvas) {
+  constructor(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
-    this.mirror = mirrorCanvas;
-    this.mctx = mirrorCanvas ? mirrorCanvas.getContext("2d") : null;
 
     this.position = 0;
     this.curve = 0;
@@ -44,11 +41,6 @@ export class Road {
     this.canvas.width = Math.round(this.w * dpr);
     this.canvas.height = Math.round(this.h * dpr);
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    if (this.mirror) {
-      const r = this.mirror.getBoundingClientRect();
-      this.mirror.width = Math.max(1, Math.round(r.width * dpr));
-      this.mirror.height = Math.max(1, Math.round(r.height * dpr));
-    }
   }
 
   // ---- drawing ----
@@ -110,7 +102,6 @@ export class Road {
     ctx.fillStyle = haze;
     ctx.fillRect(0, hor - h * 0.03, w, h * 0.12);
 
-    this.drawMirror();
   }
 
   hills(hor, amp, color, parallax, seed, freq) {
@@ -224,16 +215,5 @@ export class Road {
     }
   }
 
-  drawMirror() {
-    if (!this.mctx || !this.mirror.width) return;
-    const m = this.mctx, cw = this.mirror.width, ch = this.mirror.height;
-    const srcW = this.canvas.width * 0.42, srcH = srcW * (ch / cw);
-    const srcX = (this.canvas.width - srcW) / 2;
-    const srcY = (this.hor / this.h) * this.canvas.height - srcH * 0.42;
-    m.save();
-    m.setTransform(-1, 0, 0, 1, cw, 0); // mirror image
-    m.drawImage(this.canvas, srcX, srcY, srcW, srcH, 0, 0, cw, ch);
-    m.restore();
-  }
 }
 

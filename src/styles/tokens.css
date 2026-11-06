@@ -10,6 +10,16 @@
   --text-muted: #9ca6b4;
   --accent: #6da7ec;
   --accent-warm: #e66767;
+  --strongly-disagree: #8C3F52;
+  --disagree: #F07167;
+  --neutral: #E6DDC9;
+  --agree: #3B82F6;
+  --strongly-agree: #14B8A6;
+  --willingness-strongly-disagree: #8C3F52;
+  --willingness-disagree: #F07167;
+  --willingness-neutral: #E6DDC9;
+  --willingness-agree: #3B82F6;
+  --willingness-strongly-agree: #14B8A6;
   --accent-dim: rgba(109,167,236,.13);
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;

@@ -25,8 +25,14 @@
 
   /* geometry */
   --rise: 0;                         /* 0 on the hero → 1 once driving (set by JS) */
-  --copy-panel-percent: 22;
-  --copy-panel-width: 20.24vw;
+  --copy-panel-percent: 23;
+  --copy-panel-width: 21.16vw;
+  --copy-title-size: 37px;
+  --copy-body-size: 14px;
+  --copy-eyebrow-to-title: 25px;
+  --copy-title-to-body: 73px;
+  --copy-body-to-divider: 27px;
+  --copy-divider-to-instruction: 27px;
   --dashboard-height: 14vh;
   --wheel-size: 200px;
   --wheel-y-offset: 45px;
@@ -229,16 +235,19 @@ a { color: var(--accent); }
 .is-active .screen-right { transition-delay: .1s; }
 
 .kicker { margin: 0 0 8px; font: 600 12px var(--ui); letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+.screen-left .kicker { margin-bottom: var(--copy-eyebrow-to-title); }
 .kicker span { color: var(--ink-3); }
-.screen h2 { margin: 0 0 12px; font: 600 clamp(22px, 2.1vw, 31px)/1.12 var(--display); letter-spacing: -.003em; color: #fff; }
+.screen-left h2 { margin: 0 0 var(--copy-title-to-body); font: 600 var(--copy-title-size)/1.12 var(--display); letter-spacing: -.003em; color: #fff; }
 .screen-left p { margin: 0 0 12px; color: var(--ink-2); }
+.screen-left p:not(.kicker):not(.howto) { font-size: var(--copy-body-size); }
 .screen-left p strong { color: var(--ink); }
 .howto {
-  margin-top: 16px !important; padding-top: 12px; border-top: 1px solid var(--rule);
+  margin-top: var(--copy-body-to-divider) !important; padding-top: var(--copy-divider-to-instruction); border-top: 1px solid var(--rule);
   font-size: 13.5px; color: var(--ink-3) !important; display: flex; gap: 8px;
 }
 .howto::before { content: "☞"; color: var(--accent); }
 .callout { color: var(--ink) !important; font-weight: 500; border-left: 3px solid var(--accent); padding-left: 12px; }
+.step-last .screen-left { --copy-body-to-divider: 0px; --copy-divider-to-instruction: 0px; }
 
 .screen-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 8px; }
 .screen-head h3 { margin: 0 auto 0 0; font: 600 16px var(--ui); color: var(--ink); }

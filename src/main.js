@@ -25,21 +25,18 @@ function chartStep(id, number, nav, title, copy, howto, chartTitle) {
 }
 
 function willingnessIntroStep(stats) {
-  const roundedAgree = Math.round(stats.agree);
-  const roundedNeutral = Math.round(stats.neutral);
   const exact = (item) => item.share.toFixed(1);
   const neutral = stats.distribution[2];
   const agree = stats.distribution[3];
   const stronglyAgree = stats.distribution[4];
   return `<section class="step chart-step willingness-intro-step" id="willingness-intro" data-nav="Willingness" aria-labelledby="willingness-intro-title">
-    <article class="screen screen-left"><p class="kicker">Finding 01 <span>/ 04</span></p><h2 id="willingness-intro-title">${roundedAgree}% would use a self-driving car, and ${roundedNeutral}% are neutral</h2>
+    <article class="screen screen-left"><p class="kicker">Finding 01 <span>/ 04</span></p><h2 id="willingness-intro-title">64% would use a self-driving car, and 23% are neutral</h2>
       <p>Among ${stats.n.toLocaleString()} valid responses, <strong>${exact(agree)}% agree</strong> and <strong>${exact(stronglyAgree)}% strongly agree</strong> that they would use a self-driving car in the future. Another ${exact(neutral)}% are neutral, while ${stats.disagree.toFixed(1)}% disagree.</p>
       <p class="howto">Hover over a seat or a legend item to highlight one response group. Each car represents four seats.</p>
     </article>
     <div class="screen screen-right chart-shell willingness-shell">
       <div class="screen-head"><h3>Every 100 respondents, seated in 25 cars</h3><span class="data-badge">L3Pilot survey</span></div>
       <div class="chart-scroll willingness-scroll" tabindex="0" role="region" aria-label="A 100-seat illustration of the five-point willingness-to-use response distribution. Hover or focus a legend item to highlight its category."><div class="chart-meta"></div><div class="chart willingness-car-chart" id="willingness-intro-chart"></div></div>
-      <div class="screen-foot"><span>${stats.n.toLocaleString()} valid responses · five-point agreement scale</span><span>100-seat illustration, rounded</span></div>
     </div>
   </section>`;
 }
@@ -114,8 +111,8 @@ function buildPage(stats, total) {
     <section class="step step-hero" data-nav="Start" aria-labelledby="page-title"><div class="hero"><p class="hero-course">CS 6730 Data Visualization &nbsp;|&nbsp; Team Nulls</p><p class="hero-team">${team}</p><h1 id="page-title">Would you get in?</h1><p class="hero-sub">How trust and safety shape acceptance of autonomous vehicles across 17 countries.</p><button class="start-cue" type="button" data-goto="1">Scroll to start the drive <span aria-hidden="true">↓</span></button></div></section>
     <section class="step step-intro" data-nav="Intro" aria-label="Introduction"><div class="hud"><p>Designing a self-driving car means designing for how people feel about it: whether they trust it, whether they feel safe in it, and whether those feelings hold from one market to the next. We looked at <strong>${total.toLocaleString()} survey responses from 17 countries</strong> to see where they line up and where they don't.</p></div></section>
     ${willingnessIntroStep(stats)}
-    ${chartStep('country-trust', '02', 'By country', 'Compare country profiles', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of seven measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles')}
-    ${chartStep('commercial-gap', '03', 'Use vs buy', 'People may use it before they buy it', 'Use and purchase are not the same decision. Compare each country’s average intention to use and to buy. Filter by age and income to see how the commercial gap changes.', 'Use the age and income filters together. Hover or focus a dot for its sample size and use-to-buy gap. Reset to compare all respondents.', 'Intention to use vs. intention to buy')}
+    ${chartStep('country-trust', '02', 'By country', 'How does acceptance vary across countries?', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of seven measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles')}
+    ${chartStep('commercial-gap', '03', 'Use vs buy', 'People might like using automated cars, but not buying', 'Use and purchase are not the same decision. Compare each country’s average intention to use and to buy. Filter by age and income to see how the commercial gap changes.', 'Use the age and income filters together. Hover or focus a dot for its sample size and use-to-buy gap. Reset to compare all respondents.', 'Intention to use vs. intention to buy')}
     ${countryBumpStep()}
     <section class="step" data-nav="Takeaways" aria-labelledby="takeaways-title"><article class="screen screen-left"><p class="kicker">Destination</p><h2 id="takeaways-title">What should AV teams remember?</h2><p>Trust, safety confidence, readiness and ownership are related, but they are not interchangeable.</p><p class="howto">Use the dashboard route to revisit any finding.</p></article><div class="screen screen-right"><ol class="takeaways"><li><div><strong>Start with trust.</strong> Countries with higher average trust also report higher willingness to use.</div></li><li><div><strong>Separate trust from safety confidence.</strong> The country rankings diverge, so strong trust should not be treated as evidence of low safety concern.</div></li><li><div><strong>Look beyond a global average.</strong> Country profiles reveal differences by age, secondary activities, and awareness.</div></li><li><div><strong>Separate use from ownership.</strong> Explore how the use-to-buy gap changes with age and income.</div></li></ol></div></section>
     <section class="step step-last" data-nav="Data" aria-labelledby="methods-title"><article class="screen screen-left"><p class="kicker">Parked</p><h2 id="methods-title">Data and methods</h2><p><strong>Source:</strong> L3Pilot Global User Acceptance Survey, Phase 1. ${total.toLocaleString()} responses from 17 countries.</p><p>Likert-based measures use the original five-point agreement scale. Prior awareness and L3 capability knowledge are percentages. Blank values and non-scale code 6 are excluded from Likert averages.</p><p>The source does not name motorway, urban, or traffic-jam conditions, so these charts do not assign driving-context labels.</p></article><div class="screen screen-right methods-screen"><div class="links"><a class="link-card" href="/data/l3pilot_clean.json" download>Cleaned survey data<span>JSON ↓</span></a><a class="link-card" href="/data/country_metrics.json" download>Country metrics<span>JSON ↓</span></a><a class="link-card" href="/data/respondents.json" download>Respondent extract<span>JSON ↓</span></a><a class="link-card" href="/docs/DATA_DICTIONARY.md">Data dictionary<span>Read ↗</span></a><a class="link-card" href="/docs/PROCESS_BOOK.md">Process book<span>Read ↗</span></a><a class="link-card" href="/data/l3pilot_labeled.xlsx" download>Raw workbook<span>XLSX ↓</span></a></div><p class="credits">Team Nulls · ${team}.<br>CS 6730 Data Visualization. Built with D3.js. Map: Natural Earth.</p><button class="start-cue small" type="button" data-goto="0">Back to the start ↑</button></div></section>
@@ -178,9 +175,10 @@ async function initialize() {
   ]);
   const stats = getStoryboardStats(data);
   buildPage(stats, data.length);
+  let layoutHarness = null;
   if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('layoutHarness') === '1') {
     const { initLayoutHarness } = await import('./dev/layoutHarness.js');
-    initLayoutHarness();
+    layoutHarness = initLayoutHarness();
   }
   renderWillingnessCars(requireElement('#willingness-intro-chart'), stats);
   const map = requireElement('#country-trust-chart');
@@ -213,6 +211,7 @@ async function initialize() {
       document.querySelector('.mobile-chapter').textContent = steps[index].dataset.nav;
       document.querySelector('[data-previous]').disabled = index === 0;
       document.querySelector('[data-next]').disabled = index === steps.length - 1;
+      layoutHarness?.setActiveSection(steps[index]);
     }
   });
   document.querySelector('[data-previous]').addEventListener('click', () => cockpit.goTo(cockpit.active - 1));
