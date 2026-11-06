@@ -178,6 +178,10 @@ async function initialize() {
   ]);
   const stats = getStoryboardStats(data);
   buildPage(stats, data.length);
+  if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('layoutHarness') === '1') {
+    const { initLayoutHarness } = await import('./dev/layoutHarness.js');
+    initLayoutHarness();
+  }
   renderWillingnessCars(requireElement('#willingness-intro-chart'), stats);
   const map = requireElement('#country-trust-chart');
   map.closest('.chart-scroll')?.classList.add('map-chart-scroll');
@@ -194,14 +198,9 @@ async function initialize() {
     renderCountryDrilldown(map, mapData, state, actions);
     renderMapSummary(map, mapData, state);
     syncBumpHighlightsToMap();
-    const selected = Object.values(mapData.metrics.countries).find((country) => country.iso3 === state.selectedCountry);
-    document.querySelector('.pin-value').textContent = selected?.name || 'None. Select a country';
-    document.querySelector('.pin-screen').classList.toggle('has-pin', !!selected);
-    document.querySelector('.pin-clear').hidden = !selected;
   };
   subscribe(updateMap);
   updateMap(getState());
-  document.querySelector('.pin-clear').addEventListener('click', () => setSelectedCountry(null));
   renderCommercialGap(requireElement('#commercial-gap-chart'), respondents);
   renderCountryBump(requireElement('#country-bump-explorer'), mapData.metrics, countryInsights, {
     onCountryHover: (iso3) => { hoveredBumpCountry = iso3; syncBumpHighlightsToMap(); },

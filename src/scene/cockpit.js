@@ -1,5 +1,3 @@
-const fmt1 = (value) => value.toFixed(1);
-
 /* =====================================================================
    Cockpit : ties scrolling to the car.
      • which story step is active (screens pop in/out)
@@ -19,11 +17,7 @@ export class Cockpit {
     this.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     this.wheelEl = document.getElementById("wheel");
-    this.speedEl = document.getElementById("speed");
-    this.tripEl = document.getElementById("trip");
-    this.chapterEl = document.getElementById("cluster-chapter");
     this.navNowEl = document.getElementById("nav-now");
-    this.gearEls = Array.from(document.querySelectorAll(".gears span"));
 
     this.angle = 0;
     this.vel = 0;
@@ -31,7 +25,6 @@ export class Cockpit {
     this.lastT = performance.now();
     this.lastScrollAt = 0;
     this.active = -1;
-    this.gear = "P";
     this.running = false;
 
     this.buildWheel();
@@ -89,7 +82,7 @@ export class Cockpit {
 
       <!-- spoke buttons -->
       ${[[-168, -12, "+"], [-168, 16, "−"], [-124, -12, "⏵"], [-124, 16, "☰"], [124, -12, "▲"], [124, 16, "▼"], [168, -12, "◁"], [168, 16, "▷"]]
-        .map(([x, y, t]) => `<g transform="translate(${x},${y})"><rect x="-17" y="-11" width="34" height="22" rx="7" fill="#0c0d0f" stroke="#34373d"/>
+        .slice(0, 0).map(([x, y, t]) => `<g transform="translate(${x},${y})"><rect x="-17" y="-11" width="34" height="22" rx="7" fill="#0c0d0f" stroke="#34373d"/>
         <text text-anchor="middle" dy="4.5" font-size="12" fill="#8c939c" font-family="sans-serif">${t}</text></g>`).join("")}
 
       <!-- hub -->
@@ -152,13 +145,6 @@ export class Cockpit {
       this.road.skyShift += this.road.curve * dy * 9;
     }
 
-    // gear
-    if (dy > 0.5) this.gear = "D";
-    else if (dy < -0.5) this.gear = "R";
-    else if (performance.now() - this.lastScrollAt > 400) {
-      this.gear = (y < 4 || y >= this.maxScroll - 4) ? "P" : "N";
-    }
-
     this.update(false);
     this.road.draw();
 
@@ -191,9 +177,6 @@ export class Cockpit {
 
   render() {
     this.wheelEl.style.transform = `rotate(${this.angle.toFixed(2)}deg)`;
-    this.speedEl.textContent = Math.min(180, Math.round(Math.abs(this.vel) * 62));
-    this.tripEl.textContent = fmt1((window.scrollY / this.maxScroll) * 12.4);
-    this.gearEls.forEach(g => g.classList.toggle("on", g.dataset.g === this.gear));
   }
 
   setActive(idx, force) {
@@ -204,8 +187,6 @@ export class Cockpit {
       s.inert = i !== idx;
       s.setAttribute('aria-hidden', String(i !== idx));
     });
-    const label = this.steps[idx].dataset.nav || "";
-    this.chapterEl.textContent = label;
     this.navNowEl.textContent = idx + 1 < this.steps.length ? `Next: ${this.steps[idx + 1].dataset.nav}` : "Arrived";
     this.navStops.forEach((b, i) => { b.classList.toggle("done", i < idx); b.classList.toggle("now", i === idx); if (i === idx) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
     const first = this.navStops[0], cur = this.navStops[idx];

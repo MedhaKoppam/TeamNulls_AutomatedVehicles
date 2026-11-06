@@ -25,12 +25,15 @@
 
   /* geometry */
   --rise: 0;                         /* 0 on the hero → 1 once driving (set by JS) */
-  --wheel-d: min(52vh, 44vw);
-  --dash-h: 31vh;
+  --copy-panel-percent: 22;
+  --copy-panel-width: 20.24vw;
+  --dashboard-height: 14vh;
+  --wheel-size: 200px;
+  --wheel-y-offset: 45px;
   --gutter: max(3vw, 20px);
-  --left-w: clamp(280px, 29vw, 440px);
+  --panel-gap: 2vw;
   --panel-top: 4.5vh;
-  --panel-bottom: 34vh;
+  --panel-bottom: calc(var(--dashboard-height) + 3vh);
 }
 
 * { box-sizing: border-box; }
@@ -84,7 +87,7 @@ a { color: var(--accent); }
 
 /* ---------- Dashboard ---------- */
 .dash {
-  position: absolute; left: 0; right: 0; bottom: 0; height: var(--dash-h);
+  position: absolute; left: 0; right: 0; bottom: 0; height: var(--dashboard-height);
   transform: translateY(calc((1 - var(--rise)) * 24vh));
   will-change: transform;
 }
@@ -98,22 +101,22 @@ a { color: var(--accent); }
   box-shadow: 0 -10px 40px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.14);
 }
 .dash-top::after {   /* stitching */
-  content: ""; position: absolute; left: 6%; right: 6%; top: 2.6vh; height: 4vh;
+  content: ""; position: absolute; left: 6%; right: 6%; top: 1.8vh; height: 2vh;
   border-top: 1.5px dashed rgba(200, 190, 175, .16);
   border-radius: 50% 50% 0 0 / 3vh 3vh 0 0;
 }
 .vent {
-  position: absolute; top: 6vh; width: 15vw; height: 5.4vh; border-radius: 10px;
+  position: absolute; top: 3vh; width: 13vw; height: 4.2vh; border-radius: 10px;
   background:
     repeating-linear-gradient(180deg, #2a2d33 0 2px, #050506 2px 7px);
   box-shadow: inset 0 2px 8px rgba(0,0,0,.9), 0 1px 0 rgba(255,255,255,.07);
 }
 .vent::after { content: ""; position: absolute; inset: 0; border-radius: 10px; border: 2px solid #2c2f35; }
-.vent-left { left: 8vw; }
-.vent-right { right: 8vw; }
+.vent-left { left: 7vw; }
+.vent-right { right: 7vw; }
 
 .mini-screen {
-  position: absolute; top: 14.5vh; height: 11vh;
+  position: absolute; top: 2.4vh; height: 9.4vh;
   background: linear-gradient(180deg, #0a0c10, #050608);
   border-radius: 10px; padding: 1vh 14px;
   box-shadow: 0 0 0 3px #1c1e23, 0 0 0 4px rgba(255,255,255,.05), inset 0 0 30px rgba(60,110,180,.08);
@@ -121,16 +124,8 @@ a { color: var(--accent); }
   overflow: hidden;
 }
 .mini-label { font: 500 10.5px var(--ui); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); }
-.pin-screen { left: 7vw; width: 19vw; }
-.pin-value { font: 600 clamp(15px, 1.4vw, 20px) var(--display); color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pin-screen.has-pin .pin-value { color: var(--highlight); }
-.pin-clear {
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  border: 1px solid var(--rule); background: #15181d; border-radius: 999px;
-  padding: 2px 10px; font: 500 12px var(--ui); cursor: pointer; pointer-events: auto;
-}
-.nav-screen { right: 6vw; width: 25vw; top: 13vh; height: 13vh; }
-.nav-now { font: 600 clamp(14px, 1.3vw, 19px) var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nav-screen { right: 6vw; width: min(25vw, 390px); padding: 10px 14px; justify-content: center; gap: 7px; }
+.nav-now { font: 600 clamp(13px, 1.15vw, 17px) var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .nav-route { position: relative; display: flex; justify-content: space-between; align-items: center; margin-top: 6px; height: 16px; pointer-events: auto; }
 .nav-route::before { content: ""; position: absolute; left: 4px; right: 4px; top: 50%; height: 2px; background: #2a2f37; }
 .nav-route .fill { position: absolute; left: 4px; top: 50%; height: 2px; background: var(--accent); transition: width .5s ease; }
@@ -142,27 +137,13 @@ a { color: var(--accent); }
 .nav-stop.done { border-color: var(--accent); background: var(--accent); }
 .nav-stop.now { border-color: #fff; background: #fff; box-shadow: 0 0 10px var(--accent); }
 
-/* Instrument cluster (seen through the top of the wheel) */
-.cluster {
-  position: absolute; left: 50%; top: 3.6vh; transform: translateX(-50%);
-  width: min(56vh, 40vw); height: 16vh; border-radius: 22px 22px 12px 12px;
-  background: radial-gradient(70% 110% at 50% 10%, #0f1a29 0%, #040507 70%);
-  box-shadow: 0 0 0 4px #15171b, 0 -2vh 0 1.6vh #121317, inset 0 0 40px rgba(60,120,200,.12);
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-  padding-top: 2.4vh; gap: .5vh; font-family: var(--ui);
-}
-.cluster-speed { display: flex; align-items: baseline; gap: 6px; font: 600 clamp(22px, 4vh, 38px)/1 var(--ui); font-variant-numeric: tabular-nums; }
-.cluster-speed small { font: 500 10px var(--ui); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
-.gears { display: flex; justify-content: center; gap: 10px; font: 600 clamp(12px, 1.8vh, 17px) var(--ui); color: #3b424d; }
-.gears span.on { color: #fff; text-shadow: 0 0 8px var(--accent); }
-.cluster-chapter { max-width: 22vh; font: 500 11px var(--ui); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mini-label span { color: var(--ink-2); font-variant-numeric: tabular-nums; }
 
 /* ---------- Steering wheel ---------- */
 .wheel-wrap {
-  position: absolute; left: 50%; top: 95vh;
-  width: var(--wheel-d); height: var(--wheel-d);
-  transform: translate(-50%, -50%) translateY(calc((1 - var(--rise)) * 42vh));
+  position: absolute; left: 50%; top: 90vh;
+  width: var(--wheel-size); height: var(--wheel-size);
+  transform: translate(-50%, -50%) translateY(calc((1 - var(--rise)) * 42vh + var(--wheel-y-offset)));
   will-change: transform;
   filter: drop-shadow(0 18px 24px rgba(0,0,0,.6));
 }
@@ -233,13 +214,13 @@ a { color: var(--accent); }
   background: linear-gradient(125deg, rgba(255,255,255,.06) 0%, rgba(255,255,255,0) 32%);
 }
 .screen-left {
-  left: var(--gutter); width: var(--left-w);
+  left: var(--gutter); width: var(--copy-panel-width);
   padding: clamp(18px, 2.6vh, 30px) 26px; overflow-y: auto; scrollbar-width: thin;
   transform: perspective(1400px) translateX(calc(-100% - 8vw)) rotateY(32deg);
   transform-origin: left center;
 }
 .screen-right {
-  left: calc(var(--gutter) + var(--left-w) + 2vw); right: var(--gutter);
+  left: calc(var(--gutter) + var(--copy-panel-width) + var(--panel-gap)); right: var(--gutter);
   padding: 16px 20px 14px; display: flex; flex-direction: column;
   transform: perspective(1400px) translateX(calc(100% + 8vw)) rotateY(-32deg);
   transform-origin: right center;
@@ -316,14 +297,14 @@ a { color: var(--accent); }
 /* =========================================================
    Responsive
    ========================================================= */
-@media (max-width: 1100px) {
-  :root { --left-w: clamp(260px, 32vw, 380px); }
+@media (max-width: 1280px) {
+  :root { --copy-panel-width: clamp(240px, 28vw, 340px); }
   .screen h2 { font-size: 22px; }
   .map-layout { grid-template-columns: 1fr; grid-template-rows: 1.4fr 1fr; }
 }
 @media (max-width: 760px), (max-height: 560px) {
-  :root { --wheel-d: min(34vh, 70vw); --dash-h: 18vh; --gutter: 12px; }
-  .vent, .mini-screen, .cluster { display: none; }
+  :root { --wheel-size: min(34vh, 70vw); --dashboard-height: 18vh; --gutter: 12px; }
+  .vent, .mini-screen { display: none; }
   .hero h1 { margin-bottom: calc(1.4vh + 28px); }
   .screen-left { left: 12px; right: 12px; width: auto; top: 4.5vh; bottom: auto; max-height: 36vh; padding: 14px 16px; }
   .screen-left p:not(.howto):not(.kicker) { font-size: 14px; }
