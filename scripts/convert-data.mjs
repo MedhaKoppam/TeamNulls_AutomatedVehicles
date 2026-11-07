@@ -1,5 +1,6 @@
 import XLSX from 'xlsx';
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { COUNTRY_MAP } from './country-map.mjs';
 
 const workbook = XLSX.readFile('data/raw/l3pilot_labeled.xlsx', { cellDates: true });
 const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { defval: null, raw: true });
@@ -43,8 +44,12 @@ const clean = rows.map((row) => {
   const commute = likert(row.f20_1), business = likert(row.f20_2), errands = likert(row.f20_3), leisure = likert(row.f20_4), vacation = likert(row.f20_5);
   const age = numeric(row.s1);
   const countryCode = numeric(row.country), genderCode = numeric(row.s2), educationCode = numeric(row.s3);
+  const country = COUNTRY_MAP[countryCode];
+  if (!country) throw new Error(`Unmapped workbook country code ${countryCode}; update src/data/countryMap.js before converting data.`);
   const output = {
-    respondent_id: numeric(row.userid), country_code: countryCode, country_label: `Country code ${countryCode ?? 'missing'}`,
+    // Keep the source code for aggregation, but derive all human labels from
+    // the canonical country registry rather than repeating code placeholders.
+    respondent_id: numeric(row.userid), country_code: countryCode, country_label: country.name,
     region: 'Unmapped — requires source codebook', response_start_date: cleanValue(row.startdate), respondent_age: age, age_group: ageGroup(age),
     gender_source_code: genderCode, gender_label: `Gender code ${genderCode ?? 'missing'}`,
     education_source_code: educationCode, education_label: `Education code ${educationCode ?? 'missing'}`,

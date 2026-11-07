@@ -173,7 +173,7 @@ a { color: var(--accent); }
 }
 .hero-course { margin: 0; font: 600 13px var(--ui); letter-spacing: .24em; text-transform: uppercase; color: #fff; opacity: .9; }
 .hero-team { margin: 8px 0 0; font: 500 15px var(--ui); color: rgba(255,255,255,.82); }
-.hero h1 { margin: 2.2vh 0 calc(1.4vh + 60px); font: 700 clamp(54px, 9.4vw, 140px)/.92 var(--display); letter-spacing: -.01em; color: #fff; }
+.hero h1 { margin: 2.2vh 0 calc(1.4vh + 60px); font: 700 clamp(42px, 6.2vw, 96px)/.92 var(--display); letter-spacing: -.01em; color: #fff; }
 .hero-sub { margin: 0 auto; max-width: 36ch; font: 400 clamp(17px, 1.6vw, 22px)/1.4 var(--body); color: rgba(255,255,255,.92); }
 .start-cue {
   margin-top: 4vh; pointer-events: auto; cursor: pointer;

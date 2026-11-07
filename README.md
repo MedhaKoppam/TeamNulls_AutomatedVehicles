@@ -71,3 +71,9 @@ For a quick integrity check of rule-based country insights, run:
 ```bash
 npm run check:insights
 ```
+
+For the repeatable country-label, country-join, topology, and linked-view audit, run:
+
+```bash
+npm run check:countries
+```
