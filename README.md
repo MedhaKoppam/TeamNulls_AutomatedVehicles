@@ -1,6 +1,13 @@
 # Would you get in? | Team Nulls
 
-An interactive CS 6730 Data Visualization project exploring public trust in Level 3 autonomous vehicles through the L3Pilot Global User Acceptance Survey.
+An interactive CS 6730 Data Visualization project exploring public trust in Level 3 autonomous vehicles through the L3Pilot Global User Acceptance Survey. 
+Access the visualization using the vercel link below:
+
+## View Vercel website
+
+This repo has been hosted on vercel and the view can be accessed on this link: https://dvp-heatmap-preview.vercel.app/
+
+The source code for the deployment is this repository.
 
 ## Run locally
 
