@@ -39,6 +39,7 @@ export class Cockpit {
     this.wheelGestureTimer = null;
     this.unlockTimer = null;
     this.scrollAnimation = null;
+    this.pendingTarget = null;
     this.desktopWheelQuery = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 761px)');
 
     this.buildWheel();
@@ -279,6 +280,7 @@ export class Cockpit {
     this.tops.forEach((top, i) => { if (top <= y + vh * 0.5) idx = i; });
     if (y >= this.maxScroll - 2) idx = this.steps.length - 1;
     if (idx !== this.active || force) this.setActive(idx, force);
+    if (!this.scrollAnimation && this.pendingTarget !== null) this.pendingTarget = null;
 
     this.render();
   }
@@ -304,10 +306,19 @@ export class Cockpit {
 
   goTo(i) {
     this.measure();
-    const s = this.steps[Math.max(0, Math.min(this.steps.length - 1, i))];
+    const targetIndex = Math.max(0, Math.min(this.steps.length - 1, i));
+    const s = this.steps[targetIndex];
+    this.pendingTarget = targetIndex;
     // land a little into the section so its screens are fully open
-    const y = Math.max(0, Math.min(this.maxScroll, i === 0 ? 0 : s.offsetTop + innerHeight * 0.05));
-    return this.scrollTo(y);
+    const y = Math.max(0, Math.min(this.maxScroll, targetIndex === 0 ? 0 : s.offsetTop + innerHeight * 0.05));
+    return this.scrollTo(y).finally(() => {
+      if (!this.scrollAnimation && this.pendingTarget === targetIndex) this.pendingTarget = null;
+    });
+  }
+
+  step(delta) {
+    const origin = this.scrollAnimation && this.pendingTarget !== null ? this.pendingTarget : this.active;
+    return this.goTo(origin + delta);
   }
 
   scrollTo(targetY) {

@@ -95,7 +95,7 @@ function countryBumpStep() {
 
 function buildPage(stats, total) {
   app.innerHTML = `${sceneMarkup}<main id="story">
-    <section class="step step-hero" data-nav="Start" aria-labelledby="page-title"><div class="hero"><p class="hero-course">CS 6730 Data Visualization &nbsp;|&nbsp; Team Nulls</p><p class="hero-team">${team}</p><h1 id="page-title">Who would get into an autonomous vehicle, and&nbsp;why?</h1><p class="hero-sub">How trust and safety shape acceptance of autonomous vehicles across 17 countries</p><button class="start-cue" type="button" data-goto="1">Scroll to start the drive <span aria-hidden="true">↓</span></button></div></section>
+    <section class="step step-hero" data-nav="Start" aria-labelledby="page-title"><div class="hero"><p class="hero-course">CS 6730 Data Visualization &nbsp;|&nbsp; Team Nulls</p><p class="hero-team">${team}</p><h1 id="page-title">Who would get into an autonomous vehicle, and&nbsp;why?</h1><p class="hero-sub">How trust and safety shape acceptance of autonomous vehicles across 17 countries</p><button class="start-cue" type="button" data-goto="1" aria-label="Start the drive. You can also use the arrow keys."><span class="start-cue-keyboard"><span class="start-cue-keys" aria-hidden="true"><kbd class="keycap">←</kbd><kbd class="keycap">→</kbd></span><span>Use the arrow keys to start the drive</span></span><span class="start-cue-touch">Tap to start the drive <span class="cue-arrow" aria-hidden="true">↓</span></span></button></div></section>
     <section class="step step-intro" data-nav="Intro" aria-label="Introduction"><div class="hud"><p>Designing a self-driving car means designing for how people feel about it: whether they trust it, whether they feel safe in it, and whether those feelings hold from one market to the next. We looked at <strong>${total.toLocaleString()} survey responses from 17 countries</strong> to see where they line up and where they don't.</p></div></section>
     ${willingnessIntroStep(stats)}
     ${chartStep('country-trust', '02', 'By country', 'How does acceptance vary across countries?', 'Acceptance looks different around the world. Choose a measure to compare the 17 surveyed countries, then explore the age, behavior, and readiness profile behind each country average.', 'Choose one of seven measures. Select a country on the map or in the ranking to open its profile. Use World map or Escape to return.', 'Global patterns and country profiles', false)}
@@ -239,10 +239,20 @@ async function initialize() {
   document.querySelector('[data-next]').addEventListener('click', () => cockpit.goTo(cockpit.active + 1));
   document.querySelectorAll('[data-goto]').forEach((button) => button.addEventListener('click', () => cockpit.goTo(Number(button.dataset.goto))));
   window.addEventListener('keydown', (event) => {
-    // Keep keyboard navigation within filters, chart marks, and scrollable panels.
-    if (event.target.closest('button, a, input, select, textarea, .chart-scroll, [tabindex]')) return;
-    if (['PageDown', 'ArrowDown'].includes(event.key)) { event.preventDefault(); cockpit.goTo(cockpit.active + 1); }
-    if (['PageUp', 'ArrowUp'].includes(event.key)) { event.preventDefault(); cockpit.goTo(cockpit.active - 1); }
+    if (event.defaultPrevented || event.repeat || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+    const target = event.target instanceof Element ? event.target : document.activeElement;
+    if (target?.closest('input, textarea, select, [contenteditable], [role="slider"], [role="listbox"], [role="combobox"]')) return;
+
+    const forward = ['ArrowRight', 'ArrowDown', 'PageDown'];
+    const backward = ['ArrowLeft', 'ArrowUp', 'PageUp'];
+    const verticalOrBoundary = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End'];
+    if (!forward.includes(event.key) && !backward.includes(event.key) && !['Home', 'End'].includes(event.key)) return;
+    if (verticalOrBoundary.includes(event.key) && cockpit.isInsideVerticallyScrollablePanel(target)) return;
+
+    event.preventDefault();
+    if (event.key === 'Home') cockpit.goTo(0);
+    else if (event.key === 'End') cockpit.goTo(steps.length - 1);
+    else cockpit.step(forward.includes(event.key) ? 1 : -1);
   });
 }
 
