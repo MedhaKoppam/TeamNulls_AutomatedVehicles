@@ -108,6 +108,7 @@
 .commercial-segmented { display: flex; flex-wrap: wrap; gap: 4px; }
 .commercial-segmented button { padding: 5px 9px; }
 .commercial-plot-card { position: relative; min-width: 280px; min-height: 340px; }
+.commercial-plot-card > .hint-tip { position: absolute; left: var(--commercial-hint-left); top: var(--commercial-hint-top); }
 .commercial-gap-svg { width: auto; max-width: 100%; height: auto; }
 .commercial-grid line { stroke: rgba(255,255,255,.07); }
 .commercial-grid path { display: none; }
@@ -120,7 +121,7 @@
 .commercial-node.is-low-sample { fill: var(--bg-card); stroke: var(--accent); stroke-width: 2; stroke-dasharray: 3 2; }
 .commercial-node.is-dimmed { fill: #66727a; }
 .commercial-node.is-hovered { fill: #d95926; stroke: #fff; }
-.commercial-tooltip { display: grid; gap: 2px; }
+.commercial-tooltip { display: grid; gap: 2px; z-index: 50; }
 .commercial-tooltip[hidden] { display: none; }
 .commercial-tooltip span:last-child { color: var(--accent); }
 
@@ -176,7 +177,7 @@
   min-height: 0;
   min-width: 0;
 }
-.map-chart-scroll { overflow: hidden !important; }
+.map-chart-scroll { overflow: visible !important; }
 .map-chart-scroll > #country-trust-chart { flex: 1 1 auto; }
 #country-trust-chart > .map-controls {
   flex: 0 0 auto;
@@ -198,6 +199,16 @@
   font: 500 11px var(--ui);
   white-space: nowrap;
 }
+#country-trust-chart .metric-select-tooltip-anchor { position: relative; min-width: 0; }
+#country-trust-chart .metric-select-tooltip-anchor > .hint-tip {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 10px);
+  width: max-content;
+  max-width: none;
+  transform: translateY(-50%);
+}
+#country-trust-chart .metric-select-tooltip-anchor > .hint-tip.hint-tip--leaving { transform: translateY(-50%) scale(.96); }
 #country-trust-chart .metric-select {
   width: 100%;
   min-width: 0;

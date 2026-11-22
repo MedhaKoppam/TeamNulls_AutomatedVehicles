@@ -1,7 +1,9 @@
 import * as d3 from 'd3';
 import { COUNTRY_MAP } from '../data/countryMap.js';
+import { showOnceOnView } from '../components/tooltip.js';
 
 const MIN_SAMPLE = 30;
+const HINT_COUNTRY_CODE = 9;
 const AGE_BANDS = [['all', 'All'], ['18-24', '18-24'], ['25-34', '25-34'], ['35-44', '35-44'], ['45-54', '45-54'], ['55-69', '55-69']];
 const INCOME_BANDS = [['all', 'All'], ['low', 'Low'], ['middle', 'Middle'], ['high', 'High']];
 // F13/F5 controls remain intentionally absent until the L3Pilot codebook defines their meaning.
@@ -92,6 +94,24 @@ function clearActiveNode(state, nodes) {
   state.tooltip.attr('hidden', true);
 }
 
+function dismissHintOnHover(state) {
+  if (!state.hint?.classList.contains('hint-tip--leaving')) state.hint?.querySelector('.hint-tip__close')?.click();
+}
+
+function positionHint(state) {
+  const hint = state.hint;
+  const target = state.hintData?.find((d) => d.code === HINT_COUNTRY_CODE);
+  if (!hint || hint.classList.contains('hint-tip--leaving')) return;
+  if (!target?.n) {
+    hint.hidden = true;
+    return;
+  }
+  hint.hidden = false;
+  const targetRadius = target.n < MIN_SAMPLE ? 8 : state.hintRadius(target.n);
+  hint.style.setProperty('--commercial-hint-left', `${state.hintX(target.use) - 12}px`);
+  hint.style.setProperty('--commercial-hint-top', `${state.hintY(target.buy) + targetRadius + 10}px`);
+}
+
 function activateNode(state, event, d, nodes) {
   if (!d?.n) return;
   nodes.classed('is-hovered', (node) => node.code === d.code).classed('is-dimmed', (node) => node.code !== d.code && node.n > 0);
@@ -121,6 +141,10 @@ function draw(state, data) {
   const y = d3.scaleLinear().domain([1, 5]).range([margins.top + innerHeight, margins.top]);
   const maxN = d3.max(data, (d) => d.n) || MIN_SAMPLE;
   const radius = d3.scaleSqrt().domain([MIN_SAMPLE, maxN]).range([7, 18]).clamp(true);
+  state.hintData = data;
+  state.hintX = x;
+  state.hintY = y;
+  state.hintRadius = radius;
   const previous = new Map((state.previousData || []).map((d) => [d.code, d]));
   let svg = state.frame.select('svg.commercial-gap-svg');
   if (svg.empty()) svg = state.frame.insert('svg', ':first-child').attr('class', 'commercial-gap-svg');
@@ -156,9 +180,13 @@ function draw(state, data) {
     const nearest = delaunay && reachable[delaunay.find(pointerX, pointerY)];
     const isNear = nearest && Math.hypot(pointerX - x(nearest.use), pointerY - y(nearest.buy)) <= 30;
     svg.style('cursor', isNear ? 'pointer' : 'default');
-    if (isNear) activateNode(state, event, nearest, nodes);
+    if (isNear) {
+      dismissHintOnHover(state);
+      activateNode(state, event, nearest, nodes);
+    }
     else clearActiveNode(state, nodes);
   }).on('pointerleave', () => clearActiveNode(state, nodes));
+  positionHint(state);
   state.previousData = data;
 }
 
@@ -172,6 +200,18 @@ export function renderCommercialGap(container, respondents) {
   const state = { container, rows: validateRows(respondents), filters: { age: 'all', income: 'all' }, resizeTimer: null };
   container.__commercialGap = state;
   buildControls(state);
+  showOnceOnView({
+    id: 'commercial-gap',
+    anchorEl: container.closest('.step'),
+    text: 'Hover to see a country!',
+    mount: (tooltip) => {
+      state.hint = tooltip;
+      state.frame.node().append(tooltip);
+      positionHint(state);
+    },
+    tail: 'top',
+    align: 'start',
+  });
   state.resizeObserver = new ResizeObserver(() => {
     clearTimeout(state.resizeTimer);
     state.resizeTimer = setTimeout(() => update(state), 120);

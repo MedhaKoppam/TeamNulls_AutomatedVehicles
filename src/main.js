@@ -241,12 +241,13 @@ async function initialize() {
   window.addEventListener('keydown', (event) => {
     if (event.defaultPrevented || event.repeat || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
     const target = event.target instanceof Element ? event.target : document.activeElement;
-    if (target?.closest('input, textarea, select, [contenteditable], [role="slider"], [role="listbox"], [role="combobox"]')) return;
-
     const forward = ['ArrowRight', 'ArrowDown', 'PageDown'];
     const backward = ['ArrowLeft', 'ArrowUp', 'PageUp'];
     const verticalOrBoundary = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End'];
     if (!forward.includes(event.key) && !backward.includes(event.key) && !['Home', 'End'].includes(event.key)) return;
+    if (target?.closest('select, [role="slider"], [role="listbox"], [role="combobox"]')) return;
+    const textEntry = target?.closest('input:not([type="checkbox"]):not([type="radio"]), textarea, [contenteditable]');
+    if (verticalOrBoundary.includes(event.key) && textEntry) return;
     if (verticalOrBoundary.includes(event.key) && cockpit.isInsideVerticallyScrollablePanel(target)) return;
 
     event.preventDefault();

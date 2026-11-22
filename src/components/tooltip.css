@@ -1,0 +1,99 @@
+/* Tooltip component - dismissible, directional tail. */
+
+.hint-tip {
+  position: relative;
+  display: inline-flex;
+  width: max-content;
+  box-sizing: border-box;
+  /* Soft shadow so the white card separates from the dark map.
+     Remove this line if you want the flat Figma look. */
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.28));
+  transition: opacity 160ms ease, transform 160ms ease;
+  z-index: 40;
+}
+
+.hint-tip__container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px;
+  width: max-content;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 4px;
+}
+
+.hint-tip__label {
+  flex: 1 1 auto;
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: pre;
+  color: #000000;
+}
+
+.hint-tip__close {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 2px 0 0;
+  border: none;
+  background: transparent;
+  color: #000000;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+}
+.hint-tip__close:hover { opacity: 0.6; }
+.hint-tip__close:focus-visible { outline: 2px solid #1a73e8; outline-offset: 2px; }
+
+/* --- Tail: a CSS triangle anchored to one edge of the card --- */
+.hint-tip__tail {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Left / right tails (vertical edge): triangle 6w x 10h */
+.hint-tip--tail-left  .hint-tip__tail,
+.hint-tip--tail-right .hint-tip__tail {
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+.hint-tip--tail-left  .hint-tip__tail { left: -6px;  border-right: 6px solid #fff; }
+.hint-tip--tail-right .hint-tip__tail { right: -6px; border-left: 6px solid #fff; }
+
+/* Top / bottom tails (horizontal edge): triangle 10w x 6h */
+.hint-tip--tail-top    .hint-tip__tail,
+.hint-tip--tail-bottom .hint-tip__tail {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+.hint-tip--tail-top    .hint-tip__tail { top: -6px;    border-bottom: 6px solid #fff; }
+.hint-tip--tail-bottom .hint-tip__tail { bottom: -6px; border-top: 6px solid #fff; }
+
+/* --- Tail alignment along its edge (start / center / end) --- */
+/* vertical edges */
+.hint-tip--tail-left.hint-tip--align-center  .hint-tip__tail,
+.hint-tip--tail-right.hint-tip--align-center .hint-tip__tail { top: 50%; transform: translateY(-50%); }
+.hint-tip--tail-left.hint-tip--align-start   .hint-tip__tail,
+.hint-tip--tail-right.hint-tip--align-start  .hint-tip__tail { top: 12px; }
+.hint-tip--tail-left.hint-tip--align-end     .hint-tip__tail,
+.hint-tip--tail-right.hint-tip--align-end    .hint-tip__tail { bottom: 12px; }
+/* horizontal edges */
+.hint-tip--tail-top.hint-tip--align-center    .hint-tip__tail,
+.hint-tip--tail-bottom.hint-tip--align-center .hint-tip__tail { left: 50%; transform: translateX(-50%); }
+.hint-tip--tail-top.hint-tip--align-start     .hint-tip__tail,
+.hint-tip--tail-bottom.hint-tip--align-start  .hint-tip__tail { left: 12px; }
+.hint-tip--tail-top.hint-tip--align-end       .hint-tip__tail,
+.hint-tip--tail-bottom.hint-tip--align-end    .hint-tip__tail { right: 12px; }
+
+/* Dismiss animation */
+.hint-tip--leaving { opacity: 0; transform: scale(0.96); pointer-events: none; }

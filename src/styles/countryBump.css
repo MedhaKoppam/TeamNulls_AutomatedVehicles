@@ -76,6 +76,9 @@
 /* Country insights open as a separate detail view, like the map's country profile. */
 .bump-rank-view { display: flex; flex-direction: column; gap: 10px; }
 .bump-bottom-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 28px; }
+.bump-filter-tooltip-anchor { position: relative; display: inline-flex; flex: 0 0 auto; }
+.bump-filter-tooltip-anchor > .hint-tip { position: absolute; top: 50%; left: calc(100% + 10px); width: max-content; max-width: none; transform: translateY(-50%); }
+.bump-filter-tooltip-anchor > .hint-tip.hint-tip--leaving { transform: translateY(-50%) scale(.96); }
 .bump-filter-toggle { display: inline-flex; align-items: center; gap: 9px; color: var(--text-secondary); font: 500 15px var(--ui); cursor: pointer; }
 .bump-filter-toggle input { position: absolute; inline-size: 1px; block-size: 1px; opacity: 0; }
 .bump-filter-toggle i { position: relative; display: inline-block; width: 36px; height: 20px; border: 1px solid var(--border-subtle); border-radius: 999px; background: rgba(255,255,255,.05); }

@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { feature } from 'topojson-client';
+import { showOnceOnView } from '../components/tooltip.js';
 
 const fmt = d3.format('.2f');
 const prefersReducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -10,10 +11,29 @@ export function renderMetricControls(container, source, state, actions, { showRa
   controls.html('');
   const selector = controls.append('label').attr('class', 'metric-selector');
   selector.append('span').attr('class', 'metric-select-label').text('Map metric');
-  selector.append('select').attr('class', 'metric-select').attr('aria-label', 'Choose map metric')
+  const selectAnchor = selector.append('span').attr('class', 'metric-select-tooltip-anchor');
+  const hint = container.__mapMetricHint;
+  if (hint && !hint.classList.contains('hint-tip--leaving')) {
+    selectAnchor.node().append(hint);
+  }
+  selectAnchor.append('select').attr('class', 'metric-select').attr('aria-label', 'Choose map metric')
     .selectAll('option').data(source.metrics).join('option')
     .attr('value', (d) => d.key).property('selected', (d) => d.key === metric.key).text((d) => d.label);
   selector.select('select').on('change', function change() { actions.setMetric(this.value); });
+  if (!container.__mapMetricTooltipInitialized) {
+    container.__mapMetricTooltipInitialized = true;
+    showOnceOnView({
+      id: 'map-metric',
+      anchorEl: container.closest('.step'),
+      text: 'Play with different map metrics!',
+      mount: (tooltip) => {
+        container.__mapMetricHint = tooltip;
+        container.querySelector('.metric-select-tooltip-anchor')?.append(tooltip);
+      },
+      tail: 'left',
+      align: 'center',
+    });
+  }
   if (!showRanking) {
     d3.select(container).selectAll('.ranking-strip').remove();
     return;

@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { showOnceOnView } from '../components/tooltip.js';
 import { COUNTRY_MAP } from '../data/countryMap.js';
 
 const AXES = [
@@ -9,6 +10,25 @@ const AXES = [
 const LIKERT_COLORS = ['#9d5662', '#e66767', '#c9c8c2', '#3d8de7', '#32ad9b'];
 const LIKERT_LABELS = ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree'];
 const GROUP_COLORS = { selected: '#32ad9b', others: '#e5a65d' };
+
+function ensureFilterHintAnchor(container) {
+  const toggle = container.querySelector('.bump-filter-toggle');
+  let anchor = container.querySelector('.bump-filter-tooltip-anchor');
+  if (toggle && !anchor) {
+    anchor = document.createElement('span');
+    anchor.className = 'bump-filter-tooltip-anchor';
+    toggle.before(anchor);
+    anchor.append(toggle);
+  }
+  const hint = container.__bumpFilterHint;
+  if (anchor && hint && !hint.classList.contains('hint-tip--leaving')) anchor.append(hint);
+  return anchor;
+}
+
+function dismissFilterHint(container) {
+  const hint = container.__bumpFilterHint;
+  if (!hint?.classList.contains('hint-tip--leaving')) hint?.querySelector('.hint-tip__close')?.click();
+}
 const COUNTRY_NAME_BY_ISO = new Map(Object.values(COUNTRY_MAP).map((country) => [country.iso3, country.name]));
 
 function makeRows(source) {
@@ -153,6 +173,7 @@ export function renderCountryBump(container, metricSource, insightData, {
   const rankView = container.querySelector('#bump-rank-view');
   const insightsView = container.querySelector('#bump-insights');
   const screenHead = container.closest('.chart-shell')?.querySelector('.screen-head');
+  ensureFilterHintAnchor(container);
   const filterMode = container.querySelector('#bump-filter-mode');
   const selectionToolbar = container.querySelector('.bump-selection-toolbar');
   const selectionStatus = container.querySelector('#bump-selection-status');
@@ -166,6 +187,21 @@ export function renderCountryBump(container, metricSource, insightData, {
   const selectedIso = new Set();
   let hoveredIso = null;
   let rankFilterEnabled = false;
+
+  if (!container.__bumpFilterHintInitialized) {
+    container.__bumpFilterHintInitialized = true;
+    showOnceOnView({
+      id: 'bump-filter',
+      anchorEl: container.closest('.step'),
+      text: 'Turn this on, then drag an axis to isolate countries!',
+      mount: (tooltip) => {
+        container.__bumpFilterHint = tooltip;
+        container.querySelector('.bump-filter-tooltip-anchor')?.append(tooltip);
+      },
+      tail: 'left',
+      align: 'center',
+    });
+  }
 
   const enjoymentItems = insightData.items.enjoyment;
   const socialItems = insightData.items.socialInfluence.map((item) => ({
@@ -406,6 +442,7 @@ export function renderCountryBump(container, metricSource, insightData, {
   });
   filterMode.addEventListener('change', () => {
     rankFilterEnabled = filterMode.checked;
+    if (rankFilterEnabled) dismissFilterHint(container);
     if (!rankFilterEnabled) AXES.forEach((axis) => setRange(axis.key, [1, rows.length]));
     svg.classed('is-filter-mode', rankFilterEnabled);
     updateSelection();
