@@ -1,0 +1,1658 @@
+{
+  "source": "L3Pilot Global User Acceptance Survey, original workbook; agreement response codes 1-5 only.",
+  "scoring": {
+    "agreementScale": [
+      "Strongly disagree",
+      "Disagree",
+      "Neutral",
+      "Agree",
+      "Strongly agree"
+    ],
+    "nonScaleCode": 6,
+    "missingAndCode6": "Excluded item by item; no imputation."
+  },
+  "items": {
+    "enjoyment": [
+      {
+        "key": "fun",
+        "label": "Fun",
+        "field": "f16_6"
+      },
+      {
+        "key": "entertaining",
+        "label": "Entertaining",
+        "field": "f16_8"
+      },
+      {
+        "key": "enjoyable",
+        "label": "Enjoyable",
+        "field": "f16_10"
+      }
+    ],
+    "socialInfluence": [
+      {
+        "key": "valuedOpinions",
+        "label": "People whose opinions I value",
+        "field": "f16_7"
+      },
+      {
+        "key": "behaviorInfluencers",
+        "label": "People who influence my behaviour",
+        "field": "f16_17"
+      },
+      {
+        "key": "importantPeople",
+        "label": "People important to me",
+        "field": "f16_19"
+      },
+      {
+        "key": "recommend",
+        "label": "Would recommend to others",
+        "field": "f16_20"
+      }
+    ]
+  },
+  "directUse": {
+    "field": "f16_9",
+    "question": "I intend to use a conditionally automated car in the future.",
+    "n": 18472,
+    "counts": [
+      1071,
+      1355,
+      4206,
+      7649,
+      4191
+    ],
+    "shares": [
+      5.797964,
+      7.335427,
+      22.769597,
+      41.408618,
+      22.688393
+    ]
+  },
+  "countries": [
+    {
+      "countryCode": 1,
+      "name": "United Kingdom",
+      "iso3": "GBR",
+      "respondents": 1217,
+      "useIntention": {
+        "n": 1210,
+        "mean": 3.324793
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1211,
+            "counts": [
+              57,
+              81,
+              389,
+              497,
+              187
+            ],
+            "mean": 3.558216
+          },
+          "entertaining": {
+            "n": 1210,
+            "counts": [
+              147,
+              222,
+              435,
+              319,
+              87
+            ],
+            "mean": 2.980992
+          },
+          "enjoyable": {
+            "n": 1204,
+            "counts": [
+              171,
+              147,
+              387,
+              344,
+              155
+            ],
+            "mean": 3.137043
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1207,
+            "counts": [
+              130,
+              121,
+              326,
+              448,
+              182
+            ],
+            "mean": 3.357084
+          },
+          "behaviorInfluencers": {
+            "n": 1205,
+            "counts": [
+              48,
+              75,
+              288,
+              573,
+              221
+            ],
+            "mean": 3.700415
+          },
+          "importantPeople": {
+            "n": 1207,
+            "counts": [
+              73,
+              116,
+              426,
+              465,
+              127
+            ],
+            "mean": 3.378625
+          },
+          "recommend": {
+            "n": 1209,
+            "counts": [
+              154,
+              240,
+              423,
+              303,
+              89
+            ],
+            "mean": 2.944582
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 2,
+      "name": "United States",
+      "iso3": "USA",
+      "respondents": 1056,
+      "useIntention": {
+        "n": 1050,
+        "mean": 3.460952
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1050,
+            "counts": [
+              48,
+              65,
+              284,
+              464,
+              189
+            ],
+            "mean": 3.648571
+          },
+          "entertaining": {
+            "n": 1046,
+            "counts": [
+              124,
+              201,
+              391,
+              236,
+              94
+            ],
+            "mean": 2.976099
+          },
+          "enjoyable": {
+            "n": 1053,
+            "counts": [
+              119,
+              139,
+              352,
+              299,
+              144
+            ],
+            "mean": 3.19943
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1050,
+            "counts": [
+              82,
+              111,
+              244,
+              425,
+              188
+            ],
+            "mean": 3.500952
+          },
+          "behaviorInfluencers": {
+            "n": 1053,
+            "counts": [
+              37,
+              46,
+              208,
+              500,
+              262
+            ],
+            "mean": 3.8585
+          },
+          "importantPeople": {
+            "n": 1050,
+            "counts": [
+              58,
+              117,
+              347,
+              415,
+              113
+            ],
+            "mean": 3.388571
+          },
+          "recommend": {
+            "n": 1049,
+            "counts": [
+              143,
+              211,
+              390,
+              213,
+              92
+            ],
+            "mean": 2.904671
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 3,
+      "name": "Sweden",
+      "iso3": "SWE",
+      "respondents": 1177,
+      "useIntention": {
+        "n": 1157,
+        "mean": 3.354365
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1157,
+            "counts": [
+              81,
+              74,
+              371,
+              438,
+              193
+            ],
+            "mean": 3.508211
+          },
+          "entertaining": {
+            "n": 1144,
+            "counts": [
+              175,
+              159,
+              498,
+              224,
+              88
+            ],
+            "mean": 2.90472
+          },
+          "enjoyable": {
+            "n": 1151,
+            "counts": [
+              179,
+              133,
+              436,
+              261,
+              142
+            ],
+            "mean": 3.046916
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1160,
+            "counts": [
+              138,
+              94,
+              312,
+              378,
+              238
+            ],
+            "mean": 3.417241
+          },
+          "behaviorInfluencers": {
+            "n": 1155,
+            "counts": [
+              81,
+              91,
+              347,
+              425,
+              211
+            ],
+            "mean": 3.514286
+          },
+          "importantPeople": {
+            "n": 1145,
+            "counts": [
+              119,
+              127,
+              454,
+              335,
+              110
+            ],
+            "mean": 3.165939
+          },
+          "recommend": {
+            "n": 1142,
+            "counts": [
+              192,
+              155,
+              472,
+              220,
+              103
+            ],
+            "mean": 2.901051
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 4,
+      "name": "Germany",
+      "iso3": "DEU",
+      "respondents": 1133,
+      "useIntention": {
+        "n": 1083,
+        "mean": 2.914127
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1116,
+            "counts": [
+              119,
+              155,
+              287,
+              396,
+              159
+            ],
+            "mean": 3.287634
+          },
+          "entertaining": {
+            "n": 1119,
+            "counts": [
+              140,
+              125,
+              318,
+              370,
+              166
+            ],
+            "mean": 3.265416
+          },
+          "enjoyable": {
+            "n": 1119,
+            "counts": [
+              113,
+              167,
+              322,
+              391,
+              126
+            ],
+            "mean": 3.223414
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1116,
+            "counts": [
+              65,
+              79,
+              263,
+              509,
+              200
+            ],
+            "mean": 3.62724
+          },
+          "behaviorInfluencers": {
+            "n": 1112,
+            "counts": [
+              147,
+              150,
+              247,
+              400,
+              168
+            ],
+            "mean": 3.26259
+          },
+          "importantPeople": {
+            "n": 1066,
+            "counts": [
+              202,
+              237,
+              408,
+              179,
+              40
+            ],
+            "mean": 2.641651
+          },
+          "recommend": {
+            "n": 1101,
+            "counts": [
+              72,
+              110,
+              361,
+              457,
+              101
+            ],
+            "mean": 3.367847
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 5,
+      "name": "France",
+      "iso3": "FRA",
+      "respondents": 1164,
+      "useIntention": {
+        "n": 1155,
+        "mean": 3.458874
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1151,
+            "counts": [
+              64,
+              71,
+              286,
+              518,
+              212
+            ],
+            "mean": 3.645526
+          },
+          "entertaining": {
+            "n": 1145,
+            "counts": [
+              166,
+              183,
+              443,
+              273,
+              80
+            ],
+            "mean": 2.928384
+          },
+          "enjoyable": {
+            "n": 1151,
+            "counts": [
+              191,
+              125,
+              381,
+              322,
+              132
+            ],
+            "mean": 3.068636
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1157,
+            "counts": [
+              116,
+              75,
+              281,
+              478,
+              207
+            ],
+            "mean": 3.505618
+          },
+          "behaviorInfluencers": {
+            "n": 1149,
+            "counts": [
+              64,
+              78,
+              265,
+              532,
+              210
+            ],
+            "mean": 3.64926
+          },
+          "importantPeople": {
+            "n": 1154,
+            "counts": [
+              82,
+              110,
+              392,
+              441,
+              129
+            ],
+            "mean": 3.368284
+          },
+          "recommend": {
+            "n": 1148,
+            "counts": [
+              179,
+              195,
+              407,
+              279,
+              88
+            ],
+            "mean": 2.914634
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 6,
+      "name": "China",
+      "iso3": "CHN",
+      "respondents": 1004,
+      "useIntention": {
+        "n": 1002,
+        "mean": 4.086826
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 999,
+            "counts": [
+              3,
+              20,
+              239,
+              496,
+              241
+            ],
+            "mean": 3.952953
+          },
+          "entertaining": {
+            "n": 1001,
+            "counts": [
+              3,
+              58,
+              297,
+              434,
+              209
+            ],
+            "mean": 3.787213
+          },
+          "enjoyable": {
+            "n": 998,
+            "counts": [
+              4,
+              19,
+              185,
+              493,
+              297
+            ],
+            "mean": 4.062124
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 997,
+            "counts": [
+              1,
+              17,
+              180,
+              505,
+              294
+            ],
+            "mean": 4.077232
+          },
+          "behaviorInfluencers": {
+            "n": 997,
+            "counts": [
+              3,
+              14,
+              159,
+              502,
+              319
+            ],
+            "mean": 4.12337
+          },
+          "importantPeople": {
+            "n": 1000,
+            "counts": [
+              3,
+              35,
+              224,
+              526,
+              212
+            ],
+            "mean": 3.909
+          },
+          "recommend": {
+            "n": 999,
+            "counts": [
+              8,
+              25,
+              290,
+              450,
+              226
+            ],
+            "mean": 3.861862
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 7,
+      "name": "Hungary",
+      "iso3": "HUN",
+      "respondents": 1146,
+      "useIntention": {
+        "n": 1135,
+        "mean": 3.540969
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1136,
+            "counts": [
+              27,
+              57,
+              196,
+              616,
+              240
+            ],
+            "mean": 3.867077
+          },
+          "entertaining": {
+            "n": 1132,
+            "counts": [
+              93,
+              170,
+              431,
+              350,
+              88
+            ],
+            "mean": 3.150177
+          },
+          "enjoyable": {
+            "n": 1132,
+            "counts": [
+              66,
+              90,
+              302,
+              499,
+              175
+            ],
+            "mean": 3.553887
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1135,
+            "counts": [
+              88,
+              188,
+              372,
+              370,
+              117
+            ],
+            "mean": 3.211454
+          },
+          "behaviorInfluencers": {
+            "n": 1135,
+            "counts": [
+              44,
+              90,
+              293,
+              530,
+              178
+            ],
+            "mean": 3.623789
+          },
+          "importantPeople": {
+            "n": 1134,
+            "counts": [
+              36,
+              100,
+              312,
+              561,
+              125
+            ],
+            "mean": 3.563492
+          },
+          "recommend": {
+            "n": 1131,
+            "counts": [
+              118,
+              212,
+              440,
+              288,
+              73
+            ],
+            "mean": 2.987622
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 8,
+      "name": "Italy",
+      "iso3": "ITA",
+      "respondents": 1186,
+      "useIntention": {
+        "n": 1172,
+        "mean": 3.544369
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1173,
+            "counts": [
+              33,
+              81,
+              341,
+              556,
+              162
+            ],
+            "mean": 3.624893
+          },
+          "entertaining": {
+            "n": 1167,
+            "counts": [
+              77,
+              166,
+              470,
+              363,
+              91
+            ],
+            "mean": 3.192802
+          },
+          "enjoyable": {
+            "n": 1165,
+            "counts": [
+              74,
+              101,
+              358,
+              466,
+              166
+            ],
+            "mean": 3.471245
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1175,
+            "counts": [
+              60,
+              114,
+              409,
+              440,
+              152
+            ],
+            "mean": 3.434043
+          },
+          "behaviorInfluencers": {
+            "n": 1179,
+            "counts": [
+              33,
+              58,
+              278,
+              586,
+              224
+            ],
+            "mean": 3.771841
+          },
+          "importantPeople": {
+            "n": 1173,
+            "counts": [
+              47,
+              123,
+              395,
+              504,
+              104
+            ],
+            "mean": 3.421995
+          },
+          "recommend": {
+            "n": 1174,
+            "counts": [
+              85,
+              175,
+              471,
+              333,
+              110
+            ],
+            "mean": 3.177172
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 9,
+      "name": "Finland",
+      "iso3": "FIN",
+      "respondents": 1021,
+      "useIntention": {
+        "n": 1013,
+        "mean": 2.969398
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1010,
+            "counts": [
+              76,
+              80,
+              324,
+              343,
+              187
+            ],
+            "mean": 3.480198
+          },
+          "entertaining": {
+            "n": 999,
+            "counts": [
+              137,
+              155,
+              479,
+              167,
+              61
+            ],
+            "mean": 2.85986
+          },
+          "enjoyable": {
+            "n": 1003,
+            "counts": [
+              213,
+              170,
+              399,
+              157,
+              64
+            ],
+            "mean": 2.68993
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1013,
+            "counts": [
+              174,
+              137,
+              333,
+              250,
+              119
+            ],
+            "mean": 3.002962
+          },
+          "behaviorInfluencers": {
+            "n": 1011,
+            "counts": [
+              60,
+              75,
+              195,
+              437,
+              244
+            ],
+            "mean": 3.722057
+          },
+          "importantPeople": {
+            "n": 1012,
+            "counts": [
+              58,
+              122,
+              286,
+              443,
+              103
+            ],
+            "mean": 3.406126
+          },
+          "recommend": {
+            "n": 1003,
+            "counts": [
+              242,
+              242,
+              367,
+              126,
+              26
+            ],
+            "mean": 2.453639
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 10,
+      "name": "Spain",
+      "iso3": "ESP",
+      "respondents": 1074,
+      "useIntention": {
+        "n": 1071,
+        "mean": 3.698413
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1073,
+            "counts": [
+              24,
+              59,
+              247,
+              495,
+              248
+            ],
+            "mean": 3.823858
+          },
+          "entertaining": {
+            "n": 1071,
+            "counts": [
+              67,
+              119,
+              437,
+              305,
+              143
+            ],
+            "mean": 3.315593
+          },
+          "enjoyable": {
+            "n": 1070,
+            "counts": [
+              62,
+              94,
+              337,
+              389,
+              188
+            ],
+            "mean": 3.511215
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1071,
+            "counts": [
+              47,
+              68,
+              237,
+              469,
+              250
+            ],
+            "mean": 3.753501
+          },
+          "behaviorInfluencers": {
+            "n": 1073,
+            "counts": [
+              22,
+              41,
+              187,
+              502,
+              321
+            ],
+            "mean": 3.986952
+          },
+          "importantPeople": {
+            "n": 1070,
+            "counts": [
+              22,
+              24,
+              155,
+              559,
+              310
+            ],
+            "mean": 4.038318
+          },
+          "recommend": {
+            "n": 1066,
+            "counts": [
+              69,
+              114,
+              400,
+              330,
+              153
+            ],
+            "mean": 3.360225
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 11,
+      "name": "Brazil",
+      "iso3": "BRA",
+      "respondents": 1057,
+      "useIntention": {
+        "n": 1052,
+        "mean": 4.282319
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1051,
+            "counts": [
+              6,
+              36,
+              168,
+              476,
+              365
+            ],
+            "mean": 4.101808
+          },
+          "entertaining": {
+            "n": 1053,
+            "counts": [
+              25,
+              77,
+              308,
+              390,
+              253
+            ],
+            "mean": 3.730294
+          },
+          "enjoyable": {
+            "n": 1052,
+            "counts": [
+              12,
+              23,
+              150,
+              435,
+              432
+            ],
+            "mean": 4.190114
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1053,
+            "counts": [
+              13,
+              25,
+              147,
+              471,
+              397
+            ],
+            "mean": 4.152896
+          },
+          "behaviorInfluencers": {
+            "n": 1049,
+            "counts": [
+              11,
+              16,
+              101,
+              510,
+              411
+            ],
+            "mean": 4.233556
+          },
+          "importantPeople": {
+            "n": 1054,
+            "counts": [
+              15,
+              36,
+              189,
+              546,
+              268
+            ],
+            "mean": 3.963947
+          },
+          "recommend": {
+            "n": 1048,
+            "counts": [
+              28,
+              51,
+              269,
+              418,
+              282
+            ],
+            "mean": 3.834924
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 12,
+      "name": "Indonesia",
+      "iso3": "IDN",
+      "respondents": 1059,
+      "useIntention": {
+        "n": 1052,
+        "mean": 4.08365
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1053,
+            "counts": [
+              5,
+              10,
+              181,
+              557,
+              300
+            ],
+            "mean": 4.079772
+          },
+          "entertaining": {
+            "n": 1056,
+            "counts": [
+              4,
+              33,
+              267,
+              505,
+              247
+            ],
+            "mean": 3.907197
+          },
+          "enjoyable": {
+            "n": 1050,
+            "counts": [
+              6,
+              9,
+              132,
+              495,
+              408
+            ],
+            "mean": 4.228571
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1055,
+            "counts": [
+              5,
+              16,
+              142,
+              508,
+              384
+            ],
+            "mean": 4.184834
+          },
+          "behaviorInfluencers": {
+            "n": 1055,
+            "counts": [
+              5,
+              6,
+              101,
+              517,
+              426
+            ],
+            "mean": 4.282464
+          },
+          "importantPeople": {
+            "n": 1056,
+            "counts": [
+              5,
+              22,
+              173,
+              567,
+              289
+            ],
+            "mean": 4.053977
+          },
+          "recommend": {
+            "n": 1057,
+            "counts": [
+              8,
+              36,
+              299,
+              456,
+              258
+            ],
+            "mean": 3.870388
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 13,
+      "name": "India",
+      "iso3": "IND",
+      "respondents": 1054,
+      "useIntention": {
+        "n": 1050,
+        "mean": 4.270476
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1051,
+            "counts": [
+              20,
+              16,
+              111,
+              458,
+              446
+            ],
+            "mean": 4.231208
+          },
+          "entertaining": {
+            "n": 1048,
+            "counts": [
+              21,
+              25,
+              130,
+              454,
+              418
+            ],
+            "mean": 4.166985
+          },
+          "enjoyable": {
+            "n": 1045,
+            "counts": [
+              20,
+              13,
+              82,
+              423,
+              507
+            ],
+            "mean": 4.324402
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1042,
+            "counts": [
+              20,
+              21,
+              90,
+              430,
+              481
+            ],
+            "mean": 4.277351
+          },
+          "behaviorInfluencers": {
+            "n": 1047,
+            "counts": [
+              14,
+              18,
+              70,
+              452,
+              493
+            ],
+            "mean": 4.329513
+          },
+          "importantPeople": {
+            "n": 1052,
+            "counts": [
+              21,
+              24,
+              132,
+              467,
+              408
+            ],
+            "mean": 4.156844
+          },
+          "recommend": {
+            "n": 1048,
+            "counts": [
+              18,
+              28,
+              167,
+              436,
+              399
+            ],
+            "mean": 4.116412
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 14,
+      "name": "Japan",
+      "iso3": "JPN",
+      "respondents": 1074,
+      "useIntention": {
+        "n": 1074,
+        "mean": 3.46648
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1074,
+            "counts": [
+              40,
+              124,
+              471,
+              369,
+              70
+            ],
+            "mean": 3.283985
+          },
+          "entertaining": {
+            "n": 1070,
+            "counts": [
+              52,
+              125,
+              501,
+              345,
+              47
+            ],
+            "mean": 3.196262
+          },
+          "enjoyable": {
+            "n": 1073,
+            "counts": [
+              94,
+              136,
+              460,
+              302,
+              81
+            ],
+            "mean": 3.130475
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1072,
+            "counts": [
+              38,
+              108,
+              369,
+              453,
+              104
+            ],
+            "mean": 3.444963
+          },
+          "behaviorInfluencers": {
+            "n": 1074,
+            "counts": [
+              85,
+              180,
+              419,
+              317,
+              73
+            ],
+            "mean": 3.105214
+          },
+          "importantPeople": {
+            "n": 1074,
+            "counts": [
+              25,
+              102,
+              506,
+              389,
+              52
+            ],
+            "mean": 3.317505
+          },
+          "recommend": {
+            "n": 1073,
+            "counts": [
+              45,
+              138,
+              477,
+              352,
+              61
+            ],
+            "mean": 3.229264
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 15,
+      "name": "Russia",
+      "iso3": "RUS",
+      "respondents": 1079,
+      "useIntention": {
+        "n": 1077,
+        "mean": 3.967502
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1070,
+            "counts": [
+              10,
+              37,
+              261,
+              544,
+              218
+            ],
+            "mean": 3.862617
+          },
+          "entertaining": {
+            "n": 1070,
+            "counts": [
+              53,
+              99,
+              404,
+              384,
+              130
+            ],
+            "mean": 3.41028
+          },
+          "enjoyable": {
+            "n": 1068,
+            "counts": [
+              36,
+              70,
+              335,
+              449,
+              178
+            ],
+            "mean": 3.620787
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1069,
+            "counts": [
+              20,
+              57,
+              289,
+              502,
+              201
+            ],
+            "mean": 3.754911
+          },
+          "behaviorInfluencers": {
+            "n": 1076,
+            "counts": [
+              10,
+              22,
+              137,
+              666,
+              241
+            ],
+            "mean": 4.027881
+          },
+          "importantPeople": {
+            "n": 1073,
+            "counts": [
+              23,
+              71,
+              281,
+              551,
+              147
+            ],
+            "mean": 3.678472
+          },
+          "recommend": {
+            "n": 1073,
+            "counts": [
+              39,
+              95,
+              436,
+              370,
+              133
+            ],
+            "mean": 3.4315
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 16,
+      "name": "South Africa",
+      "iso3": "ZAF",
+      "respondents": 1070,
+      "useIntention": {
+        "n": 1068,
+        "mean": 4.005618
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1069,
+            "counts": [
+              17,
+              28,
+              191,
+              493,
+              340
+            ],
+            "mean": 4.039289
+          },
+          "entertaining": {
+            "n": 1067,
+            "counts": [
+              42,
+              113,
+              337,
+              390,
+              185
+            ],
+            "mean": 3.527648
+          },
+          "enjoyable": {
+            "n": 1063,
+            "counts": [
+              32,
+              45,
+              229,
+              430,
+              327
+            ],
+            "mean": 3.917215
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1060,
+            "counts": [
+              21,
+              21,
+              147,
+              504,
+              367
+            ],
+            "mean": 4.108491
+          },
+          "behaviorInfluencers": {
+            "n": 1066,
+            "counts": [
+              25,
+              21,
+              105,
+              524,
+              391
+            ],
+            "mean": 4.158537
+          },
+          "importantPeople": {
+            "n": 1064,
+            "counts": [
+              19,
+              66,
+              234,
+              498,
+              247
+            ],
+            "mean": 3.834586
+          },
+          "recommend": {
+            "n": 1066,
+            "counts": [
+              39,
+              106,
+              362,
+              363,
+              196
+            ],
+            "mean": 3.535647
+          }
+        }
+      }
+    },
+    {
+      "countryCode": 17,
+      "name": "Turkey",
+      "iso3": "TUR",
+      "respondents": 1060,
+      "useIntention": {
+        "n": 1051,
+        "mean": 4.248335
+      },
+      "items": {
+        "enjoyment": {
+          "fun": {
+            "n": 1056,
+            "counts": [
+              23,
+              40,
+              100,
+              502,
+              391
+            ],
+            "mean": 4.13447
+          },
+          "entertaining": {
+            "n": 1056,
+            "counts": [
+              32,
+              35,
+              169,
+              489,
+              331
+            ],
+            "mean": 3.996212
+          },
+          "enjoyable": {
+            "n": 1055,
+            "counts": [
+              29,
+              24,
+              87,
+              427,
+              488
+            ],
+            "mean": 4.252133
+          }
+        },
+        "socialInfluence": {
+          "valuedOpinions": {
+            "n": 1053,
+            "counts": [
+              36,
+              26,
+              79,
+              392,
+              520
+            ],
+            "mean": 4.266857
+          },
+          "behaviorInfluencers": {
+            "n": 1058,
+            "counts": [
+              27,
+              28,
+              71,
+              501,
+              431
+            ],
+            "mean": 4.210775
+          },
+          "importantPeople": {
+            "n": 1058,
+            "counts": [
+              33,
+              47,
+              127,
+              550,
+              301
+            ],
+            "mean": 3.982042
+          },
+          "recommend": {
+            "n": 1052,
+            "counts": [
+              39,
+              76,
+              235,
+              429,
+              273
+            ],
+            "mean": 3.780418
+          }
+        }
+      }
+    }
+  ],
+  "weighting": "Country insight comparisons average country-level item distributions equally across selected countries."
+}

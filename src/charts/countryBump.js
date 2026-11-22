@@ -288,7 +288,7 @@ export function renderCountryBump(container, metricSource, insightData, {
     rankView.hidden = false;
     if (screenHead) {
       const title = document.createElement('h3');
-      title.textContent = 'How country rankings shift across the three measures';
+      title.textContent = 'Each line is a country. Follow it from trust to safety to adoption';
       screenHead.replaceChildren(title);
     }
   }
